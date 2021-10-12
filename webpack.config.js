@@ -1,7 +1,15 @@
+const HtmlWebpaclPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+let mode = 'development'
+
+if (process.env.NODE_ENV === 'production') {
+  mode = 'production'
+}
+
 module.exports = {
-  mode: 'development',
+  mode: mode,
 
   module: {
     rules: [
@@ -11,22 +19,31 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "postcss-loader",
+          "sass-loader",
+        ],
       },
     ],
   },
 
   plugins: [
-    new MiniCssExtractPlugin()
+    new HtmlWebpaclPlugin({
+      template: './src/index.html',
+    }),
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
   ],
-
-  devtool: 'source-map',
   devServer: {
-    static: './dist',
+    static: './src/index.html',
     hot: true,
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+    extensions: ['*', '.js', '.ts'],
   },
 }

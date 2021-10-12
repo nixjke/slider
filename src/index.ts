@@ -1,3 +1,12 @@
-import './styles/index.css'
+import './styles/index.scss'
 
-console.log('tasdest')
+let a = {
+  a: 'Aziz',
+  t: 'Timur',
+}
+let b = {
+  a: 'Aziz',
+  t: 'Timur',
+}
+
+console.log(a, b)
