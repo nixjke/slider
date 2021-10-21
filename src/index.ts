@@ -1,12 +1,11 @@
 import './styles/index.scss'
+import Model from './Model/Model'
 
-let a = {
-  a: 'Aziz',
-  t: 'Timur',
-}
-let b = {
-  a: 'Aziz',
-  t: 'Timur',
-}
+let f = new Model({
+  min: 0,
+  max: 100,
+  step: 1,
+  values: 30
+})
 
-console.log(a, b)
+console.log(f)
