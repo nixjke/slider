@@ -35,8 +35,9 @@ class View extends Observer {
 
     target.style.left = pxValue + 'px'
     bar.style.width = pxValue + 10 + 'px'
-    // bar.style.left = pxValues[0] + "px";
-    // bar.style.width = pxValues[1] - pxValues[0] + 10 + "px";
+    // bar.style.width = pxValue + 10 + "px";
+    bar.style.left = pxValues[0] + 'px'
+    bar.style.width = pxValues[1] - pxValues[0] + 10 + 'px'
     tip.setAttribute('data-value', `${value}`)
   }
 }
