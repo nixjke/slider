@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './View/scss/index.scss'
 import { Model } from './Model/Model'
 
 let f = new Model({
