@@ -1,11 +1,6 @@
 import './View/scss/index.scss'
-import { Model } from './Model/Model'
+import { Controller } from './Controller/Controller'
 
-let f = new Model({
-  min: 0,
-  max: 100,
-  step: 1,
-  values: [30]
-})
+const controller = new Controller()
 
-console.log(f)
+console.log(controller)
