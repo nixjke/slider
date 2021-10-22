@@ -1,5 +1,9 @@
-class View {
-  constructor(public anchor: HTMLElement = document.body) {}
+import { Observer } from '../Observer/Observer'
+
+class View extends Observer {
+  constructor(public anchor: HTMLElement = document.body) {
+    super()
+  }
 
   public renderTemplate({ direction, skin, bar, tip, type }: any) {
     const sliderTemplate = `
@@ -20,7 +24,20 @@ class View {
       </div>
     `
 
-    this.anchor.insertAdjacentHTML('afterbegin', sliderTemplate)
+    this.anchor.insertAdjacentHTML('beforeend', sliderTemplate)
+
+    this.emit('finishRenderTemplate', this.anchor.querySelector('.wrapper-slider'))
+  }
+
+  public renderValues({ pxValue, value, target, pxValues }: any) {
+    const tip = target.querySelector('.slider__tip') as HTMLElement
+    const bar = this.anchor.querySelector('.slider__bar') as HTMLElement
+
+    target.style.left = pxValue + 'px'
+    bar.style.width = pxValue + 10 + 'px'
+    // bar.style.left = pxValues[0] + "px";
+    // bar.style.width = pxValues[1] - pxValues[0] + 10 + "px";
+    tip.setAttribute('data-value', `${value}`)
   }
 }
 
