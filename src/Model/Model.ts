@@ -20,53 +20,74 @@ class Model extends Observer {
   public setState(state: any = {}): void {
     Object.assign(this.state, state)
 
-    this._correctMinMaxRange()
-    this._correctStep();
-    this.state.values = this.state.values
-      ? (this.state.values as number[]).map(value => this._correctValue(value)).sort()
-      : []
+    if (state.min || state.max || state.step) {
+      this._correctMinMaxRange()
+      this._correctStep()
+    }
 
-    if (state.target && state.edge) {
-      const pxValue = this._countPxValueFromValue(this.state.value as number)
-      const pxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
+    if (state.values) {
+      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort()
+    }
 
-      this.mapOfHandlers.set(state.target, { value: state.value, pxValue })
+    // для начальной отрисовки
+    if (state.tempTarget && state.edge && state.tempValue) {
+      // высчитываем tempPxValue от переданного value
+      const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number)
 
-      console.log(this.mapOfHandlers)
+      // высчитываем массив tempPxValues для правильного отображения bar
+      const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
+
+      // записываем результаты в нашу карту
+      this.mapOfHandlers.set(state.tempTarget, {
+        tempValue: state.tempValue,
+        tempPxValue,
+      })
 
       this.emit('pxValueDone', {
-        target: state.target,
-        value: state.value,
-        values: state.values,
-        pxValue,
-        pxValues,
+        tempTarget: this.state.tempTarget,
+        tempValue: this.state.tempValue,
+        tempPxValue,
+        tempPxValues,
       })
     }
 
-    if (state.target && state.left) {
-      this.state.value = this._countValueFromLeft(state.left)
-      this.state.value = this._correctValue(this.state.value)
+    // для отрисовки от действий пользователя
+    if (state.tempTarget && state.left) {
+      // высчитываем tempValue от переданного userLeft
+      this.state.tempValue = this._countValueFromLeft(state.left)
 
-      const pxValue = this._countPxValueFromValue(this.state.value as number)
+      // Корректируем его
+      this.state.tempValue = this._correctValue(this.state.tempValue)
 
-      this.mapOfHandlers.set(state.target, { value: this.state.value, pxValue })
+      if (state.target) {
+        const pxValue = this._countPxValueFromValue(this.state.value as number)
+        const pxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
+        // Высчитываем сколько px для этого value нужно
+        const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number)
 
-      const pxValues = []
-      for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
-        pxValues.push(handlerObj.pxValue)
+        this.emit('pxValueDone', { pxValue, value: this.state.value, target: state.target, pxValues })
+        // записываем новый результат в нашу карту заменяя старые значения
+        this.mapOfHandlers.set(state.tempTarget, { tempValue: this.state.tempValue, tempPxValue })
+
+        // берем из карты из всех бегунков value и перезаписываем массив значений
+        this.state.values = []
+        for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
+          this.state.values.push(handlerObj.tempValue)
+        }
+        this.state.values.sort((a, b) => a - b)
+
+        // высчитываем массив tempPxValues для правильного отображения bar
+        const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
+
+        this.emit('pxValueDone', {
+          tempTarget: state.tempTarget,
+          tempValue: this.state.tempValue,
+          tempPxValue,
+          tempPxValues,
+        })
       }
-      pxValues.sort((a, b) => a - b)
-
-      this.emit('pxValueDone', {
-        target: state.target,
-        value: this.state.value,
-        values: this.state.values,
-        pxValue,
-        pxValues,
-      })
     }
   }
-
   private _countValueFromLeft(left: number): number {
     const state = this.state as IOnlyNumbers
     return (left / ((state.edge / (state.max - state.min)) * state.step)) * state.step + state.min
