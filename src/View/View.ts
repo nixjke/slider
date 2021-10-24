@@ -24,20 +24,20 @@ class View extends Observer {
       </div>
     `
 
-    this.slider.insertAdjacentHTML('beforeend', sliderTemplate)
+    this.slider.insertAdjacentHTML('afterbegin', sliderTemplate)
 
     this.emit('finishRenderTemplate', this.slider.querySelector('.wrapper-slider'))
   }
 
-  public renderValues({ pxValue, value, target, pxValues }: any) {
-    const tip = target.querySelector('.slider__tip') as HTMLElement
-    const bar = this.slider.querySelector('.slider__bar') as HTMLElement
+  public renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: any) {
+    const tip = tempTarget.querySelector('.slider__tip') as HTMLElement
+    const bar = tempTarget.parentElement.querySelector('.slider__bar')
 
-    target.style.left = pxValue + 'px'
-    bar.style.width = pxValue + 10 + 'px'
-    bar.style.left = pxValues[0] + 'px'
-    bar.style.width = pxValues[1] - pxValues[0] + 10 + 'px'
-    tip.setAttribute('data-value', `${value}`)
+    tempTarget.style.left = tempPxValue + 'px'
+    // bar.style.width = tempPxValue + 10 + "px"
+    bar.style.left = tempPxValues[0] + 'px'
+    bar.style.width = tempPxValues[1] - tempPxValues[0] + 10 + 'px'
+    tip.setAttribute('data-value', `${tempValue}`)
   }
 }
 
