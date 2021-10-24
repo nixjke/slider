@@ -6,8 +6,7 @@ class Controller {
   private view = new View()
 
   constructor() {
-    this.view.on('finishRenderTemplate', (wrapper: HTMLElement) => this._arrangeHandlers(wrapper))
-    this.model.on('pxValueDone', (obj: {}) => this.view.renderTemplate(obj))
+    this._bindEvents()
 
     this.model.setState({
       min: 1,
@@ -24,6 +23,12 @@ class Controller {
     })
   }
 
+  private _bindEvents() {
+    this.view.on('finishRenderTemplate', (wrapper: HTMLElement) => this._arrangeHandlers(wrapper))
+    this.model.on('pxValueDone', (obj: {}) => this.view.renderTemplate(obj))
+  }
+
+  // Начальная расстановке бегунков
   private _arrangeHandlers(wrapper: HTMLElement) {
     const handlers = wrapper.querySelectorAll('.slider__handler')
     const edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth
@@ -31,20 +36,20 @@ class Controller {
     for (let i = 0; i < handlers.length; i++) {
       this.model.setState({
         edge,
-        target: handlers[i],
-        value: (this.model.state.values as number[])[i],
+        template: handlers[i],
+        templateValue: (this.model.state.values as number[])[i],
       })
     }
 
-    this._addListener(wrapper, edge)
+    this._listenUserEvents(wrapper, edge)
   }
 
-  private _addListener(wrapper: HTMLElement, edge: number) {
+  private _listenUserEvents(wrapper: HTMLElement, edge: number) {
     wrapper.addEventListener('mousedown', e => {
       e.preventDefault()
       if ((e.target as HTMLElement).className !== 'slider__handler') return
 
-      const target = e.target
+      const tempTarget = e.target
       const shiftX = e.offsetX
 
       const mousemove = _onMouseMove.bind(this)
@@ -54,12 +59,9 @@ class Controller {
       document.addEventListener('mouseup', mouseup)
 
       function _onMouseMove(this: Controller, e: MouseEvent) {
-        let left = e.clientX - shiftX - wrapper.offsetLeft
+        const left = e.clientX - shiftX - wrapper.offsetLeft
 
-        left = left < 0 ? 0 : left
-        left = left > edge ? edge : left
-
-        this.model.setState({ left, target })
+        this.model.setState({ left, tempTarget })
       }
 
       function _onMouseUp() {

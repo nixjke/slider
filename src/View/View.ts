@@ -1,7 +1,7 @@
 import { Observer } from '../Observer/Observer'
 
 class View extends Observer {
-  constructor(public anchor: HTMLElement = document.body) {
+  constructor(public slider: HTMLElement = document.body) {
     super()
   }
 
@@ -24,18 +24,17 @@ class View extends Observer {
       </div>
     `
 
-    this.anchor.insertAdjacentHTML('beforeend', sliderTemplate)
+    this.slider.insertAdjacentHTML('beforeend', sliderTemplate)
 
-    this.emit('finishRenderTemplate', this.anchor.querySelector('.wrapper-slider'))
+    this.emit('finishRenderTemplate', this.slider.querySelector('.wrapper-slider'))
   }
 
   public renderValues({ pxValue, value, target, pxValues }: any) {
     const tip = target.querySelector('.slider__tip') as HTMLElement
-    const bar = this.anchor.querySelector('.slider__bar') as HTMLElement
+    const bar = this.slider.querySelector('.slider__bar') as HTMLElement
 
     target.style.left = pxValue + 'px'
     bar.style.width = pxValue + 10 + 'px'
-    // bar.style.width = pxValue + 10 + "px";
     bar.style.left = pxValues[0] + 'px'
     bar.style.width = pxValues[1] - pxValues[0] + 10 + 'px'
     tip.setAttribute('data-value', `${value}`)

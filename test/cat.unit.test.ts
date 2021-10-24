@@ -19,7 +19,7 @@ class CatModuleTest {
   }
 
   @test 'Cat is created'() {
-    this.SUT.name.should.to.not.be.undefined.and.have.property('name').equal('Tom')
+    expect(this.SUT?.name).equal('Tom')
   }
 
   @test 'Cat move 10m'() {
