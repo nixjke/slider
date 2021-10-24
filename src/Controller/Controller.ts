@@ -1,9 +1,11 @@
 import { Model } from '../Model/Model'
 import { View } from '../View/View'
+import { VisualModel } from '../Model/VisualModel'
 
 class Controller {
   private model = new Model()
-  private view = new View()
+  private visualModel = new VisualModel()
+  private view: View = new View()
 
   constructor() {
     this._bindEvents()
@@ -14,7 +16,7 @@ class Controller {
       values: [30, 60],
       step: 5,
     })
-    this.view.renderTemplate({
+    this.visualModel.setState({
       direction: 'horizontal',
       skin: 'green',
       bar: true,
@@ -24,14 +26,19 @@ class Controller {
   }
 
   private _bindEvents() {
+    this.visualModel.on('newVisualModel', (state: {}) => this.view.renderTemplate(state))
     this.view.on('finishRenderTemplate', (wrapper: HTMLElement) => this._arrangeHandlers(wrapper))
-    this.model.on('pxValueDone', (obj: {}) => this.view.renderTemplate(obj))
+    this.model.on('pxValueDone', (obj: {}) => this.view.renderValues(obj))
   }
 
   // Начальная расстановке бегунков
   private _arrangeHandlers(wrapper: HTMLElement) {
     const handlers = wrapper.querySelectorAll('.slider__handler')
-    const edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth
+    let edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth
+
+    if (this.visualModel.state.direction === 'vertical') {
+      edge = wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight
+    }
 
     for (let i = 0; i < handlers.length; i++) {
       this.model.setState({
@@ -51,6 +58,7 @@ class Controller {
 
       const tempTarget = e.target
       const shiftX = e.offsetX
+      const shiftY = (e.target as HTMLElement).offsetHeight - e.offsetY
 
       const mousemove = _onMouseMove.bind(this)
       const mouseup = _onMouseUp
@@ -59,8 +67,13 @@ class Controller {
       document.addEventListener('mouseup', mouseup)
 
       function _onMouseMove(this: Controller, e: MouseEvent) {
-        const left = e.clientX - shiftX - wrapper.offsetLeft
-
+        let left
+        if (this.visualModel.state.direction === 'vertical') {
+          left = wrapper.offsetHeight - e.clientY - shiftY + wrapper.getBoundingClientRect().top
+        } else {
+          left = e.clientX - shiftX - wrapper.offsetLeft
+        }
+        
         this.model.setState({ left, tempTarget })
       }
 
