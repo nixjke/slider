@@ -183,4 +183,17 @@ div[class*='slider'] {
       border-bottom: 14px solid purple;
     }
   }
+
+  &__dashes {
+    position: relative;
+    bottom: -30px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__dash {
+    width: 1px;
+    height: 3px;
+    background-color: red;
+  }
 }

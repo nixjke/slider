@@ -7,21 +7,26 @@ class Controller {
   private visualModel = new VisualModel()
   private view: View = new View()
 
-  constructor() {
+  constructor(slider: HTMLElement) {
+    this.view = new View(slider)
     this._bindEvents()
 
     this.model.setState({
-      min: 1,
-      max: 100,
-      values: [30, 60],
-      step: 5,
+      min: 10,
+      max: 80,
+      values: [12, 50],
+      step: 2,
     })
     this.visualModel.setState({
       direction: 'horizontal',
-      skin: 'yellow',
+      skin: 'red',
       bar: true,
       tip: true,
       type: 'double',
+      scale: {
+        status: true,
+        count: 6,
+      },
     })
   }
 
@@ -29,61 +34,18 @@ class Controller {
     this.visualModel.on('newVisualModel', (state: {}) => this.view.update(state))
     this.view.on('finishRenderTemplate', (wrapper: HTMLElement) => this._arrangeHandlers(wrapper))
     this.model.on('pxValueDone', (obj: {}) => this.view.update(obj))
+    this.view.on('onUserMove', (obj: {}) => this.model.setState(obj))
   }
 
-  // Начальная расстановке бегунков
-  private _arrangeHandlers(wrapper: HTMLElement) {
-    const handlers = wrapper.querySelectorAll('.slider__handler')
-    let edge
-
-    if (this.visualModel.state.direction === 'vertical') {
-      edge = wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight
-    } else {
-      edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth
-    }
-
+  // Начальная расстановка бегунков
+  private _arrangeHandlers({ edge, handlers }: any) {
     for (let i = 0; i < handlers.length; i++) {
       this.model.setState({
         edge,
-        template: handlers[i],
-        templateValue: (this.model.state.values as number[])[i],
+        tempTarget: handlers[i],
+        tempValue: (this.model.state.values as number[])[i],
       })
     }
-
-    this._listenUserEvents(wrapper)
-  }
-
-  private _listenUserEvents(wrapper: HTMLElement) {
-    wrapper.addEventListener('mousedown', e => {
-      e.preventDefault()
-      if ((e.target as HTMLElement).className !== 'slider__handler') return
-
-      const tempTarget = e.target as HTMLElement
-      const shiftX = e.offsetX
-      const shiftY = (e.target as HTMLElement).offsetHeight - e.offsetY
-
-      const mousemove = _onMouseMove.bind(this)
-      const mouseup = _onMouseUp
-
-      document.addEventListener('mousemove', mousemove)
-      document.addEventListener('mouseup', mouseup)
-
-      function _onMouseMove(this: Controller, e: MouseEvent) {
-        let left
-        if (this.visualModel.state.direction === 'vertical') {
-          left = wrapper.offsetHeight - e.clientY - shiftY + wrapper.getBoundingClientRect().top
-        } else {
-          left = e.clientX - shiftX - wrapper.offsetLeft
-        }
-
-        this.model.setState({ left, tempTarget })
-      }
-
-      function _onMouseUp() {
-        document.removeEventListener('mousemove', mousemove)
-        document.removeEventListener('mouseup', mouseup)
-      }
-    })
   }
 }
 
