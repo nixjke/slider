@@ -17,7 +17,7 @@ class Controller {
       step: 5,
     })
     this.visualModel.setState({
-      direction: 'vertical',
+      direction: 'horizontal',
       skin: 'yellow',
       bar: true,
       tip: true,
