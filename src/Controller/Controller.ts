@@ -17,8 +17,8 @@ class Controller {
       step: 5,
     })
     this.visualModel.setState({
-      direction: 'horizontal',
-      skin: 'green',
+      direction: 'vertical',
+      skin: 'yellow',
       bar: true,
       tip: true,
       type: 'double',
@@ -26,18 +26,20 @@ class Controller {
   }
 
   private _bindEvents() {
-    this.visualModel.on('newVisualModel', (state: {}) => this.view.renderTemplate(state))
+    this.visualModel.on('newVisualModel', (state: {}) => this.view.update(state))
     this.view.on('finishRenderTemplate', (wrapper: HTMLElement) => this._arrangeHandlers(wrapper))
-    this.model.on('pxValueDone', (obj: {}) => this.view.renderValues(obj))
+    this.model.on('pxValueDone', (obj: {}) => this.view.update(obj))
   }
 
   // Начальная расстановке бегунков
   private _arrangeHandlers(wrapper: HTMLElement) {
     const handlers = wrapper.querySelectorAll('.slider__handler')
-    let edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth
+    let edge
 
     if (this.visualModel.state.direction === 'vertical') {
       edge = wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight
+    } else {
+      edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth
     }
 
     for (let i = 0; i < handlers.length; i++) {
@@ -48,15 +50,15 @@ class Controller {
       })
     }
 
-    this._listenUserEvents(wrapper, edge)
+    this._listenUserEvents(wrapper)
   }
 
-  private _listenUserEvents(wrapper: HTMLElement, edge: number) {
+  private _listenUserEvents(wrapper: HTMLElement) {
     wrapper.addEventListener('mousedown', e => {
       e.preventDefault()
       if ((e.target as HTMLElement).className !== 'slider__handler') return
 
-      const tempTarget = e.target
+      const tempTarget = e.target as HTMLElement
       const shiftX = e.offsetX
       const shiftY = (e.target as HTMLElement).offsetHeight - e.offsetY
 
@@ -73,7 +75,7 @@ class Controller {
         } else {
           left = e.clientX - shiftX - wrapper.offsetLeft
         }
-        
+
         this.model.setState({ left, tempTarget })
       }
 

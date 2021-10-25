@@ -26,7 +26,7 @@ class Model extends Observer {
     }
 
     if (state.values) {
-      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort()
+      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort((a, b) => a - b)
     }
 
     // для начальной отрисовки
@@ -65,9 +65,17 @@ class Model extends Observer {
         // Высчитываем сколько px для этого value нужно
         const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number)
 
-        this.emit('pxValueDone', { pxValue, value: this.state.value, target: state.target, pxValues })
+        this.emit('pxValueDone', {
+          pxValue,
+          value: this.state.value,
+          target: state.target,
+          pxValues,
+        })
         // записываем новый результат в нашу карту заменяя старые значения
-        this.mapOfHandlers.set(state.tempTarget, { tempValue: this.state.tempValue, tempPxValue })
+        this.mapOfHandlers.set(state.tempTarget, {
+          tempValue: this.state.tempValue,
+          tempPxValue,
+        })
 
         // берем из карты из всех бегунков value и перезаписываем массив значений
         this.state.values = []
@@ -77,7 +85,9 @@ class Model extends Observer {
         this.state.values.sort((a, b) => a - b)
 
         // высчитываем массив tempPxValues для правильного отображения bar
-        const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
+        const tempPxValues = (this.state.values as number[])
+          .map(value => this._countPxValueFromValue(value))
+          .sort((a, b) => a - b)
 
         this.emit('pxValueDone', {
           tempTarget: state.tempTarget,
@@ -92,7 +102,10 @@ class Model extends Observer {
 
         const pxValue = this._countPxValueFromValue(this.state.value as number)
 
-        this.mapOfHandlers.set(state.target, { value: this.state.value, pxValue })
+        this.mapOfHandlers.set(state.target, {
+          value: this.state.value,
+          pxValue,
+        })
 
         const pxValues = []
         for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
@@ -110,7 +123,7 @@ class Model extends Observer {
       }
     }
   }
-  
+
   private _countValueFromLeft(left: number): number {
     const state = this.state as IOnlyNumbers
     return (left / ((state.edge / (state.max - state.min)) * state.step)) * state.step + state.min
