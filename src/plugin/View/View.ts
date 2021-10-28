@@ -1,5 +1,5 @@
 import { Observer } from '../Observer/Observer'
-import constants from '../../other/constants'
+import constants from '../../utils/constants'
 
 class View extends Observer {
   private wrapper!: HTMLElement

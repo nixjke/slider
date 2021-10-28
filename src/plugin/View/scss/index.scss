@@ -101,86 +101,72 @@ div[class*='slider'] {
 
   &--green {
     .slider__bar {
-      background-color: green;
+      background-color: #48AD01;
     }
     .slider__handler {
-      background-color: green;
+      background-color: #48AD01;
     }
     .slider__tip {
-      background-color: green;
+      background-color: #48AD01;
     }
     .slider__tongue {
-      border-bottom: 14px solid green;
+      border-bottom: 14px solid #48AD01;
     }
   }
   &--red {
     .slider__bar {
-      background-color: red;
+      background-color: #F31D2F;
     }
     .slider__handler {
-      background-color: red;
+      background-color: #F31D2F;
     }
     .slider__tip {
-      background-color: red;
+      background-color: #F31D2F;
     }
     .slider__tongue {
-      border-bottom: 14px solid red;
+      border-bottom: 14px solid #F31D2F;
     }
   }
   &--yellow {
     .slider__bar {
-      background-color: yellow;
+      background-color: #F6CD61;
     }
     .slider__handler {
-      background-color: yellow;
+      background-color: #F6CD61;
     }
     .slider__tip {
-      background-color: yellow;
+      background-color: #F6CD61;
     }
     .slider__tongue {
-      border-bottom: 14px solid yellow;
-    }
-  }
-  &--yellow {
-    .slider__bar {
-      background-color: yellow;
-    }
-    .slider__handler {
-      background-color: yellow;
-    }
-    .slider__tip {
-      background-color: yellow;
-    }
-    .slider__tongue {
-      border-bottom: 14px solid yellow;
+      border-bottom: 14px solid #F6CD61;
     }
   }
   &--orange {
     .slider__bar {
-      background-color: orange;
+      background-color: #FF7B2C;
     }
     .slider__handler {
-      background-color: orange;
+      background-color: #FF7B2C;
     }
     .slider__tip {
-      background-color: orange;
+      background-color: #FF7B2C;
     }
     .slider__tongue {
-      border-bottom: 14px solid orange;
+      border-bottom: 14px solid #FF7B2C;
     }
   }
   &--purple {
     .slider__bar {
-      background-color: purple;
+      background-color: #BF4ACC;
     }
     .slider__handler {
-      background-color: purple;
+      background-color: #BF4ACC;
     }
     .slider__tip {
-      background-color: purple;
+      background-color: #BF4ACC;
     }
     .slider__tongue {
-      border-bottom: 14px solid purple;
+      border-bottom: 14px solid #BF4ACC;
     }
   }
 
