@@ -1,24 +1,18 @@
 import { Observer } from '../Observer/Observer'
 import { VisualModel } from './VisualModel'
-
-interface IState {
-  [key: string]: number | number[]
-}
-interface IOnlyNumbers {
-  [key: string]: number
-}
+import { IState, IOnlyNumbers } from '../../utils/interface'
 
 class Model extends Observer {
   public state: IState = {}
   private mapOfHandlers: Map<HTMLElement, IOnlyNumbers> = new Map()
 
-  constructor(state = {}) {
+  constructor(state: IState = {}) {
     super()
 
     this.setState(state)
   }
 
-  public setState(state: any = {}): void {
+  public setState(state: IState = {}): void {
     Object.assign(this.state, state)
 
     // для корректировки основных значений
@@ -39,22 +33,22 @@ class Model extends Observer {
     }
   }
 
-  private _initialCounting(state: any) {
+  private _initialCounting(state: IState) {
     this.state.tempPxValue = this._countPxValueFromValue(state.tempValue as number)
     this._createArrayOfPxValues(this.state.values as number[])
 
-    this.mapOfHandlers.set(state.tempTarget, {
-      tempValue: state.tempValue,
+    this.mapOfHandlers.set(state.tempTarget as HTMLElement, {
+      tempValue: state.tempValue as number,
       tempPxValue: this.state.tempPxValue,
     })
   }
 
-  private _dynamicCounting(state: any) {
-    this.state.tempValue = this._countValueFromLeft(state.left)
+  private _dynamicCounting(state: IState) {
+    this.state.tempValue = this._countValueFromLeft(state.left as number)
 
     this.state.tempPxValue = this._countPxValueFromValue(this.state.tempValue as number)
 
-    this.mapOfHandlers.set(state.tempTarget, {
+    this.mapOfHandlers.set(state.tempTarget as HTMLElement, {
       tempValue: this.state.tempValue,
       tempPxValue: this.state.tempPxValue,
     })
@@ -143,4 +137,4 @@ class Model extends Observer {
   }
 }
 
-export { Model, IState }
+export { Model }
