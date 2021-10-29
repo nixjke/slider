@@ -20,4 +20,4 @@ class Observer {
   }
 }
 
-export { Observer }
+export default Observer

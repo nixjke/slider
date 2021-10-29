@@ -1,7 +1,9 @@
 import './plugin/View/scss/index.scss'
 import { Controller } from './plugin/Controller/Controller'
-const slider = document.getElementById("slider") as HTMLElement;
+import { ApplicationConfigurator } from './plugin/View/AbstractFactory/Application'
 
-const controller = new Controller(slider);
+const slider = document.getElementById('slider') as HTMLElement
+const controller = new Controller(slider)
 
+console.log(slider)
 console.log(controller)

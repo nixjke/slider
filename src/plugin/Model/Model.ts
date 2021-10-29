@@ -1,4 +1,4 @@
-import { Observer } from '../Observer/Observer'
+import Observer from '../Observer/Observer'
 import { VisualModel } from './VisualModel'
 import { IState, IOnlyNumbers } from '../../utils/interface'
 

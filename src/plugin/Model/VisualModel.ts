@@ -1,7 +1,7 @@
-import { Observer } from '../Observer/Observer'
+import Observer from '../Observer/Observer'
 
 class VisualModel extends Observer {
-  constructor(public state: any = {}) {
+  constructor(public state: {} = {}) {
     super()
   }
 

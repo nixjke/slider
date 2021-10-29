@@ -13,9 +13,29 @@ div[class*='slider'] {
     padding-bottom: 10px;
   }
 }
+
+.settings {
+  border: 1px dotted green;
+  font-family: monospace;
+  background-color: #fff;
+  width: 280px;
+  &__separation {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(209, 209, 209);
+    margin: 20px 0;
+  }
+}
+
 .slider {
   background-color: rgb(230, 230, 230);
   border-radius: 3px;
+
+  &__settings {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
   &__tongue {
     position: absolute;
     content: '';
@@ -101,72 +121,72 @@ div[class*='slider'] {
 
   &--green {
     .slider__bar {
-      background-color: #48AD01;
+      background-color: #48ad01;
     }
     .slider__handler {
-      background-color: #48AD01;
+      background-color: #48ad01;
     }
     .slider__tip {
-      background-color: #48AD01;
+      background-color: #48ad01;
     }
     .slider__tongue {
-      border-bottom: 14px solid #48AD01;
+      border-bottom: 14px solid #48ad01;
     }
   }
   &--red {
     .slider__bar {
-      background-color: #F31D2F;
+      background-color: #f31d2f;
     }
     .slider__handler {
-      background-color: #F31D2F;
+      background-color: #f31d2f;
     }
     .slider__tip {
-      background-color: #F31D2F;
+      background-color: #f31d2f;
     }
     .slider__tongue {
-      border-bottom: 14px solid #F31D2F;
+      border-bottom: 14px solid #f31d2f;
     }
   }
   &--yellow {
     .slider__bar {
-      background-color: #F6CD61;
+      background-color: #f6cd61;
     }
     .slider__handler {
-      background-color: #F6CD61;
+      background-color: #f6cd61;
     }
     .slider__tip {
-      background-color: #F6CD61;
+      background-color: #f6cd61;
     }
     .slider__tongue {
-      border-bottom: 14px solid #F6CD61;
+      border-bottom: 14px solid #f6cd61;
     }
   }
   &--orange {
     .slider__bar {
-      background-color: #FF7B2C;
+      background-color: #ff7b2c;
     }
     .slider__handler {
-      background-color: #FF7B2C;
+      background-color: #ff7b2c;
     }
     .slider__tip {
-      background-color: #FF7B2C;
+      background-color: #ff7b2c;
     }
     .slider__tongue {
-      border-bottom: 14px solid #FF7B2C;
+      border-bottom: 14px solid #ff7b2c;
     }
   }
   &--purple {
     .slider__bar {
-      background-color: #BF4ACC;
+      background-color: #bf4acc;
     }
     .slider__handler {
-      background-color: #BF4ACC;
+      background-color: #bf4acc;
     }
     .slider__tip {
-      background-color: #BF4ACC;
+      background-color: #bf4acc;
     }
     .slider__tongue {
-      border-bottom: 14px solid #BF4ACC;
+      border-bottom: 14px solid #bf4acc;
     }
   }
 
