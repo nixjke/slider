@@ -33,6 +33,15 @@ class Model extends Observer {
     }
   }
 
+  public countScaleValues(): void {
+    const state = this.state as IOnlyNumbers
+
+    const ratio = (state.edge / (state.max - state.min)) * state.step
+    const amount = state.edge / ratio
+
+    this.emit('newScaleValues', { amount, edge: state.edge })
+  }
+
   private _initialCounting(state: IState) {
     this.state.tempPxValue = this._countPxValueFromValue(state.tempValue as number)
     this._createArrayOfPxValues(this.state.values as number[])
