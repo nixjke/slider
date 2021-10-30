@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: mode,
+  entry: './src/demo/index.ts',
 
   module: {
     rules: [
@@ -27,7 +28,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpaclPlugin({
-      template: './src/index.html',
+      template: './src/demo/index.html',
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
@@ -35,7 +36,7 @@ module.exports = {
     }),
   ],
   devServer: {
-    static: './src/index.html',
+    static: './src/demo/index.html',
     hot: true,
   },
   resolve: {
