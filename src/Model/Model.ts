@@ -11,9 +11,9 @@ class Model implements IModel {
     this.options = options
   }
 
-  public getRange = () => this.options.range
+  getRange = () => this.options.range
 
-  public getStart = () => this.options.start
+  getStart = () => this.options.start
 
   private throwError = (errorMsg: string) => {
     throw new Error(errorMsg)
