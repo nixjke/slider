@@ -1,9 +1,12 @@
-import '../style/index.scss'
-import Model from '../Model/Model'
+import Presenter from '../Presenter/Presenter';
 
-let a = new Model({
-  min: 1,
-  max: 100,
-  value: 20,
-  step: 1,
+let a = new Presenter({
+  start: 1,
+  currentValue: 20,
+  range: {
+    min: 1,
+    max: 100,
+  }
 })
+
+console.log(a)

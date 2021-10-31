@@ -15,6 +15,8 @@ class Model implements IModel {
 
   getStart = () => this.options.start
 
+  getCurrentValue = () => this.options.currentValue
+
   private throwError = (errorMsg: string) => {
     throw new Error(errorMsg)
   }

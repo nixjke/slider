@@ -2,6 +2,16 @@
 interface IModel {
   getRange(): IRange
   getStart(): number
+  getCurrentValue(): number
+}
+
+// Observer
+interface IObserver {
+  addObserver(observer: Function): void
+  removeObserver(observer: Function): void
+  getList(): Function[]
+  getCount(): Number
+  notify(data?: any): void
 }
 
 // default state
@@ -16,4 +26,4 @@ interface IOptions {
   range: IRange
 }
 
-export { IRange, IOptions, IModel }
+export { IRange, IOptions, IModel, IObserver }
