@@ -1,15 +1,22 @@
-import { IState } from '../utils/interface'
+import { IOptions, IModel } from '../utils/interface'
 
-class Model {
-  public state: IState = {}
+class Model implements IModel {
+  private options: IOptions
 
-  constructor(state: IState) {
-    this.setState(state)
+  constructor(options: IOptions) {
+    if (options.range.min > options.range.max) {
+      this.throwError('range.min не может быть > range.max')
+    }
+
+    this.options = options
   }
 
-  public setState(state: IState): void {
-    Object.assign(this.state, state)
-    console.log(this.state)
+  getRange = () => this.options.range
+
+  getStart = () => this.options.start
+
+  private throwError = (errorMsg: string) => {
+    throw new Error(errorMsg)
   }
 }
 
