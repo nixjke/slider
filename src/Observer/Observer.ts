@@ -1,29 +1,29 @@
-import { IObserver } from '../utils/interface'
+type Subscriber = (...args: any[]) => any
+interface ISubscribers {
+  [key: string]: Array<Subscriber>
+}
 
-class Observer implements IObserver {
-  private observerList: Function[] = []
+enum ObserverEvents {
+  modelOptionsUpdate,
+  rulerHide,
+  thumbHide,
+  testSub,
+}
 
-  getList = () => this.observerList
+class Observer {
+  private subscribers: ISubscribers
 
-  getCount = () => this.getList().length
-
-  addObserver = (observer: Function) => {
-    this.getList().push(observer)
+  constructor() {
+    this.subscribers = {}
   }
 
-  removeObserver = (observer: Function) => {
-    const index = this.getList().indexOf(observer)
-
-    if (index > -1) {
-      this.getList().splice(index, 1)
-    }
+  subscribe(subName: ObserverEvents, callback: Subscriber) {
+    this.subscribers[subName] = [callback]
   }
 
-  notify = (data?: any) => {
-    if (this.getCount() > 0) {
-      this.getList().forEach((observer: Function) => {
-        observer(data)
-      })
+  notify<T>(subName: ObserverEvents, data: T) {
+    if (this.subscribers[subName]) {
+      this.subscribers[subName].forEach((callback: Subscriber) => callback(data))
     }
   }
 }

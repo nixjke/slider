@@ -8,5 +8,3 @@ let a = new Presenter({
     max: 100,
   }
 })
-
-console.log(a)

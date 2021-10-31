@@ -1,9 +1,11 @@
-import { IOptions, IModel } from '../utils/interface'
+import Observer from '../Observer/Observer'
+import { IOptions } from '../utils/interface'
 
-class Model implements IModel {
+class Model extends Observer {
   private options: IOptions
 
   constructor(options: IOptions) {
+    super()
     if (options.range.min > options.range.max) {
       this.throwError('range.min не может быть > range.max')
     }

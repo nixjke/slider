@@ -1,11 +1,13 @@
+import Observer from '../Observer/Observer'
 import { IRange } from '../utils/interface'
 
-class View {
+class View extends Observer {
   private start: number
   private range: IRange
   private currentValue: number
 
   constructor(start: number, range: IRange, currentValue: number) {
+    super()
     this.start = start
     this.range = range
     this.currentValue = currentValue

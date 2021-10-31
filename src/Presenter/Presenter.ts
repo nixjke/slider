@@ -1,13 +1,16 @@
 import Model from '../Model/Model'
 import View from '../View/View'
+import Observer from '../Observer/Observer'
 
 import { IOptions } from '../utils/interface'
 
-class Presenter {
+class Presenter extends Observer {
   private options: IOptions
 
   constructor(options: IOptions) {
+    super()
     this.options = options
+    this.init()
   }
 
   init() {
