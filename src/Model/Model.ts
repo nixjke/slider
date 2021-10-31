@@ -1,4 +1,4 @@
-import Observer from '../Observer/Observer'
+import { Observer, ObserverEvents } from '../Observer/Observer'
 import { IOptions } from '../utils/interface'
 
 class Model extends Observer {

@@ -1,6 +1,6 @@
 import Model from '../Model/Model'
 import View from '../View/View'
-import Observer from '../Observer/Observer'
+import { Observer, ObserverEvents } from '../Observer/Observer'
 
 import { IOptions } from '../utils/interface'
 
