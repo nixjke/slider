@@ -16,7 +16,7 @@ class Observer {
   constructor() {
     this.subscribers = {}
   }
-
+  
   subscribe(subName: ObserverEvents, callback: Subscriber) {
     this.subscribers[subName] = [callback]
   }

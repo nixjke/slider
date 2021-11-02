@@ -14,7 +14,6 @@ class View extends Observer {
   }
 
   render() {
-    console.log('View')
     const startHTML = document.createElement('p')
     startHTML.textContent = `начальное значение: ${this.start}`
     document.body.appendChild(startHTML)
