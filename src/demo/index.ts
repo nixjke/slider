@@ -2,8 +2,9 @@ import '../../node_modules/normalize.css/normalize.css'
 import '../style/index.scss'
 import Presenter from '../Presenter/Presenter'
 
-let slider = document.getElementById('slider')
-let a = new Presenter(slider, {
+let div = document.getElementById('slider') as HTMLElement
+
+let slider = new Presenter(div, {
   start: 1,
   currentValue: 20,
   range: {
@@ -12,4 +13,4 @@ let a = new Presenter(slider, {
   },
 })
 
-console.log(a)
+console.log(slider)

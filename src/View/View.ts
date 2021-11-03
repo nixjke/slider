@@ -5,24 +5,25 @@ class View extends Observer {
   private start: number
   private range: IRange
   private currentValue: number
+  private anchor: HTMLElement
 
-  constructor(start: number, range: IRange, currentValue: number) {
+  constructor(anchor: HTMLElement, start: number, range: IRange, currentValue: number) {
     super()
+    this.anchor = anchor
     this.start = start
     this.range = range
     this.currentValue = currentValue
   }
 
   render() {
-    const startHTML = document.createElement('p')
-    startHTML.textContent = `начальное значение: ${this.start}`
-    document.body.appendChild(startHTML)
-    const p = document.createElement('p')
-    p.textContent = `рейндж: ${this.range.min} --- ${this.range.max}`
-    document.body.appendChild(p)
-    const currentValueP = document.createElement('p')
-    currentValueP.textContent = `Текущее значение: ${this.currentValue}`
-    document.body.appendChild(currentValueP)
+    const startHTML =`
+    <div>
+      <span>Начальное значение: ${this.start}</span><br>
+      <span>Рейндж: ${this.range.min} --- ${this.range.max}</span><br>
+      <span>Текущее значение: ${this.currentValue}</span>
+    </div>`
+
+    this.anchor.insertAdjacentHTML('beforeend', startHTML)
   }
 }
 

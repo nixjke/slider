@@ -5,20 +5,19 @@ import { Observer, ObserverEvents } from '../Observer/Observer'
 import { IOptions } from '../utils/interface'
 
 class Presenter extends Observer {
+  private anchor: HTMLElement
   private options: IOptions
-  private element
 
-  constructor(element: any, options: IOptions) {
+  constructor(anchor: HTMLElement, options: IOptions) {
     super()
+    this.anchor = anchor
     this.options = options
-    this.element = element
     this.init()
   }
 
   init() {
-    console.log(this.element)
     const model = new Model(this.options)
-    const view = new View(model.getStart(), model.getRange(), model.getCurrentValue())
+    const view = new View(this.anchor, model.getStart(), model.getRange(), model.getCurrentValue())
     view.render()
   }
 }

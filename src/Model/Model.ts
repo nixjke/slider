@@ -1,5 +1,5 @@
 import { Observer, ObserverEvents } from '../Observer/Observer'
-import { IOptions } from '../utils/interface'
+import { IOptions, IRange } from '../utils/interface'
 
 class Model extends Observer {
   private options: IOptions
@@ -13,11 +13,17 @@ class Model extends Observer {
     this.options = options
   }
 
-  getRange = () => this.options.range
+  public getRange(): IRange {
+    return this.options.range
+  }
 
-  getStart = () => this.options.start
+  public getStart(): number {
+    return this.options.start
+  }
 
-  getCurrentValue = () => this.options.currentValue
+  public getCurrentValue(): number {
+    return this.options.currentValue
+  }
 
   private throwError = (errorMsg: string) => {
     throw new Error(errorMsg)
