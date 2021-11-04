@@ -8,6 +8,7 @@ class Model extends Observer {
     super()
     this.state = state
     console.log(this.correctMinMax(this.state))
+    console.log(this.correctStep(this.state))
   }
 
   public setState(state: IState) {}
@@ -27,7 +28,7 @@ class Model extends Observer {
     const step = state.step === undefined ? this.state.step : state.step
     const { min, max } = state
 
-    const diff = Math.abs(max - min) || 1
+    const diff = Math.abs(max - min)
 
     if (step > diff) {
       return diff
@@ -38,6 +39,26 @@ class Model extends Observer {
     }
 
     return step
+  }
+
+  private correctValueInRange(value: number, state: IState = this.state) {
+    const { min, max, step } = state
+    const offset = min - Math.round(min / step) * step
+    const newValue = Math.round(value / step) * step + offset
+
+    if (newValue < min) {
+      return min
+    }
+
+    if (newValue > max) {
+      return max
+    }
+
+    if (value === max) {
+      return max
+    }
+
+    return newValue
   }
 }
 
