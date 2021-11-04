@@ -16,12 +16,15 @@ class View extends Observer {
   }
 
   render() {
-    const startHTML =`
-    <div>
-      <span>Начальное значение: ${this.start}</span><br>
-      <span>Рейндж: ${this.range.min} --- ${this.range.max}</span><br>
-      <span>Текущее значение: ${this.currentValue}</span>
-    </div>`
+    const startHTML = `
+    <div class="range-slider">
+      <div class="range-slider__track"></div>
+      <div class="range-slider__handle range-slider__handle--one">
+        <div class="range-slider__tooltip"></div>
+      </div>
+      <div class="range-slider__scale"></div>
+    </div>
+    `
 
     this.anchor.insertAdjacentHTML('beforeend', startHTML)
   }
