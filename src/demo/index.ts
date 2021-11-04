@@ -5,10 +5,10 @@ import Presenter from '../Presenter/Presenter'
 let div = document.getElementById('slider') as HTMLElement
 
 let slider = new Presenter(div, {
-  min: 1,
   max: 100,
-  value: 20,
+  min: 10,
   step: 1,
+  value: 20,
 })
 
 console.log(slider)

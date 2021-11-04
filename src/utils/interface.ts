@@ -1,9 +1,9 @@
 // default state
 interface IState {
-  min: number
-  max: number
-  value: number | number[]
-  step: number
+  min: number;
+  max: number;
+  step: number;
+  value: number | number[];
 }
 
 export { IState }

@@ -17,6 +17,7 @@ class Presenter extends Observer {
 
   init() {
     const model = new Model(this.state)
+    const view = new View(this.anchor).render()
   }
 }
 
