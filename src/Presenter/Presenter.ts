@@ -2,23 +2,21 @@ import Model from '../Model/Model'
 import View from '../View/View'
 import { Observer, ObserverEvents } from '../Observer/Observer'
 
-import { IOptions } from '../utils/interface'
+import { IState } from '../utils/interface'
 
 class Presenter extends Observer {
   private anchor: HTMLElement
-  private options: IOptions
+  private state: IState
 
-  constructor(anchor: HTMLElement, options: IOptions) {
+  constructor(anchor: HTMLElement, state: IState) {
     super()
     this.anchor = anchor
-    this.options = options
+    this.state = state
     this.init()
   }
 
   init() {
-    const model = new Model(this.options)
-    const view = new View(this.anchor, model.getStart(), model.getRange(), model.getCurrentValue())
-    view.render()
+    const model = new Model(this.state)
   }
 }
 

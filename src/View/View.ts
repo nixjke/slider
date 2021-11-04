@@ -1,18 +1,12 @@
 import { Observer, ObserverEvents } from '../Observer/Observer'
-import { IRange } from '../utils/interface'
+import { IState } from '../utils/interface'
 
 class View extends Observer {
-  private start: number
-  private range: IRange
-  private currentValue: number
   private anchor: HTMLElement
 
-  constructor(anchor: HTMLElement, start: number, range: IRange, currentValue: number) {
+  constructor(anchor: HTMLElement) {
     super()
     this.anchor = anchor
-    this.start = start
-    this.range = range
-    this.currentValue = currentValue
   }
 
   render() {

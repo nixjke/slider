@@ -1,13 +1,9 @@
 // default state
-interface IRange {
+interface IState {
   min: number
   max: number
+  value: number | number[]
+  step: number
 }
 
-interface IOptions {
-  start: number
-  currentValue: number
-  range: IRange
-}
-
-export { IRange, IOptions }
+export { IState }
