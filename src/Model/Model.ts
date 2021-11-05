@@ -71,6 +71,25 @@ class Model extends Observer {
 
     return newValue
   }
+
+  private createSteps() {
+    const { min, max, step } = this.state
+    const pieces = (max - min) / step
+    const result = new Set([min, max])
+
+    if (pieces >= 15) {
+      const percent = (max - min) * 0.2
+      for (let i = min; i <= max; i += percent) {
+        result.add(this.correctValueInRange(i))
+      }
+    } else {
+      for (let i = min + step; i <= max; i += step) {
+        result.add(i)
+      }
+    }
+
+    return Array.from(result).sort((a, b) => a - b)
+  }
 }
 
 export default Model
