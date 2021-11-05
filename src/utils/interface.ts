@@ -3,11 +3,31 @@ interface IState {
   min: number
   max: number
   step: number
-  value: number[]
+  values: number[]
 }
 
-interface IOnlyNumbers {
+interface OnlyNumbers {
   [ket: string]: number
 }
 
-export { IState, IOnlyNumbers }
+type Steps = Array<{ value: number; px: number }>
+
+interface ViewValues {
+  pxValue?: number
+  value?: number
+  edge?: number
+  left?: number
+  target?: HTMLElement
+  pxValues?: number[]
+  values?: number[]
+  handles?: NodeList
+  steps?: Steps
+}
+
+type EventCallback = (data?: any) => void
+
+interface Subscribers {
+  [key: string]: EventCallback[]
+}
+
+export { IState, OnlyNumbers, ViewValues, EventCallback, Subscribers }

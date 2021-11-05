@@ -1,4 +1,4 @@
-import { Observer, ObserverEvents } from '../Observer/Observer'
+import { Observer } from '../Observer/Observer'
 import { IState } from '../utils/interface'
 
 class View extends Observer {
@@ -10,7 +10,7 @@ class View extends Observer {
   }
 
   render() {
-    const startHTML = `
+    const template = `
     <div class="range-slider">
       <div class="range-slider__track"></div>
       <div class="range-slider__handle range-slider__handle--one">
@@ -20,7 +20,7 @@ class View extends Observer {
     </div>
     `
 
-    this.anchor.insertAdjacentHTML('beforeend', startHTML)
+    this.anchor.insertAdjacentHTML('beforeend', template)
   }
 }
 

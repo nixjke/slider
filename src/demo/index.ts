@@ -8,7 +8,7 @@ let slider = new Presenter(div, {
   max: 100,
   min: 0,
   step: 1,
-  value: [20],
+  values: [20],
 })
 
 console.log(slider)

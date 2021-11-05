@@ -1,9 +1,9 @@
-import { Observer, ObserverEvents } from '../Observer/Observer'
-import { IState, IOnlyNumbers } from '../utils/interface'
+import { Observer } from '../Observer/Observer'
+import { IState, OnlyNumbers, ViewValues } from '../utils/interface'
 
 class Model extends Observer {
   private state: IState
-  private mapOfHandles: Map<HTMLElement, IOnlyNumbers> = new Map()
+  private mapOfHandles: Map<HTMLElement, OnlyNumbers> = new Map()
   private edge = 0
 
   constructor(state: IState) {
@@ -13,6 +13,55 @@ class Model extends Observer {
   }
 
   public setState(state: IState) {}
+
+  public counting(viewValues: ViewValues) {
+    this.edge = viewValues.edge || this.edge
+    const value = this.findViewValue(viewValues)
+    const pxValue = this.countPxValueFromValue(value)
+    const target = viewValues.target
+
+    if (!target) throw new Error('Не был передан target!')
+
+    this.mapOfHandles.set(target, {
+      value,
+      pxValue,
+    })
+
+    if (viewValues.value === undefined) {
+      this.state = { ...this.state, ...this.updateArrayOfValues() }
+    }
+
+    this.notifyAboutPxValueDone({ value, pxValue, target })
+  }
+
+  private notifyAboutPxValueDone(state: ViewValues) {
+    this.notify('pxValueDone', {
+      value: state.value,
+      pxValue: state.pxValue,
+      pxValues: this.createArrayOfPxValues(),
+      steps: this.createSteps(),
+      values: this.state.values,
+      target: state.target,
+      edge: this.edge,
+    })
+  }
+
+  private createArrayOfPxValues() {
+    const values = this.state.values
+    return values.map(value => this.countPxValueFromValue(value)).sort((a, b) => a - b)
+  }
+
+  private findViewValue(viewValues: ViewValues) {
+    let value = 0
+
+    if (viewValues.value !== undefined) {
+      value = viewValues.value
+    } else if (viewValues.left !== undefined) {
+      value = this.countValueFromLeft(viewValues.left)
+    }
+
+    return value
+  }
 
   private updateArrayOfValues() {
     const values = []
@@ -49,6 +98,17 @@ class Model extends Observer {
     return ratio
   }
 
+  private countValueFromLeft(left: number) {
+    const state = this.state
+    const value = Math.round(left / this.getRatio()) * state.step + state.min
+
+    if (left >= this.edge) {
+      return this.state.max
+    }
+
+    return this.correctValueInRange(value)
+  }
+
   private correctMinMax(state: IState): object {
     const max = state.max === undefined ? this.state.max : state.max
     const min = state.min === undefined ? this.state.min : state.min
@@ -78,7 +138,7 @@ class Model extends Observer {
   }
 
   private correctValues(state: IState): number[] {
-    const values = state.value === undefined ? this.state.value : state.value
+    const values = state.values === undefined ? this.state.values : state.values
     const newValues = values.map(value => this.correctValueInRange(value, state)).sort((a, b) => a - b)
 
     const { max } = state

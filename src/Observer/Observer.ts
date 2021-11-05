@@ -1,31 +1,25 @@
-type Subscriber = (...args: any[]) => any
-interface ISubscribers {
-  [key: string]: Array<Subscriber>
-}
-
-enum ObserverEvents {
-  modelOptionsUpdate,
-  rulerHide,
-  thumbHide,
-  testSub,
-}
+import { Subscribers, EventCallback } from '../utils/interface'
 
 class Observer {
-  private subscribers: ISubscribers
+  constructor(public subscribers: Subscribers = {}) {}
 
-  constructor() {
-    this.subscribers = {}
-  }
-  
-  subscribe(subName: ObserverEvents, callback: Subscriber) {
-    this.subscribers[subName] = [callback]
+  public subscribe(eventName: string, func: EventCallback) {
+    const event = this.subscribers[eventName]
+
+    if (event) {
+      event.push(func)
+    } else {
+      this.subscribers[eventName] = [func]
+    }
   }
 
-  notify<T>(subName: ObserverEvents, data: T) {
-    if (this.subscribers[subName]) {
-      this.subscribers[subName].forEach((callback: Subscriber) => callback(data))
+  public notify(eventName: string, data?: {}) {
+    const event = this.subscribers[eventName]
+
+    if (event) {
+      event.forEach((func: EventCallback) => func(data))
     }
   }
 }
 
-export { Observer, ObserverEvents }
+export { Observer }
