@@ -7,11 +7,12 @@ class Model extends Observer {
   constructor(state: IState) {
     super()
     this.state = state
+    console.log(this.correctValues(this.state))
   }
 
   public setState(state: IState) {}
 
-  private correctMinMax(state: { min: number; max: number }) {
+  private correctMinMax(state: IState): object {
     const max = state.max === undefined ? this.state.max : state.max
     const min = state.min === undefined ? this.state.min : state.min
 
@@ -22,7 +23,7 @@ class Model extends Observer {
     return { min, max }
   }
 
-  private correctStep(state: { min: number; max: number; step: number }): number {
+  private correctStep(state: IState): number {
     const step = state.step === undefined ? this.state.step : state.step
     const { min, max } = state
 
@@ -39,10 +40,22 @@ class Model extends Observer {
     return step
   }
 
-  private correctValueInRange(value: number[], state: IState = this.state): number {
-    const { min, max, step } = state
+  private correctValues(state: IState): number[] {
+    const values = state.value === undefined ? this.state.value : state.value
+    const newValues = values.map(value => this.correctValueInRange(value, state)).sort((a, b) => a - b)
+
+    const { max } = state
+    if (newValues.length === 1) {
+      newValues.push(max)
+    }
+
+    return newValues
+  }
+
+  private correctValueInRange(value: number, state: IState = this.state): number {
+    const { step, min, max } = state
     const offset = min - Math.round(min / step) * step
-    const newValue = Math.round(value[0] / step) * step + offset
+    const newValue = Math.round(value / step) * step + offset
 
     if (newValue < min) {
       return min
@@ -52,7 +65,7 @@ class Model extends Observer {
       return max
     }
 
-    if (value[0] === max) {
+    if (value === max) {
       return max
     }
 
