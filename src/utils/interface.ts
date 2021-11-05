@@ -6,4 +6,8 @@ interface IState {
   value: number[]
 }
 
-export { IState }
+interface IOnlyNumbers {
+  [ket: string]: number
+}
+
+export { IState, IOnlyNumbers }

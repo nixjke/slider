@@ -1,8 +1,10 @@
 import { Observer, ObserverEvents } from '../Observer/Observer'
-import { IState } from '../utils/interface'
+import { IState, IOnlyNumbers } from '../utils/interface'
 
 class Model extends Observer {
   private state: IState
+  private mapOfHandles: Map<HTMLElement, IOnlyNumbers> = new Map()
+  private edge = 0
 
   constructor(state: IState) {
     super()
@@ -11,6 +13,41 @@ class Model extends Observer {
   }
 
   public setState(state: IState) {}
+
+  private updateArrayOfValues() {
+    const values = []
+
+    for (const handleObj of Array.from(this.mapOfHandles.values())) {
+      values.push(handleObj.value)
+    }
+
+    values.sort((a, b) => a - b)
+
+    if (this.mapOfHandles.size === 1) {
+      if (this.state.max != null) {
+        values[1] = this.state.max
+      }
+    }
+
+    return { values }
+  }
+
+  private countPxValueFromValue(value: number) {
+    const state = this.state
+    return (value - state.min) * (this.getRatio() / state.step)
+  }
+
+  private getRatio() {
+    const state = this.state
+    const edge = this.edge
+
+    const ratio = (edge / (state.max - state.min)) * state.step
+
+    if (!isFinite(ratio)) {
+      return 0
+    }
+    return ratio
+  }
 
   private correctMinMax(state: IState): object {
     const max = state.max === undefined ? this.state.max : state.max
