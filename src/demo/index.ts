@@ -6,9 +6,9 @@ let div = document.getElementById('slider') as HTMLElement
 
 let slider = new Presenter(div, {
   max: 100,
-  min: 10,
+  min: 0,
   step: 1,
-  value: 20,
+  value: [20],
 })
 
 console.log(slider)
