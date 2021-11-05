@@ -9,7 +9,6 @@ class Model extends Observer {
   constructor(state: IState) {
     super()
     this.state = state
-    console.log(this.correctValues(this.state))
   }
 
   public setState(state: IState) {}
