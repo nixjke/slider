@@ -1,4 +1,5 @@
 import { ViewValues } from '../../../../utils/interface'
+import { constants } from '../../../../utils/constants'
 
 interface ITip {
   init(handle: HTMLElement): void
