@@ -1,14 +1,16 @@
 import '../../node_modules/normalize.css/normalize.css'
-import '../style/index.scss'
-import Presenter from '../Presenter/Presenter'
+import '../plugin'
+
 
 let div = document.getElementById('slider') as HTMLElement
 
-let slider = new Presenter(div, {
-  max: 100,
-  min: 0,
-  step: 1,
-  values: [20],
-})
-
-console.log(slider)
+($(div).rangeSlider as any)(
+  {
+    settings: true,
+    skin: 'red',
+  },
+  {
+    min: 20,
+    step: 5,
+  }
+)
