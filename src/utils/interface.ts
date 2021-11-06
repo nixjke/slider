@@ -30,4 +30,4 @@ interface Subscribers {
   [key: string]: EventCallback[]
 }
 
-export { IState, OnlyNumbers, ViewValues, EventCallback, Subscribers }
+export { IState, OnlyNumbers, Steps, ViewValues, EventCallback, Subscribers }
