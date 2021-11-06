@@ -1,3 +1,9 @@
+import { HandleInterface } from '../View/Factories/SubView/Handle/Handle';
+import { BarInterface } from '../View/Factories/SubView/Bar/Bar';
+import { ITip } from '../View/Factories/SubView/Tip/Tip';
+import { Scale } from '../View/Factories/SubView/Scale/Scale';
+import Settings from '../View/Factories/SubView/Settings/Settings';
+
 // default state
 interface IState {
   min: number
@@ -42,4 +48,35 @@ interface Subscribers {
   [key: string]: EventCallback[]
 }
 
-export { IState, OnlyNumbers, Steps, ViewValues, EventCallback, Subscribers, VisualState }
+interface GState {
+  [key: string]: number | string | number[] | HTMLElement
+}
+
+type ForMouseMove = {
+  shiftX: number
+  shiftY: number
+  data: { wrapper: HTMLElement; state: VisualState }
+  target: HTMLElement
+}
+
+interface UI {
+  handle?: HandleInterface;
+  bar?: BarInterface;
+  tip?: ITip;
+  scale?: Scale;
+  settings?: Settings;
+}
+
+export {
+  IState,
+  OnlyNumbers,
+  Steps,
+  ViewValues,
+  EventCallback,
+  Subscribers,
+  Directions,
+  VisualState,
+  GState,
+  ForMouseMove,
+  UI
+}

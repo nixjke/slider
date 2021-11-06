@@ -1,4 +1,4 @@
-import { IState } from '../utils/interface'
+import { IState, VisualState } from '../utils/interface'
 
 const defaultModel: IState = {
   min: 0,
@@ -14,4 +14,14 @@ const constants = {
   TYPE_SINGLE: 'single',
 }
 
-export { defaultModel, constants }
+const defaultVisualModel: VisualState = {
+  direction: 'horizontal',
+  skin: 'green',
+  bar: true,
+  tip: true,
+  type: 'single',
+  scale: false,
+  settings: false,
+}
+
+export { defaultModel, constants, defaultVisualModel }
