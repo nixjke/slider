@@ -1,17 +1,23 @@
 import { Observer } from '../Observer/Observer'
 import { IState, OnlyNumbers, ViewValues } from '../utils/interface'
+import { defaultModel } from '../utils/constants'
 
 class Model extends Observer {
-  private state: IState
+  public state: IState = defaultModel
   private mapOfHandles: Map<HTMLElement, OnlyNumbers> = new Map()
   private edge = 0
 
   constructor(state: IState) {
     super()
-    this.state = state
+    this.setState(state)
   }
 
-  public setState(state: IState) {}
+  public setState(state: IState) {
+    const { min, max } = this.correctMinMax({ min: state.min, max: state.max })
+    const step = this.correctStep({ step: state.step, min, max })
+    const values = this.correctValues({ values: state.values, min, max, step })
+    this.state = { ...this.state, min, max, step, values }
+  }
 
   public counting(viewValues: ViewValues) {
     this.edge = viewValues.edge || this.edge
@@ -31,23 +37,6 @@ class Model extends Observer {
     }
 
     this.notifyAboutPxValueDone({ value, pxValue, target })
-  }
-
-  private notifyAboutPxValueDone(state: ViewValues) {
-    this.notify('pxValueDone', {
-      value: state.value,
-      pxValue: state.pxValue,
-      pxValues: this.createArrayOfPxValues(),
-      steps: this.createSteps(),
-      values: this.state.values,
-      target: state.target,
-      edge: this.edge,
-    })
-  }
-
-  private createArrayOfPxValues() {
-    const values = this.state.values
-    return values.map(value => this.countPxValueFromValue(value)).sort((a, b) => a - b)
   }
 
   private findViewValue(viewValues: ViewValues) {
@@ -97,6 +86,11 @@ class Model extends Observer {
     return ratio
   }
 
+  private createArrayOfPxValues() {
+    const values = this.state.values
+    return values.map((value: number) => this.countPxValueFromValue(value)).sort((a, b) => a - b)
+  }
+
   private countValueFromLeft(left: number) {
     const state = this.state
     const value = Math.round(left / this.getRatio()) * state.step + state.min
@@ -105,10 +99,22 @@ class Model extends Observer {
       return this.state.max
     }
 
-    return this.correctValueInRange(value)
+    return this.correctValueInTheRange(value)
   }
 
-  private correctMinMax(state: IState): object {
+  private notifyAboutPxValueDone(state: ViewValues) {
+    this.notify('pxValueDone', {
+      value: state.value,
+      pxValue: state.pxValue,
+      pxValues: this.createArrayOfPxValues(),
+      steps: this.createSteps(),
+      values: this.state.values,
+      target: state.target,
+      edge: this.edge,
+    })
+  }
+
+  private correctMinMax(state: { min: number; max: number }) {
     const max = state.max === undefined ? this.state.max : state.max
     const min = state.min === undefined ? this.state.min : state.min
 
@@ -119,11 +125,11 @@ class Model extends Observer {
     return { min, max }
   }
 
-  private correctStep(state: IState): number {
+  private correctStep(state: { min: number; max: number; step: number }) {
     const step = state.step === undefined ? this.state.step : state.step
     const { min, max } = state
 
-    const diff = Math.abs(max - min)
+    const diff = Math.abs(max - min) || 1
 
     if (step > diff) {
       return diff
@@ -136,9 +142,11 @@ class Model extends Observer {
     return step
   }
 
-  private correctValues(state: IState): number[] {
+  private correctValues(state: { min: number; max: number; values: number[]; step: number }) {
     const values = state.values === undefined ? this.state.values : state.values
-    const newValues = values.map(value => this.correctValueInRange(value, state)).sort((a, b) => a - b)
+    const newValues = values
+      .map((value: number) => this.correctValueInTheRange(value, state))
+      .sort((a: number, b: number) => a - b)
 
     const { max } = state
     if (newValues.length === 1) {
@@ -148,7 +156,7 @@ class Model extends Observer {
     return newValues
   }
 
-  private correctValueInRange(value: number, state: IState = this.state): number {
+  private correctValueInTheRange(value: number, state: IState = this.state) {
     const { step, min, max } = state
     const offset = min - Math.round(min / step) * step
     const newValue = Math.round(value / step) * step + offset
@@ -176,7 +184,7 @@ class Model extends Observer {
     if (pieces >= 15) {
       const percent = (max - min) * 0.2
       for (let i = min; i <= max; i += percent) {
-        result.add(this.correctValueInRange(i))
+        result.add(this.correctValueInTheRange(i))
       }
     } else {
       for (let i = min + step; i <= max; i += step) {
@@ -184,7 +192,9 @@ class Model extends Observer {
       }
     }
 
-    return Array.from(result).sort((a, b) => a - b)
+    return Array.from(result)
+      .sort((a, b) => a - b)
+      .map(value => ({ value, px: this.countPxValueFromValue(value) }))
   }
 }
 
