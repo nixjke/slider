@@ -11,6 +11,8 @@ interface OnlyNumbers {
 }
 
 type Steps = Array<{ value: number; px: number }>
+type Directions = 'horizontal' | 'vertical'
+type Types = 'single' | 'interval'
 
 interface ViewValues {
   pxValue?: number
@@ -24,10 +26,20 @@ interface ViewValues {
   steps?: Steps
 }
 
+interface VisualState {
+  scale: boolean
+  direction: Directions
+  skin: 'green' | 'red'
+  bar: boolean
+  tip: boolean
+  type: Types
+  settings: boolean
+}
+
 type EventCallback = (data?: any) => void
 
 interface Subscribers {
   [key: string]: EventCallback[]
 }
 
-export { IState, OnlyNumbers, Steps, ViewValues, EventCallback, Subscribers }
+export { IState, OnlyNumbers, Steps, ViewValues, EventCallback, Subscribers, VisualState }
