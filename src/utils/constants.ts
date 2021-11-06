@@ -7,4 +7,11 @@ const defaultModel: IState = {
   values: [20],
 }
 
-export { defaultModel }
+const constants = {
+  DIRECTION_VERTICAL: 'vertical',
+  DIRECTION_HORIZONTAL: 'horizontal',
+  TYPE_INTERVAL: 'interval',
+  TYPE_SINGLE: 'single',
+}
+
+export { defaultModel, constants }

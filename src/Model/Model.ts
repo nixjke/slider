@@ -25,7 +25,7 @@ class Model extends Observer {
     const pxValue = this.countPxValueFromValue(value)
     const target = viewValues.target
 
-    if (!target) throw new Error('Не был передан target!')
+    if (!target) throw new Error('Не был передан target')
 
     this.mapOfHandles.set(target, {
       value,

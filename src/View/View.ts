@@ -1,5 +1,4 @@
 import { Observer } from '../Observer/Observer'
-import { IState } from '../utils/interface'
 
 class View extends Observer {
   private anchor: HTMLElement
