@@ -1,7 +1,6 @@
 import '../../node_modules/normalize.css/normalize.css'
 import '../plugin'
 
-
 let div = document.getElementById('slider') as HTMLElement
 
 ($(div).rangeSlider as any)(
@@ -10,7 +9,8 @@ let div = document.getElementById('slider') as HTMLElement
     skin: 'red',
   },
   {
-    min: 20,
-    step: 5,
+    min: 0,
+    max: 100,
+    step: 1,
   }
 )
