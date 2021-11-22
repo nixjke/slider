@@ -1,5 +1,5 @@
 import '../../node_modules/normalize.css/normalize.css'
-import '../plugin'
+import '../slider'
 
 let div = document.getElementById('slider') as HTMLElement
 

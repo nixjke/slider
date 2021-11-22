@@ -1,25 +1,19 @@
-import { Subscribers, EventCallback } from '../utils/interface'
-
-class Observer {
-  constructor(public subscribers: Subscribers = {}) {}
-
-  public subscribe(eventName: string, func: EventCallback) {
-    const event = this.subscribers[eventName]
-
-    if (event) {
-      event.push(func)
-    } else {
-      this.subscribers[eventName] = [func]
-    }
-  }
-
-  public notify(eventName: string, data?: {}) {
-    const event = this.subscribers[eventName]
-
-    if (event) {
-      event.forEach((func: EventCallback) => func(data))
-    }
-  }
+export interface Observer {
+  update: Function
 }
 
-export { Observer }
+export class Observable {
+  observer: Observer[]
+
+  constructor() {
+    this.observer = []
+  }
+
+  on(observer: Observer) {
+    this.observer.push(observer)
+  }
+
+  notify(data: any) {
+    this.observer.forEach((observer: Observer) => observer.update(data))
+  }
+}
