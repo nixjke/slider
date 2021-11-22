@@ -1,8 +1,8 @@
-export interface Observer {
+interface Observer {
   update: Function
 }
 
-export class Observable {
+export default class Observable {
   observer: Observer[]
 
   constructor() {
