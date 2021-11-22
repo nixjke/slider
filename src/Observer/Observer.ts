@@ -2,7 +2,7 @@ interface Observer {
   update: Function
 }
 
-export default class Observable {
+class Observer {
   observer: Observer[]
 
   constructor() {
@@ -17,3 +17,5 @@ export default class Observable {
     this.observer.forEach((observer: Observer) => observer.update(data))
   }
 }
+
+export default Observer
