@@ -2,9 +2,10 @@ import Observer from '../Observer/Observer'
 import { State } from '../utils/interface'
 
 class Model extends Observer {
-  constructor(public state: State) {
+  constructor(private state: State) {
     super()
     this.setState(state)
+    console.log(state)
   }
 
   public setState(state: State) {
@@ -12,6 +13,7 @@ class Model extends Observer {
     const step = this.correctStep({ step: state.step, min, max })
     const values = this.correctValues({ values: state.values, min, max, step })
     this.state = { ...this.state, min, max, step, values }
+    this.notify(this.state)
   }
 
   private correctMinMax(state: { min: number; max: number }) {

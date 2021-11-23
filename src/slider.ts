@@ -6,7 +6,7 @@ let input = document.querySelector('#input') as HTMLInputElement
 
 
 let presenterSettings = {
-  min: 200,
+  min: 0,
   max: 100,
   step: 2,
   values: [20],
@@ -19,4 +19,4 @@ let presenterSettings = {
 
 let presenter = new Presenter(anchor, presenterSettings)
 
-console.log(presenter.model)
+console.log(presenter)
