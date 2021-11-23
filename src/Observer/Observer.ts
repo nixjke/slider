@@ -1,20 +1,28 @@
-interface Observer {
-  update: Function
+type EventCallback = (data?: any) => void
+
+interface Events {
+  [key: string]: EventCallback[]
 }
 
 class Observer {
-  observer: Observer[]
+  constructor(public events: Events = {}) {}
 
-  constructor() {
-    this.observer = []
+  public on(eventName: string, func: EventCallback) {
+    const event = this.events[eventName]
+
+    if (event) {
+      event.push(func)
+    } else {
+      this.events[eventName] = [func]
+    }
   }
 
-  on(observer: Observer) {
-    this.observer.push(observer)
-  }
+  public notify(eventName: string, data?: {}) {
+    const event = this.events[eventName]
 
-  notify(data: any) {
-    this.observer.forEach((observer: Observer) => observer.update(data))
+    if (event) {
+      event.forEach((func: EventCallback) => func(data))
+    }
   }
 }
 
