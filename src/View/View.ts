@@ -1,12 +1,9 @@
 import Observer from '../Observer/Observer'
 
 class View extends Observer {
-  constructor() {
+  static updateModelOptions: any
+  constructor(public anchor: HTMLElement) {
     super()
-  }
-
-  public test() {
-    console.log('test')
   }
 }
 

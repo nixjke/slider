@@ -6,15 +6,9 @@ class Presenter {
   private model
   private view
 
-  constructor(anchor: HTMLElement, state: State) {
+  constructor(public anchor: HTMLElement, public state: State) {
     this.model = new Model(state)
-    this.view = new View()
-    this.model.on(this.handleViewUpdate)
-  }
-
-  private handleViewUpdate(state: any) {
-    this.model.setState(state)
+    this.view = new View(anchor)
   }
 }
-
 export default Presenter

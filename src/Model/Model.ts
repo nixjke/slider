@@ -5,7 +5,6 @@ class Model extends Observer {
   constructor(private state: State) {
     super()
     this.setState(state)
-    console.log(state)
   }
 
   public setState(state: State) {
