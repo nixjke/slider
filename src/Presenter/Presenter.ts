@@ -8,7 +8,8 @@ class Presenter {
   private test = document.querySelector('#anchor') as HTMLElement
   private view: View = new View(this.test)
 
-  constructor(private anchor: HTMLElement) {
+  constructor(anchor: HTMLElement) {
+    this.view = new View(anchor)
     this._bindEvents()
 
     this.model.setState({
@@ -21,7 +22,11 @@ class Presenter {
       direction: 'vertical',
       bar: true,
       tip: true,
-      type: 'single',
+      type: 'double',
+      scale: {
+        status: true,
+        count: 6,
+      },
     })
   }
 
