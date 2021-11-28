@@ -23,27 +23,35 @@ class Model extends Observer {
 
     // для начальной отрисовки
     if (state.tempTarget && state.edge && state.tempValue) {
-      this.state.tempPxValue = this.countPxValueFromValue(state.tempValue as number)
-      this.createArrayOfPxValues(this.state.values as number[])
-
-      this.mapOfHandlers.set(state.tempTarget, {
-        tempValue: state.tempValue,
-        tempPxValue: this.state.tempPxValue,
-      })
+      this.initialCounting(state)
     }
 
     // для отрисовки от действий пользователя
     if (state.tempTarget && state.left) {
-      this.state.tempValue = this.countValueFromLeft(state.left)
-      this.state.tempPxValue = this.countPxValueFromValue(this.state.tempValue as number)
-
-      this.mapOfHandlers.set(state.tempTarget, {
-        tempValue: this.state.tempValue,
-        tempPxValue: this.state.tempPxValue,
-      })
-      this.updateArrayOfValues()
-      this.createArrayOfPxValues(this.state.values as number[])
+      this.dynamicCounting(state)
     }
+  }
+
+  private initialCounting(state: any) {
+    this.state.tempPxValue = this.countPxValueFromValue(state.tempValue as number)
+    this.createArrayOfPxValues(this.state.values as number[])
+
+    this.mapOfHandlers.set(state.tempTarget, {
+      tempValue: state.tempValue,
+      tempPxValue: this.state.tempPxValue,
+    })
+  }
+
+  private dynamicCounting(state: any) {
+    this.state.tempValue = this.countValueFromLeft(state.left)
+    this.state.tempPxValue = this.countPxValueFromValue(this.state.tempValue as number)
+
+    this.mapOfHandlers.set(state.tempTarget, {
+      tempValue: this.state.tempValue,
+      tempPxValue: this.state.tempPxValue,
+    })
+    this.updateArrayOfValues()
+    this.createArrayOfPxValues(this.state.values as number[])
   }
 
   private updateArrayOfValues(): void {
