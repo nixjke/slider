@@ -14,114 +14,77 @@ class Model extends Observer {
   public setState(state: any = {}): void {
     Object.assign(this.state, state)
 
+    // для корректировки основных значений
     if (state.min || state.max || state.step) {
-      this._correctMinMaxRange()
-      this._correctStep()
-    }
-
-    if (state.values) {
-      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort((a, b) => a - b)
+      this.correctMinMaxRange()
+      this.correctStep()
+      this.state.values = (this.state.values as number[]).map(value => this.correctValue(value)).sort((a, b) => a - b)
     }
 
     // для начальной отрисовки
     if (state.tempTarget && state.edge && state.tempValue) {
-      // высчитываем tempPxValue от переданного value
-      const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number)
+      this.state.tempPxValue = this.countPxValueFromValue(state.tempValue as number)
+      this.createArrayOfPxValues(this.state.values as number[])
 
-      // высчитываем массив tempPxValues для правильного отображения bar
-      const tempPxValues = (this.state.values as number[])
-        .map(value => this._countPxValueFromValue(value))
-        .sort((a, b) => a - b)
-
-      // записываем результаты в нашу карту
       this.mapOfHandlers.set(state.tempTarget, {
         tempValue: state.tempValue,
-        tempPxValue,
-      })
-
-      this.notify('pxValueDone', {
-        tempTarget: this.state.tempTarget,
-        tempValue: this.state.tempValue,
-        tempPxValue,
-        tempPxValues,
+        tempPxValue: this.state.tempPxValue,
       })
     }
 
     // для отрисовки от действий пользователя
     if (state.tempTarget && state.left) {
-      // высчитываем tempValue от переданного userLeft
-      this.state.tempValue = this._countValueFromLeft(state.left)
+      this.state.tempValue = this.countValueFromLeft(state.left)
+      this.state.tempPxValue = this.countPxValueFromValue(this.state.tempValue as number)
 
-      // Корректируем его
-      this.state.tempValue = this._correctValue(this.state.tempValue)
-
-      // Высчитываем сколько px для этого value нужно
-      const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number)
-
-      // записываем новый результат в нашу карту заменяя старые значения
-      this.mapOfHandlers.set(state.tempTarget, { tempValue: this.state.tempValue, tempPxValue })
-
-      // берем из карты из всех бегунков value и перезаписываем массив значений
-      this.state.values = []
-      for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
-        this.state.values.push(handlerObj.tempValue)
-      }
-      this.state.values.sort((a, b) => a - b)
-
-      // высчитываем массив tempPxValues для правильного отображения bar
-      const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
-
-      this.notify('pxValueDone', {
-        tempTarget: state.tempTarget,
+      this.mapOfHandlers.set(state.tempTarget, {
         tempValue: this.state.tempValue,
-        tempPxValue,
-        tempPxValues,
+        tempPxValue: this.state.tempPxValue,
       })
-    }
-
-    if (state.target && state.left) {
-      this.state.value = this._countValueFromLeft(state.left)
-      this.state.value = this._correctValue(this.state.value)
-
-      const pxValue = this._countPxValueFromValue(this.state.value as number)
-
-      this.mapOfHandlers.set(state.target, { value: this.state.value, pxValue })
-
-      const pxValues = []
-      for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
-        pxValues.push(handlerObj.pxValue)
-      }
-      pxValues.sort((a, b) => a - b)
-
-      this.notify('pxValueDone', {
-        target: state.target,
-        value: this.state.value,
-        values: this.state.values,
-        pxValue,
-        pxValues,
-      })
+      this.updateArrayOfValues()
+      this.createArrayOfPxValues(this.state.values as number[])
     }
   }
 
-  private _countValueFromLeft(left: number): number {
+  private updateArrayOfValues(): void {
+    this.state.values = []
+    for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
+      this.state.values.push(handlerObj.tempValue)
+    }
+    this.state.values.sort((a, b) => a - b)
+  }
+
+  private createArrayOfPxValues(array: number[]): void {
+    const tempPxValues = array.map(value => this.countPxValueFromValue(value)).sort((a, b) => a - b)
+
+    this.notify('pxValueDone', {
+      tempTarget: this.state.tempTarget,
+      tempValue: this.state.tempValue,
+      tempPxValue: this.state.tempPxValue,
+      tempPxValues,
+    })
+  }
+
+  private countValueFromLeft(left: number): number {
     const state = this.state as IOnlyNumbers
-    return (left / ((state.edge / (state.max - state.min)) * state.step)) * state.step + state.min
+    const value = (left / ((state.edge / (state.max - state.min)) * state.step)) * state.step + state.min
+    return this.correctValue(value)
   }
 
-  private _countPxValueFromValue(value: number): number {
+  private countPxValueFromValue(value: number): number {
     const state = this.state as IOnlyNumbers
     const tempPxValue = (value - state.min) * (state.edge / (state.max - state.min))
     return tempPxValue
   }
 
-  private _correctValue(value: number): number {
-    value = this._correctValueInTheRange(value)
-    value = this._correctValueByStep(value)
+  private correctValue(value: number): number {
+    value = this.correctValueInTheRange(value)
+    value = this.correctValueByStep(value)
 
     return value
   }
 
-  private _correctMinMaxRange(): void {
+  private correctMinMaxRange(): void {
     if (this.state.min > this.state.max) {
       const temp = this.state.min
       this.state.min = this.state.max
@@ -129,16 +92,16 @@ class Model extends Observer {
     }
   }
 
-  private _correctStep(): void {
+  private correctStep(): void {
     this.state.step < 1 ? (this.state.step = 1) : ''
     this.state.step > this.state.max ? (this.state.step = this.state.max) : ''
   }
 
-  private _correctValueInTheRange(value: number): number {
-    return this._isValueInTheRange(value)
+  private correctValueInTheRange(value: number): number {
+    return this.isValueInTheRange(value)
   }
 
-  private _isValueInTheRange(value: number): number {
+  private isValueInTheRange(value: number): number {
     if (value < this.state.min) {
       return this.state.min as number
     } else if (value > this.state.max) {
@@ -148,7 +111,7 @@ class Model extends Observer {
     }
   }
 
-  private _correctValueByStep(value: number): number {
+  private correctValueByStep(value: number): number {
     const step = this.state.step as number
     const newValue = Math.ceil(value / step) * step
 
