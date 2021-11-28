@@ -15,6 +15,6 @@ let presenterSettings = {
   scale: true,
 }
 
-let presenter = new Presenter(anchor, presenterSettings)
+let presenter = new Presenter()
 
 console.log(presenter)

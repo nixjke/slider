@@ -1,13 +1,7 @@
-interface State {
-  min: number
-  max: number
-  step: number
-  values: number[]
-  direction: string
-  type: string
-  bar: boolean
-  tip: boolean
-  scale: boolean
+interface IState {
+  [key: string]: number | number[]
 }
-
-export { State }
+interface IOnlyNumbers {
+  [key: string]: number
+}
+export { IState, IOnlyNumbers }

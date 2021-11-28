@@ -1,16 +1,22 @@
 class Observer {
-  observer: any[]
+  constructor(public events: any = {}) {}
 
-  constructor() {
-    this.observer = []
+  public on(eventName: string, func: any) {
+    const event = this.events[eventName] as [() => void]
+
+    if (event) {
+      event.push(func)
+    } else {
+      this.events[eventName] = [func]
+    }
   }
 
-  on(observer: any) {
-    this.observer.push(observer)
-  }
+  public emit(eventName: string, data: any) {
+    const event = this.events[eventName]
 
-  notify(data: any) {
-    this.observer.forEach(observer => observer(data))
+    if (event) {
+      event.forEach((func: (arg0: any) => void) => func(data))
+    }
   }
 }
 
