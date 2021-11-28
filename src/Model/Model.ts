@@ -20,7 +20,7 @@ class Model extends Observer {
     }
 
     if (state.values) {
-      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort()
+      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort((a, b) => a - b)
     }
 
     // для начальной отрисовки
@@ -29,7 +29,9 @@ class Model extends Observer {
       const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number)
 
       // высчитываем массив tempPxValues для правильного отображения bar
-      const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
+      const tempPxValues = (this.state.values as number[])
+        .map(value => this._countPxValueFromValue(value))
+        .sort((a, b) => a - b)
 
       // записываем результаты в нашу карту
       this.mapOfHandlers.set(state.tempTarget, {
@@ -74,6 +76,29 @@ class Model extends Observer {
         tempValue: this.state.tempValue,
         tempPxValue,
         tempPxValues,
+      })
+    }
+
+    if (state.target && state.left) {
+      this.state.value = this._countValueFromLeft(state.left)
+      this.state.value = this._correctValue(this.state.value)
+
+      const pxValue = this._countPxValueFromValue(this.state.value as number)
+
+      this.mapOfHandlers.set(state.target, { value: this.state.value, pxValue })
+
+      const pxValues = []
+      for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
+        pxValues.push(handlerObj.pxValue)
+      }
+      pxValues.sort((a, b) => a - b)
+
+      this.notify('pxValueDone', {
+        target: state.target,
+        value: this.state.value,
+        values: this.state.values,
+        pxValue,
+        pxValues,
       })
     }
   }

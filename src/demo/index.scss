@@ -1,4 +1,4 @@
-div[class*="anchor"] {
+div[class*='anchor'] {
   padding: 20px;
   width: 250px;
 }
@@ -17,7 +17,7 @@ div[class*="anchor"] {
 
   &__tongue {
     position: absolute;
-    content: "";
+    content: '';
     width: 0;
     height: 0;
     z-index: -1;
@@ -94,6 +94,15 @@ div[class*="anchor"] {
     }
   }
 
+  // .slider__tongue {
+  //   left: -2%;
+  //   top: 56%;
+  //   border-left: 8px solid transparent;
+  //   border-right: 8px solid transparent;
+  //   border-bottom: 14px solid inherit;
+  //   transform: rotate(-90deg) translate(50%, -50%);
+  // }
+
   &--green {
     .slider__bar {
       background-color: rgb(58, 190, 140);
@@ -106,21 +115,6 @@ div[class*="anchor"] {
     }
     .slider__tongue {
       border-bottom: 14px solid rgb(58, 190, 140);
-    }
-  }
-
-  &--red {
-    .slider__bar {
-      background-color: rgb(216, 77, 77);
-    }
-    .slider__handler {
-      background-color: rgb(216, 77, 77);
-    }
-    .slider__tip {
-      background-color: rgb(216, 77, 77);
-    }
-    .slider__tongue {
-      border-bottom: 14px solid rgb(216, 77, 77);
     }
   }
 }
