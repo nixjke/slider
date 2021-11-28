@@ -5,10 +5,10 @@ class View extends Observer {
     super()
   }
 
-  public renderTemplate({ direction, skin, bar, tip, type }: any) {
+  public renderTemplate({ direction, bar, tip, type }: any) {
     const sliderTemplate = `
       <div class="wrapper-slider wrapper-slider--${direction}">
-        <div class="slider slider--${direction} slider--${skin}">
+        <div class="slider slider--${direction} slider--green">
           ${bar ? `<div class="slider__bar"></div>` : ''}
           <div class="slider__handler">
             ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ''}
@@ -26,7 +26,7 @@ class View extends Observer {
 
     this.anchor.insertAdjacentHTML('afterbegin', sliderTemplate)
 
-    this.emit('finishRenderTemplate', this.anchor.querySelector('.wrapper-slider'))
+    this.notify('finishRenderTemplate', this.anchor.querySelector('.wrapper-slider'))
   }
 
   public renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: any) {

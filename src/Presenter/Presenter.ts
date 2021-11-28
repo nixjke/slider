@@ -11,12 +11,11 @@ class Presenter {
     this.model.setState({
       min: 1,
       max: 100,
-      values: [31],
+      values: [10, 30],
       step: 1,
     })
     this.view.renderTemplate({
       direction: 'horizontal',
-      skin: 'green',
       bar: true,
       tip: true,
       type: 'double',

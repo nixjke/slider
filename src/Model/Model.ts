@@ -7,7 +7,7 @@ class Model extends Observer {
 
   constructor(state = {}) {
     super()
-    
+
     this.setState(state)
   }
 
@@ -37,7 +37,7 @@ class Model extends Observer {
         tempPxValue,
       })
 
-      this.emit('pxValueDone', {
+      this.notify('pxValueDone', {
         tempTarget: this.state.tempTarget,
         tempValue: this.state.tempValue,
         tempPxValue,
@@ -69,7 +69,7 @@ class Model extends Observer {
       // высчитываем массив tempPxValues для правильного отображения bar
       const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value))
 
-      this.emit('pxValueDone', {
+      this.notify('pxValueDone', {
         tempTarget: state.tempTarget,
         tempValue: this.state.tempValue,
         tempPxValue,
