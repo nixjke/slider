@@ -5,9 +5,10 @@ import VisualModel from '../Model/VisualModel'
 class Presenter {
   private model = new Model()
   private visualModel = new VisualModel()
-  private view: View = new View()
+  private test = document.querySelector('#anchor') as HTMLElement
+  private view: View = new View(this.test)
 
-  constructor() {
+  constructor(private anchor: HTMLElement) {
     this._bindEvents()
 
     this.model.setState({
@@ -20,7 +21,7 @@ class Presenter {
       direction: 'vertical',
       bar: true,
       tip: true,
-      type: 'double',
+      type: 'single',
     })
   }
 

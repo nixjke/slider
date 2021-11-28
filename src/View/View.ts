@@ -4,27 +4,27 @@ class View extends Observer {
   private wrapper!: HTMLElement
   private state: any = {}
 
-  constructor(public anchor: HTMLElement = document.body) {
+  constructor(public anchor: HTMLElement) {
     super()
   }
 
   public update(state: any) {
     if (state.direction && state.type) {
       Object.assign(this.state, arguments[0])
-      this._renderTemplate(state)
+      this.renderTemplate(state)
     } else {
-      this._renderValues(state)
+      this.renderValues(state)
     }
   }
 
-  private _recreateTemplate() {
+  private recreateTemplate() {
     if (this.wrapper !== undefined) {
       ;(this.wrapper.parentElement as HTMLElement).removeChild(this.wrapper)
     }
   }
 
-  private _renderTemplate({ direction, bar, tip, type }: any) {
-    this._recreateTemplate()
+  private renderTemplate({ direction, bar, tip, type }: any) {
+    this.recreateTemplate()
 
     const sliderTemplate = `
       <div class="wrapper-slider wrapper-slider--${direction}">
@@ -59,7 +59,7 @@ class View extends Observer {
     this.notify('finishRenderTemplate', { handlers, edge })
   }
 
-  private _renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: any) {
+  private renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: any) {
     if (!tempTarget) return
 
     let tip
@@ -104,13 +104,13 @@ class View extends Observer {
       const shiftX = e.offsetX
       const shiftY = tempTarget.offsetHeight - e.offsetY
 
-      const mousemove = _onMouseMove.bind(this)
-      const mouseup = _onMouseUp
+      const mousemove = onMouseMove.bind(this)
+      const mouseup = onMouseUp
 
       document.addEventListener('mousemove', mousemove)
       document.addEventListener('mouseup', mouseup)
 
-      function _onMouseMove(this: View, e: MouseEvent) {
+      function onMouseMove(this: View, e: MouseEvent) {
         let left
         if (this.state.direction === 'vertical') {
           left = this.wrapper.offsetHeight - e.clientY - shiftY + this.wrapper.getBoundingClientRect().top
@@ -121,7 +121,7 @@ class View extends Observer {
         this.notify('onUserMove', { left, tempTarget })
       }
 
-      function _onMouseUp() {
+      function onMouseUp() {
         document.removeEventListener('mousemove', mousemove)
         document.removeEventListener('mouseup', mouseup)
       }

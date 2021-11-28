@@ -26,7 +26,7 @@ class Model extends Observer {
       this.initialCounting(state)
     }
 
-    // для отрисовки от действий пользователя
+    // для отрисовки действий пользователя
     if (state.tempTarget && state.left) {
       this.dynamicCounting(state)
     }
@@ -110,23 +110,28 @@ class Model extends Observer {
   }
 
   private isValueInTheRange(value: number): number {
-    if (value < this.state.min) {
-      return this.state.min as number
-    } else if (value > this.state.max) {
-      return this.state.max as number
+    const min = this.correctValueByStep(+this.state.min, 'ceil')
+    const max = this.correctValueByStep(+this.state.max, 'floor')
+
+    if (value < min) {
+      return min
+    } else if (value > max) {
+      return max
     } else {
-      return value
+      return this.correctValueByStep(value)
     }
   }
 
-  private correctValueByStep(value: number): number {
+  private correctValueByStep(value: number, how?: string): number {
     const step = this.state.step as number
-    const newValue = Math.ceil(value / step) * step
 
-    if (newValue > this.state.max) {
+    if (how === 'ceil') {
+      return Math.ceil(value / step) * step
+    }
+    if (how === 'floor') {
       return Math.floor(value / step) * step
     } else {
-      return newValue
+      return Math.round(value / step) * step
     }
   }
 }
