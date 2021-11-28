@@ -1,4 +1,5 @@
 import Observer from '../Observer/Observer'
+import { constants } from '../utils/const'
 
 class View extends Observer {
   private wrapper!: HTMLElement
@@ -23,7 +24,7 @@ class View extends Observer {
     }
   }
 
-  private renderTemplate({ direction, bar, tip, type, dashes }: any) {
+  private renderTemplate({ direction, bar, tip, type, scale }: any) {
     this.recreateTemplate()
 
     const sliderTemplate = `
@@ -49,13 +50,13 @@ class View extends Observer {
     const handlers = this.wrapper.querySelectorAll('.slider__handler')
 
     let edge
-    if (this.state.direction === 'vertical') {
+    if (direction === constants.DIRECTION_VERTICAL) {
       edge = this.wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight
     } else {
       edge = this.wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth
     }
 
-    if (this.state.scale.status) {
+    if (scale.status) {
       const dashesHTML = `<div class="slider__dashes"></div>`
       this.wrapper.insertAdjacentHTML('afterbegin', dashesHTML)
 
@@ -85,15 +86,15 @@ class View extends Observer {
     if (this.state.bar === true) {
       bar = tempTarget.parentElement.querySelector('.slider__bar')
 
-      if (this.state.direction === 'vertical') {
-        if (this.state.type === 'double') {
+      if (this.state.direction === constants.DIRECTION_VERTICAL) {
+        if (this.state.type === constants.TYPE_DOUBLE) {
           bar.style.bottom = tempPxValues[0] + 'px'
           bar.style.height = tempPxValues[1] - tempPxValues[0] + 10 + 'px'
         } else {
           bar.style.height = tempPxValue + 10 + 'px'
         }
       } else {
-        if (this.state.type === 'double') {
+        if (this.state.type === constants.TYPE_DOUBLE) {
           bar.style.left = tempPxValues[0] + 'px'
           bar.style.width = tempPxValues[1] - tempPxValues[0] + 10 + 'px'
         } else {
@@ -102,7 +103,7 @@ class View extends Observer {
       }
     }
 
-    if (this.state.direction === 'vertical') {
+    if (this.state.direction === constants.DIRECTION_VERTICAL) {
       tempTarget.style.bottom = tempPxValue + 'px'
     } else {
       tempTarget.style.left = tempPxValue + 'px'
@@ -118,11 +119,11 @@ class View extends Observer {
       const shiftX = e.offsetX
       const shiftY = tempTarget.offsetHeight - e.offsetY
 
-      const mousemove = onMouseMove.bind(this)
-      const mouseup = onMouseUp
+      const onmousemove = onMouseMove.bind(this)
+      const onmouseup = onMouseUp
 
-      document.addEventListener('mousemove', mousemove)
-      document.addEventListener('mouseup', mouseup)
+      document.addEventListener('mousemove', onmousemove)
+      document.addEventListener('mouseup', onmouseup)
 
       function onMouseMove(this: View, e: MouseEvent) {
         let left
@@ -136,8 +137,8 @@ class View extends Observer {
       }
 
       function onMouseUp() {
-        document.removeEventListener('mousemove', mousemove)
-        document.removeEventListener('mouseup', mouseup)
+        document.removeEventListener('mousemove', onmousemove)
+        document.removeEventListener('mouseup', onmouseup)
       }
     })
   }
