@@ -5,7 +5,8 @@
         "watch": "webpack --watch",
         "build": "NODE_ENV=production webpack",
         "build-dev": "webpack",
-        "test": "jest"
+        "test": "jest",
+        "coverage": "jest --collectCoverage"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.14.5",
