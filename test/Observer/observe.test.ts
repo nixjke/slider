@@ -1,15 +1,25 @@
 import Observer from '../../src/Observer/Observer'
 
-describe('Obsever', () => {
-  const observer = new Observer()
-  const data = { text: 'data' }
+let observer: Observer
 
-  test('should add subscriber to observers and send them data', () => {
-    const subscriber = jest.fn()
+beforeEach(() => {
+  observer = new Observer()
+})
 
-    observer.on(subscriber)
-    observer.notify(data)
+describe('Observer', () => {
+  it('подписывает', () => {
+    observer = new Observer()
+    const testSubCallBack = jest.fn()
+    observer.subscribe(testSubCallBack)
+    expect(testSubCallBack.mock.calls.length).toBe(0)
+  })
 
-    expect(subscriber).toHaveBeenCalledWith(data)
+  it('оповещает', () => {
+    observer = new Observer()
+    const testData = { text: 'hello from test' }
+    const testSubCallBack = jest.fn()
+    observer.subscribe(testSubCallBack)
+    observer.notify(testData)
+    expect(testSubCallBack.mock.calls.length).toBe(1)
   })
 })
