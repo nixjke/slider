@@ -7,14 +7,14 @@ beforeEach(() => {
 })
 
 describe('Observer', () => {
-  it('подписывает', () => {
+  it('Signed', () => {
     observer = new Observer()
     const testSubCallBack = jest.fn()
     observer.subscribe(testSubCallBack)
     expect(testSubCallBack.mock.calls.length).toBe(0)
   })
 
-  it('оповещает', () => {
+  it('Alerts', () => {
     observer = new Observer()
     const testData = { text: 'hello from test' }
     const testSubCallBack = jest.fn()
