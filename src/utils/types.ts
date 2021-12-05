@@ -1,3 +1,3 @@
-type values = { min: number; max?: number }
+type values = { start: number; end?: number }
 
 export { values }

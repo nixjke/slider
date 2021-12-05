@@ -3,8 +3,8 @@ import { values } from './types'
 interface IModel {
   values: values
   range: { min: number; max: number }
-  ruler: boolean
-  thumb: boolean
+  scale: boolean
+  tip: boolean
   step: number
   orientation: 'horizontal' | 'vertical'
 }
