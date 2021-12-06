@@ -1,27 +1,17 @@
 import Observer from '../Observer/Observer'
 import IModel from '../utils/IModel'
+import defaultState from '../utils/defaultState'
 
 class Model extends Observer {
   private state: IModel
-  private anchor
 
   constructor(state: IModel) {
     super()
     this.state = this.getProcessedData(state)
-    this.sub()
-
-    this.anchor = document.getElementById('anchor')?.addEventListener('click', () => this.notify(this.event))
   }
 
-  sub() {
-    this.subscribe(this.event)
-  }
-  not() {
-    this.notify(this.event)
-  }
-
-  event() {
-    console.log('Test observer')
+  getState(): IModel {
+    return this.state
   }
 
   private getProcessedData(state: IModel): IModel {
@@ -31,6 +21,56 @@ class Model extends Observer {
     const isRangeNan = Number.isNaN(range.min) || Number.isNaN(range.max)
     const isStepNan = Number.isNaN(step)
     const isRange = values.hasOwnProperty('max')
+
+    if (isRangeNan) {
+      processedData.range.min = defaultState.range.min
+      processedData.range.max = defaultState.range.max
+    }
+
+    if (isValuesNan) {
+      processedData.values.start = defaultState.values.start
+      if (isRange) {
+        processedData.values.end = range.max
+      }
+    }
+
+    const isStepInvalid = isStepNan || step <= 0
+    if (isStepInvalid) {
+      processedData.step = defaultState.step
+    }
+
+    const isStepMoreThenRangeMax = !isStepInvalid && step > range.max
+    if (isStepMoreThenRangeMax) {
+      processedData.step = range.max
+    }
+
+    if (range.min > range.max) {
+      processedData.range.min = range.max
+    }
+
+    if (values.start < range.min) {
+      processedData.values.start = range.min
+    }
+
+    const maxValueMoreThenRangeMax = isRange && values.end! > range.max
+    if (maxValueMoreThenRangeMax) {
+      processedData.values.end = range.max
+    }
+
+    if (values.start > range.max) {
+      processedData.values.start = range.max
+    }
+
+    const maxValueLessThenRangeMax = isRange && values.end! < range.min
+    if (maxValueLessThenRangeMax) {
+      processedData.values.end = range.min
+    }
+
+    const maxValueLessThenMinValue = isRange && values.end! < values.start
+    if (maxValueLessThenMinValue) {
+      values.start = range.min
+      values.end = range.max
+    }
 
     return processedData
   }
