@@ -8,7 +8,7 @@ class Observer {
     this.subscribers = []
   }
 
-  public subscribe(callback: Subscriber) {
+  public on(callback: Subscriber) {
     this.subscribers.push(callback)
   }
 

@@ -10,8 +10,13 @@ class Model extends Observer {
     this.state = this.getProcessedData(state)
   }
 
-  getState(): IModel {
+  public getState(): IModel {
     return this.state
+  }
+
+  public updateState(state: IModel): void {
+    this.state = this.getProcessedData(state)
+    this.notify(this.state)
   }
 
   private getProcessedData(state: IModel): IModel {
