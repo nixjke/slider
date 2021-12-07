@@ -9,5 +9,4 @@ let a = new Model({
   orientation: 'vertical',
 })
 
-
 console.log(a)
