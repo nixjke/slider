@@ -1,6 +1,6 @@
 import { values } from './types'
 
-interface IModel {
+interface IModelState {
   values: values
   range: { min: number; max: number }
   scale: boolean
@@ -9,4 +9,4 @@ interface IModel {
   orientation: 'horizontal' | 'vertical'
 }
 
-export default IModel
+export default IModelState

@@ -1,6 +1,6 @@
-import IModel from './IModel'
+import IModelState from './IModel'
 
-const defaultState: IModel = {
+const defaultState: IModelState = {
   values: { start: 10 },
   range: {
     min: 0,
