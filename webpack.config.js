@@ -21,6 +21,11 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
+        test: /\.hbs/,
+        loader: 'handlebars-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.(sa|sc|c)ss$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
       },

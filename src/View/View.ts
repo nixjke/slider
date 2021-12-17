@@ -1,5 +1,8 @@
 import Observer from '../Observer/Observer'
 import IModelState from '../utils/IModel'
+import './components/bar/bar.scss'
+
+const barTemplate = require('./components/bar/bar.hbs')
 
 class View extends Observer {
   private state: IModelState
@@ -13,9 +16,7 @@ class View extends Observer {
   }
 
   init() {
-    const template = '<div>Test Template View</div>'
-
-    this.anchor.insertAdjacentHTML('afterbegin', template)
+    this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
   }
 }
 
