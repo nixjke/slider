@@ -15,6 +15,10 @@ class Presenter extends Observer {
     this.view = new View(state, anchor)
   }
 
+  getModelState() {
+    return this.model.getState()
+  }
+  
   private getSplitModelState(state: any): IModelState {
     const { values, range, scale, tip, step, orientation } = state
 
@@ -28,3 +32,5 @@ class Presenter extends Observer {
     }
   }
 }
+
+export default Presenter

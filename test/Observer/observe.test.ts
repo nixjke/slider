@@ -10,7 +10,7 @@ describe('Observer', () => {
   it('Signed', () => {
     observer = new Observer()
     const testSubCallBack = jest.fn()
-    observer.subscribe(testSubCallBack)
+    observer.on(testSubCallBack)
     expect(testSubCallBack.mock.calls.length).toBe(0)
   })
 
@@ -18,7 +18,7 @@ describe('Observer', () => {
     observer = new Observer()
     const testData = { text: 'hello from test' }
     const testSubCallBack = jest.fn()
-    observer.subscribe(testSubCallBack)
+    observer.on(testSubCallBack)
     observer.notify(testData)
     expect(testSubCallBack.mock.calls.length).toBe(1)
   })

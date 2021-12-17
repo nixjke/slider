@@ -9,6 +9,13 @@ class View extends Observer {
     super()
     this.state = state
     this.anchor = anchor
+    this.init()
+  }
+
+  init() {
+    const template = '<div>Test Template View</div>'
+
+    this.anchor.insertAdjacentHTML('afterbegin', template)
   }
 }
 

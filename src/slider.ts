@@ -1,6 +1,8 @@
-import Model from './Model/Model'
+import Presenter from './Presenter/Presenter'
 
-let a = new Model({
+let anchor = document.getElementById('anchor') as HTMLElement
+
+let a = new Presenter(anchor, {
   values: { start: 20 },
   range: { min: 1, max: 100 },
   scale: true,
@@ -9,4 +11,4 @@ let a = new Model({
   orientation: 'vertical',
 })
 
-console.log(a)
+console.log(a) 
