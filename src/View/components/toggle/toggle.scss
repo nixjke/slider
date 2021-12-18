@@ -1,0 +1,22 @@
+.toggle {
+  position: absolute;
+  top: -5px;
+  left: -7px;
+  z-index: 4;
+  width: 10%;
+  height: 0;
+
+  &__handle {
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    width: 12px;
+    height: 14px;
+    font-size: 0;
+    background-color:darkviolet;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+}
