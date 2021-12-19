@@ -1,7 +1,7 @@
 .toggle {
   position: absolute;
-  top: -5px;
-  left: -7px;
+  top: -4px;
+  left: -6px;
   z-index: 4;
   width: 10%;
   height: 0;
@@ -13,10 +13,7 @@
     display: block;
     width: 12px;
     height: 14px;
-    font-size: 0;
     background-color:darkviolet;
-    border: none;
-    outline: none;
     cursor: pointer;
   }
 }

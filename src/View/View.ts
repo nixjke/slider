@@ -21,17 +21,17 @@ class View extends Observer {
     this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
     this.anchor.insertAdjacentHTML('afterbegin', toggleTemplate())
 
-    const maxValue = 10
-    const minValue = 5
+    const maxValue = 100
+    const minValue = 0
     const step = 2
 
     var slider = this.anchor
 
-    var bar = slider.querySelector('.bar')
-    var scale = bar.querySelector('.scale')
+    var bar = slider.querySelector('.bar') as HTMLElement
+    var scale = bar.querySelector('.scale') as HTMLElement
 
-    var toggle = slider.querySelector('.toggle')
-    var handle = toggle.querySelector('.toggle__handle')
+    var toggle = slider.querySelector('.toggle') as HTMLElement
+    var handle = toggle.querySelector('.toggle__handle') as HTMLElement
 
     function updateDisplay(event: MouseEvent) {
       // ПОЛУЧАЕМ ЗНАЧЕНИЯ
@@ -46,6 +46,21 @@ class View extends Observer {
       // ВЫЧИСЛЯЕМ currentValue относительно position
       var currentValue = step * Math.round((procent * (maxValue - minValue)) / step) + minValue
 
+      console.log(
+        'Длина слайдера:',
+        sliderWidth,
+        '\nКоордината X начала слайдера относительно окна пользователя:',
+        windowXSliderStart,
+        '\nкоордината X из места клика относительно длины слайдера:',
+        windowX,
+        '\nКоордината X из места клика относительно окна пользователя:',
+        sliderX,
+        '\nsliderX переводится в проценты для transform: scale:',
+        procent,
+        '\nВычесляем currentValue относительно position:',
+        currentValue
+      )
+
       if (procent >= 0 && procent <= 1) {
         // УСТАНАВЛИВАЕМ ДЛИНУ для scale
         scale.setAttribute('style', `transform: scale(${procent}, 1);`)
@@ -54,11 +69,23 @@ class View extends Observer {
         toggle.setAttribute('style', `transform: translateX(${sliderX}px);`)
 
         // Передаем currentValue в thumb
-        thumb.innerHTML = `${currentValue}`
+        // thumb.innerHTML = `${currentValue}`
       }
     }
 
-    slider.addEventListener('click', updateDisplay);
+    slider.addEventListener('click', updateDisplay)
+
+    bar.addEventListener('mousedown', () => {
+      document.addEventListener('mousemove', updateDisplay)
+    })
+
+    toggle.addEventListener('mousedown', () => {
+      document.addEventListener('mousemove', updateDisplay)
+    })
+
+    document.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', updateDisplay)
+    })
   }
 }
 
