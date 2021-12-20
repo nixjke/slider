@@ -2,9 +2,13 @@ import Observer from '../Observer/Observer'
 import IModelState from '../utils/IModel'
 import './components/bar/bar.scss'
 import './components/toggle/toggle.scss'
+import './components/thumb/thumb.scss'
+import './components/ruler/ruler.scss'
 
 const barTemplate = require('./components/bar/bar.hbs')
 const toggleTemplate = require('./components/toggle/toggle.hbs')
+const thumbTempalte = require('./components/thumb/thumb.hbs')
+const rulerTemplate = require('./components/ruler/ruler.hbs')
 
 class View extends Observer {
   private state: IModelState
@@ -20,17 +24,31 @@ class View extends Observer {
   init() {
     this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
     this.anchor.insertAdjacentHTML('afterbegin', toggleTemplate())
+    this.anchor.insertAdjacentHTML('afterbegin', rulerTemplate())
+
+    function getRulerItemPosition(item: number) {
+      const posItem = ((item - minValue) / (maxValue - minValue)) * 1000
+      return posItem
+    }
 
     const maxValue = 100
     const minValue = 0
-    const step = 2
+    const step = 1
 
     var slider = this.anchor
 
     var bar = slider.querySelector('.bar') as HTMLElement
+    console.dir(bar)
     var scale = bar.querySelector('.scale') as HTMLElement
 
     var toggle = slider.querySelector('.toggle') as HTMLElement
+    toggle.insertAdjacentHTML('afterbegin', thumbTempalte())
+
+    var thumb = toggle.querySelector('.thumb') as HTMLElement
+
+    var ruler = slider.querySelector('.ruler')
+    var ruler__item = ruler.querySelector('.ruler__item')
+
     var handle = toggle.querySelector('.toggle__handle') as HTMLElement
 
     function updateDisplay(event: MouseEvent) {
@@ -69,9 +87,38 @@ class View extends Observer {
         toggle.setAttribute('style', `transform: translateX(${sliderX}px);`)
 
         // Передаем currentValue в thumb
-        // thumb.innerHTML = `${currentValue}`
+        thumb.innerHTML = `${currentValue}`
       }
     }
+
+    function setRulerValues() {
+      const values = getRulerValues()
+
+      values.map(function (item) {
+        const posX = getRulerItemPosition(item)
+        ruler.innerHTML += `<li class="ruler__item" style="transform: translateX(${posX}%);">${item}</li>`
+      })
+    }
+
+    function getRulerValues(): any[] {
+      const midQuantity = Math.ceil((maxValue - minValue) / step)
+      const viewStep = Math.ceil(midQuantity / 5) * step
+      const midArr = []
+      let value = minValue
+
+      for (let i = 0; value < maxValue; i += 1) {
+        value += viewStep
+        if (value < maxValue) {
+          midArr.push(value)
+        }
+      }
+
+      return [minValue, ...midArr, maxValue]
+    }
+
+    setRulerValues()
+
+    thumb.innerHTML = `${minValue}`
 
     slider.addEventListener('click', updateDisplay)
 
