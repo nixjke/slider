@@ -19,6 +19,18 @@ class View extends Observer {
     this.state = state
     this.anchor = anchor
     this.init()
+
+    var slider = this.anchor
+    var bar = slider.querySelector('.bar') as HTMLElement
+
+    var scale = bar.querySelector('.scale') as HTMLElement
+
+    var toggle = slider.querySelector('.toggle') as HTMLElement
+
+    var thumb = toggle.querySelector('.thumb') as HTMLElement
+    let thumbWidth = thumb.offsetWidth
+    // thumb.style.left = `-${(thumbWidth - 12) / 2}px`
+    toggle.setAttribute('style', `transform: translateX(0px);`)
   }
 
   init() {
@@ -31,7 +43,7 @@ class View extends Observer {
       return posItem
     }
 
-    const maxValue = 100
+    const maxValue = 1000
     const minValue = 0
     const step = 1
 
@@ -46,8 +58,7 @@ class View extends Observer {
 
     var thumb = toggle.querySelector('.thumb') as HTMLElement
 
-    var ruler = slider.querySelector('.ruler')
-    var ruler__item = ruler.querySelector('.ruler__item')
+    var ruler = slider.querySelector('.ruler') as HTMLElement
 
     var handle = toggle.querySelector('.toggle__handle') as HTMLElement
 
@@ -62,6 +73,7 @@ class View extends Observer {
       var procent = sliderX / sliderWidth // sliderX переводится в проценты для transform: scale
 
       // ВЫЧИСЛЯЕМ currentValue относительно position
+      // var currentValue = step * Math.round((procent * (maxValue - minValue)) / step) + minValue
       var currentValue = step * Math.round((procent * (maxValue - minValue)) / step) + minValue
 
       console.log(
@@ -78,6 +90,9 @@ class View extends Observer {
         '\nВычесляем currentValue относительно position:',
         currentValue
       )
+
+      let thumbWidth = thumb.offsetWidth
+      thumb.style.left = `-${(thumbWidth - 14) / 2}px`
 
       if (procent >= 0 && procent <= 1) {
         // УСТАНАВЛИВАЕМ ДЛИНУ для scale

@@ -2,11 +2,13 @@
   position: absolute;
   top: -25px;
   z-index: 0;
-  padding: 2px 4px;
   color: black;
+  left: -7px;
+  min-width: 20px;
+  padding: 2px 3px;
   font-size: 14px;
   text-align: center;
   background-color: chocolate;
+  border-radius: 2px;
   cursor: pointer;
-  display: block;
 }

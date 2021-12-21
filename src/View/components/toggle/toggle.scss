@@ -1,9 +1,9 @@
 .toggle {
   position: absolute;
   top: -4px;
-  left: -6px;
+  left: -7px;
   z-index: 4;
-  width: 10%;
+  width: 8px;
   height: 0;
 
 
@@ -12,9 +12,14 @@
     position: absolute;
     z-index: 1;
     display: block;
-    width: 12px;
+    width: 14px;
     height: 14px;
+
     background-color:darkviolet;
+    outline: none;
+    border: none;
+    border-radius: 50%;
+    font-size: 0;
     cursor: pointer;
   }
 }
