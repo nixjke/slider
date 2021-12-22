@@ -1,5 +1,5 @@
 import Observer from '../Observer/Observer'
-import IModelState from '../utils/IModel'
+import ModelState from '../utils/IModel'
 import './components/bar/bar.scss'
 import './components/toggle/toggle.scss'
 import './components/thumb/thumb.scss'
@@ -11,10 +11,10 @@ const thumbTempalte = require('./components/thumb/thumb.hbs')
 const rulerTemplate = require('./components/ruler/ruler.hbs')
 
 class View extends Observer {
-  private state: IModelState
+  private state: ModelState
   private anchor: HTMLElement
 
-  constructor(state: IModelState, anchor: HTMLElement) {
+  constructor(state: ModelState, anchor: HTMLElement) {
     super()
     this.state = state
     this.anchor = anchor

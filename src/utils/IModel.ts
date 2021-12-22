@@ -1,12 +1,12 @@
 import { values } from './types'
 
-interface IModelState {
+interface ModelState {
   values: values
   range: { min: number; max: number }
-  scale: boolean
-  tip: boolean
+  ruler: boolean
+  thumb: boolean
   step: number
   orientation: 'horizontal' | 'vertical'
 }
 
-export default IModelState
+export default ModelState

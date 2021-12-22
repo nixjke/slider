@@ -1,25 +1,25 @@
 import Observer from '../Observer/Observer'
-import IModelState from '../utils/IModel'
+import ModelState from '../utils/IModel'
 import defaultState from '../utils/defaultState'
 
 class Model extends Observer {
-  private state: IModelState
+  private state: ModelState
 
-  constructor(state: IModelState) {
+  constructor(state: ModelState) {
     super()
     this.state = this.getProcessedData(state)
   }
 
-  public getState(): IModelState {
+  public getState(): ModelState {
     return this.state
   }
 
-  public updateState(state: IModelState): void {
+  public updateState(state: ModelState): void {
     this.state = this.getProcessedData(state)
     this.notify(this.state)
   }
 
-  private getProcessedData(state: IModelState): IModelState {
+  private getProcessedData(state: ModelState): ModelState {
     const processedData = { ...state }
     const { values, range, step } = state
     const isValuesNan = Number.isNaN(values.start) || Number.isNaN(values.end)
