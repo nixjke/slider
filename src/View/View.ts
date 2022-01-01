@@ -43,7 +43,7 @@ class View extends Observer {
       return posItem
     }
 
-    const maxValue = 10000
+    const maxValue = 10000100
     const minValue = 0
     const step = 1
 

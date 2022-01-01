@@ -6,8 +6,8 @@ const defaultState: ModelState = {
     min: 0,
     max: 100,
   },
-  scale: true,
-  tip: false,
+  ruler: true,
+  thumb: false,
   step: 1,
   orientation: 'horizontal',
 }

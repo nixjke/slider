@@ -1,10 +1,11 @@
 .thumb {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   position: absolute;
   top: -25px;
   z-index: 0;
   color: black;
   left: 100%;
-  transform: translate(-50%);
+  transform: translate(calc(-50% - 1px));
   min-width: 20px;
   padding: 2px 4px;
   font-size: 14px;
