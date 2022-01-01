@@ -43,7 +43,7 @@ class View extends Observer {
       return posItem
     }
 
-    const maxValue = 1000
+    const maxValue = 10000
     const minValue = 0
     const step = 1
 
@@ -90,9 +90,6 @@ class View extends Observer {
         '\nВычесляем currentValue относительно position:',
         currentValue
       )
-
-      let thumbWidth = thumb.offsetWidth
-      thumb.style.left = `-${(thumbWidth - 14) / 2}px`
 
       if (procent >= 0 && procent <= 1) {
         // УСТАНАВЛИВАЕМ ДЛИНУ для scale
