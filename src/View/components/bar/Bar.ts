@@ -5,6 +5,11 @@ class Bar {
 
   constructor(anchor: HTMLElement) {
     this.anchor = anchor
+    this.init()
+  }
+
+  private init() {
+    this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
   }
 }
 

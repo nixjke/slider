@@ -8,7 +8,6 @@ import './components/toggle/toggle.scss'
 import './components/thumb/thumb.scss'
 import './components/ruler/ruler.scss'
 
-const barTemplate = require('./components/bar/bar.hbs')
 const toggleTemplate = require('./components/toggle/toggle.hbs')
 const thumbTempalte = require('./components/thumb/thumb.hbs')
 const rulerTemplate = require('./components/ruler/ruler.hbs')
@@ -21,9 +20,9 @@ class View extends Observer {
     super()
     this.state = state
     this.anchor = anchor
+    let newbar = new Bar(this.anchor)
     this.init()
 
-    let newbar = new Bar(this.anchor)
 
 
     var slider = this.anchor
@@ -40,7 +39,6 @@ class View extends Observer {
   }
 
   init() {
-    this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
     this.anchor.insertAdjacentHTML('afterbegin', toggleTemplate())
     this.anchor.insertAdjacentHTML('afterbegin', rulerTemplate())
 
