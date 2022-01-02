@@ -1,5 +1,8 @@
 import Observer from '../Observer/Observer'
 import ModelState from '../utils/IModel'
+
+import Bar from './components/bar/Bar'
+
 import './components/bar/bar.scss'
 import './components/toggle/toggle.scss'
 import './components/thumb/thumb.scss'
@@ -19,6 +22,9 @@ class View extends Observer {
     this.state = state
     this.anchor = anchor
     this.init()
+
+    let newbar = new Bar(this.anchor)
+
 
     var slider = this.anchor
     var bar = slider.querySelector('.bar') as HTMLElement
@@ -43,14 +49,14 @@ class View extends Observer {
       return posItem
     }
 
-    const maxValue = 10000100
+    const maxValue = 100
     const minValue = 0
     const step = 1
 
     var slider = this.anchor
 
     var bar = slider.querySelector('.bar') as HTMLElement
-    console.dir(bar)
+
     var scale = bar.querySelector('.scale') as HTMLElement
 
     var toggle = slider.querySelector('.toggle') as HTMLElement
