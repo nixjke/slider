@@ -4,12 +4,12 @@ import ModelState from '../utils/IModel'
 import Bar from './components/bar/Bar'
 import Ruler from './components/ruler/Ruler'
 import Thumb from './components/thumb/Thumb'
+import Toggle from './components/toggle/Toggle'
 
 import './components/bar/bar.scss'
 import './components/toggle/toggle.scss'
 import './components/thumb/thumb.scss'
 import './components/ruler/ruler.scss'
-
 
 class View extends Observer {
   private state: ModelState
@@ -38,8 +38,8 @@ class View extends Observer {
     const newBar = new Bar(this.anchor)
     const newRuler = new Ruler(this.anchor)
     const newThumb = new Thumb(this.anchor)
+    const newToggle = new Toggle(this.anchor)
 
-    
     function getRulerItemPosition(item: number) {
       const posItem = ((item - minValue) / (maxValue - minValue)) * 1000
       return posItem
