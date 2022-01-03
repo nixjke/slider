@@ -3,14 +3,13 @@ import ModelState from '../utils/IModel'
 
 import Bar from './components/bar/Bar'
 import Ruler from './components/ruler/Ruler'
+import Thumb from './components/thumb/Thumb'
 
 import './components/bar/bar.scss'
 import './components/toggle/toggle.scss'
 import './components/thumb/thumb.scss'
 import './components/ruler/ruler.scss'
 
-const toggleTemplate = require('./components/toggle/toggle.hbs')
-const thumbTempalte = require('./components/thumb/thumb.hbs')
 
 class View extends Observer {
   private state: ModelState
@@ -20,8 +19,6 @@ class View extends Observer {
     super()
     this.state = state
     this.anchor = anchor
-    const newBar = new Bar(this.anchor)
-    const newRuler = new Ruler(this.anchor)
 
     this.init()
 
@@ -38,8 +35,11 @@ class View extends Observer {
   }
 
   init() {
-    this.anchor.insertAdjacentHTML('afterbegin', toggleTemplate())
+    const newBar = new Bar(this.anchor)
+    const newRuler = new Ruler(this.anchor)
+    const newThumb = new Thumb(this.anchor)
 
+    
     function getRulerItemPosition(item: number) {
       const posItem = ((item - minValue) / (maxValue - minValue)) * 1000
       return posItem
@@ -56,7 +56,6 @@ class View extends Observer {
     var scale = bar.querySelector('.scale') as HTMLElement
 
     var toggle = slider.querySelector('.toggle') as HTMLElement
-    toggle.insertAdjacentHTML('afterbegin', thumbTempalte())
 
     var thumb = toggle.querySelector('.thumb') as HTMLElement
 
