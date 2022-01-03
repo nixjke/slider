@@ -1,6 +1,6 @@
-const barTemplate = require('./bar.hbs')
+const rulerTemplate = require('./ruler.hbs')
 
-class Bar {
+class Ruler {
   private anchor: HTMLElement
 
   constructor(anchor: HTMLElement) {
@@ -9,8 +9,8 @@ class Bar {
   }
 
   private init() {
-    this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
+    this.anchor.insertAdjacentHTML('afterbegin', rulerTemplate())
   }
 }
 
-export default Bar
+export default Ruler
