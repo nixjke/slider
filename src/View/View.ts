@@ -37,8 +37,8 @@ class View extends Observer {
   init() {
     const newBar = new Bar(this.anchor)
     const newRuler = new Ruler(this.anchor)
-    const newThumb = new Thumb(this.anchor)
     const newToggle = new Toggle(this.anchor)
+    const newThumb = new Thumb(this.anchor)
 
     function getRulerItemPosition(item: number) {
       const posItem = ((item - minValue) / (maxValue - minValue)) * 1000
@@ -130,7 +130,6 @@ class View extends Observer {
     }
 
     setRulerValues()
-
     thumb.innerHTML = `${minValue}`
 
     slider.addEventListener('click', updateDisplay)

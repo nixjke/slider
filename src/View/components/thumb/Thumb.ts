@@ -9,9 +9,8 @@ class Thumb {
   }
 
   private init() {
-    // this.anchor.insertAdjacentHTML('afterbegin', thubmTemplate())
     const toggleHtml = this.anchor.querySelector('.toggle') as HTMLElement
-    console.log(toggleHtml)
+    toggleHtml.insertAdjacentHTML('afterbegin', thubmTemplate())
   }
 
   getThumbHtml() {
