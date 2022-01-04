@@ -11,6 +11,10 @@ class Toggle {
   private init() {
     this.anchor.insertAdjacentHTML('afterbegin', toggleTemplate())
   }
+
+  getToggleHtml() {
+    return this.anchor.querySelector('.toggle')
+  }
 }
 
 export default Toggle

@@ -13,6 +13,10 @@ class Thumb {
     const toggleHtml = this.anchor.querySelector('.toggle') as HTMLElement
     console.log(toggleHtml)
   }
+
+  getThumbHtml() {
+    return this.anchor.querySelector('.thumb')
+  }
 }
 
 export default Thumb

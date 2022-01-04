@@ -11,6 +11,10 @@ class Ruler {
   private init() {
     this.anchor.insertAdjacentHTML('afterbegin', rulerTemplate())
   }
+
+  getRulerHtml() {
+    return this.anchor.querySelector('.ruler')
+  }
 }
 
 export default Ruler

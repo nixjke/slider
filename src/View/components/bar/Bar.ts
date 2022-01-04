@@ -11,6 +11,10 @@ class Bar {
   private init() {
     this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
   }
+
+  getBarHtml() {
+    return this.anchor.querySelector('.bar')
+  }
 }
 
 export default Bar
