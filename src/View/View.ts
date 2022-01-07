@@ -15,10 +15,20 @@ class View extends Observer {
   private state: ModelState
   private anchor: HTMLElement
 
+  private bar: HTMLElement
+  private ruler: HTMLElement
+  private thumb: HTMLElement
+  private toggle: HTMLElement
+
   constructor(state: ModelState, anchor: HTMLElement) {
     super()
     this.state = state
     this.anchor = anchor
+
+    this.bar = new Bar(this.anchor).getBarHtml() as HTMLElement
+    this.ruler = new Ruler(this.anchor).getRulerHtml() as HTMLElement
+    this.toggle = new Toggle(this.anchor).getToggleHtml() as HTMLElement
+    this.thumb = new Thumb(this.anchor).getThumbHtml() as HTMLElement
 
     this.init()
 
@@ -35,11 +45,6 @@ class View extends Observer {
   }
 
   init() {
-    const newBar = new Bar(this.anchor)
-    const newRuler = new Ruler(this.anchor)
-    const newToggle = new Toggle(this.anchor)
-    const newThumb = new Thumb(this.anchor)
-
     function getRulerItemPosition(item: number) {
       const posItem = ((item - minValue) / (maxValue - minValue)) * 1000
       return posItem
