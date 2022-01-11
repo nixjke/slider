@@ -6,6 +6,8 @@ import Ruler from './components/ruler/Ruler'
 import Thumb from './components/thumb/Thumb'
 import Toggle from './components/toggle/Toggle'
 
+import sliderClassNames from '../utils/sliderClassNames'
+
 import IToggle from '../utils/interfaces/view/components/toggle/IToggle'
 
 import './components/bar/bar.scss'
@@ -20,7 +22,7 @@ interface ClickCoordinate {
 
 class View extends Observer {
   private state: ModelState
-  private anchor: HTMLElement
+  private domParent: HTMLElement
   private slider!: HTMLElement
   private isVertical: boolean
   private isRange: boolean
@@ -30,14 +32,14 @@ class View extends Observer {
   private activeToggle!: Toggle
   private activeToggleIndex!: number
 
-  constructor(state: ModelState, anchor: HTMLElement) {
+  constructor(state: ModelState, domParent: HTMLElement) {
     super()
     this.state = state
-    this.anchor = anchor
+    this.domParent = domParent
 
     this.init()
 
-    var slider = this.anchor
+    var slider = this.domParent
     var bar = slider.querySelector('.bar') as HTMLElement
 
     var scale = bar.querySelector('.scale') as HTMLElement
@@ -59,7 +61,7 @@ class View extends Observer {
     const minValue = 0
     const step = 1
 
-    var slider = this.anchor
+    var slider = this.domParent
 
     var bar = slider.querySelector('.bar') as HTMLElement
 
@@ -158,6 +160,8 @@ class View extends Observer {
   }
 
   private getCoordinate(clickCoordinate: ClickCoordinate): number {}
+
+  private createSliderContainer() {}
 }
 
 export default View

@@ -1,19 +1,19 @@
 const rulerTemplate = require('./ruler.hbs')
 
 class Ruler {
-  private anchor: HTMLElement
+  private domParent: HTMLElement
 
-  constructor(anchor: HTMLElement) {
-    this.anchor = anchor
+  constructor(domParent: HTMLElement) {
+    this.domParent = domParent
     this.init()
   }
 
   private init() {
-    this.anchor.insertAdjacentHTML('afterbegin', rulerTemplate())
+    this.domParent.insertAdjacentHTML('afterbegin', rulerTemplate())
   }
 
   getRulerHtml() {
-    return this.anchor.querySelector('.ruler')
+    return this.domParent.querySelector('.ruler')
   }
 }
 

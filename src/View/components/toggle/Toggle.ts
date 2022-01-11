@@ -1,19 +1,19 @@
 const toggleTemplate = require('./toggle.hbs')
 
 class Toggle {
-  private anchor: HTMLElement
+  private domParent: HTMLElement
 
-  constructor(anchor: HTMLElement) {
-    this.anchor = anchor
+  constructor(domParent: HTMLElement) {
+    this.domParent = domParent
     this.init()
   }
 
   private init() {
-    this.anchor.insertAdjacentHTML('afterbegin', toggleTemplate())
+    this.domParent.insertAdjacentHTML('afterbegin', toggleTemplate())
   }
 
   getToggleHtml() {
-    return this.anchor.querySelector('.toggle')
+    return this.domParent.querySelector('.toggle')
   }
 }
 

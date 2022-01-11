@@ -1,19 +1,19 @@
 const barTemplate = require('./bar.hbs')
 
 class Bar {
-  private anchor: HTMLElement
+  private domParent: HTMLElement
 
-  constructor(anchor: HTMLElement) {
-    this.anchor = anchor
+  constructor(domParent: HTMLElement) {
+    this.domParent = domParent
     this.init()
   }
 
   private init() {
-    this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
+    this.domParent.insertAdjacentHTML('afterbegin', barTemplate())
   }
 
   getHtml() {
-    return this.anchor.querySelector('.bar')
+    return this.domParent.querySelector('.bar')
   }
 }
 

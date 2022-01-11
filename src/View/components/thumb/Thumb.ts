@@ -1,20 +1,20 @@
 const thubmTemplate = require('./thumb.hbs')
 
 class Thumb {
-  private anchor: HTMLElement
+  private domParent: HTMLElement
 
-  constructor(anchor: HTMLElement) {
-    this.anchor = anchor
+  constructor(domParent: HTMLElement) {
+    this.domParent = domParent
     this.init()
   }
 
   private init() {
-    const toggleHtml = this.anchor.querySelector('.toggle') as HTMLElement
+    const toggleHtml = this.domParent.querySelector('.toggle') as HTMLElement
     toggleHtml.insertAdjacentHTML('afterbegin', thubmTemplate())
   }
 
   getThumbHtml() {
-    return this.anchor.querySelector('.thumb')
+    return this.domParent.querySelector('.thumb')
   }
 }
 
