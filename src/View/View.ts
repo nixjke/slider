@@ -35,11 +35,6 @@ class View extends Observer {
     this.state = state
     this.anchor = anchor
 
-    this.bar = new Bar(this.anchor).getHtml() as HTMLElement
-    this.ruler = new Ruler(this.anchor).getRulerHtml() as HTMLElement
-    this.toggle = new Toggle(this.anchor).getToggleHtml() as HTMLElement
-    this.thumb = new Thumb(this.anchor).getThumbHtml() as HTMLElement
-
     this.init()
 
     var slider = this.anchor
