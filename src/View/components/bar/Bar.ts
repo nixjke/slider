@@ -12,7 +12,7 @@ class Bar {
     this.anchor.insertAdjacentHTML('afterbegin', barTemplate())
   }
 
-  getBarHtml() {
+  getHtml() {
     return this.anchor.querySelector('.bar')
   }
 }
