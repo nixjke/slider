@@ -12,7 +12,7 @@ class Ruler {
     this.domParent.insertAdjacentHTML('afterbegin', rulerTemplate())
   }
 
-  getRulerHtml() {
+  getHtml() {
     return this.domParent.querySelector('.ruler')
   }
 }

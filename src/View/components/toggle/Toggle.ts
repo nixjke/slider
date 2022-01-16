@@ -12,7 +12,7 @@ class Toggle {
     this.domParent.insertAdjacentHTML('afterbegin', toggleTemplate())
   }
 
-  getToggleHtml() {
+  getHtml() {
     return this.domParent.querySelector('.toggle')
   }
 }

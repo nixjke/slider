@@ -13,7 +13,7 @@ class Thumb {
     toggleHtml.insertAdjacentHTML('afterbegin', thubmTemplate())
   }
 
-  getThumbHtml() {
+  getHtml() {
     return this.domParent.querySelector('.thumb')
   }
 }
