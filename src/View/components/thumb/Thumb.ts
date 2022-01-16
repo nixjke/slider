@@ -1,20 +1,42 @@
-const thubmTemplate = require('./thumb.hbs')
+import sliderClassNames from '../../../utils/sliderClassNames'
+import Observer from '../../../Observer/Observer'
+import IThumbProps from '../../../utils/interfaces/view/components/thumb/IThumbProps'
+import IDomNode from '../../../utils/interfaces/view/components/thumb/IDomNode'
 
-class Thumb {
-  private domParent: HTMLElement
+const thumbTemplate = require('./thumb.hbs')
 
-  constructor(domParent: HTMLElement) {
-    this.domParent = domParent
-    this.init()
+class Thumb extends Observer {
+  private props: IThumbProps
+
+  private domNode!: IDomNode
+
+  constructor(props: IThumbProps) {
+    super()
+    this.props = props
   }
 
-  private init() {
-    const toggleHtml = this.domParent.querySelector('.toggle') as HTMLElement
-    toggleHtml.insertAdjacentHTML('afterbegin', thubmTemplate())
+  getHtml = (): ChildNode => {
+    const { value } = this.props
+    const templateOptions = { sliderClassNames, value }
+    const thumb = document.createElement('div')
+    thumb.innerHTML = thumbTemplate(templateOptions)
+    return thumb.firstChild as HTMLElement
   }
 
-  getHtml() {
-    return this.domParent.querySelector('.thumb')
+  getDomNode = () => this.domNode
+
+  setDomNode = (domNode: IDomNode) => {
+    this.domNode = domNode
+  }
+
+  updateProps = (props: IThumbProps) => {
+    this.props = props
+    this.redraw()
+  }
+
+  private redraw = () => {
+    const { value } = this.props
+    this.domNode.thumb.textContent = `${value}`
   }
 }
 

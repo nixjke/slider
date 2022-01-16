@@ -1,19 +1,25 @@
+import ObserverEvents from './ObserverEvents'
+
 type Subscriber = (...args: any[]) => any
-type ISubscribers = Array<Subscriber>
+interface ISubscribers {
+  [key: string]: Array<Subscriber>
+}
 
 class Observer {
   private subscribers: ISubscribers
 
   constructor() {
-    this.subscribers = []
+    this.subscribers = {}
   }
 
-  public on(callback: Subscriber) {
-    this.subscribers.push(callback)
+  subscribe = (subName: ObserverEvents, callback: Subscriber) => {
+    this.subscribers[subName] = [callback]
   }
 
-  public notify<T>(data: T) {
-    this.subscribers.forEach((callback: Subscriber) => callback(data))
+  notify = <T>(subName: ObserverEvents, data: T) => {
+    if (this.subscribers[subName]) {
+      this.subscribers[subName].forEach((callback: Subscriber) => callback(data))
+    }
   }
 }
 
