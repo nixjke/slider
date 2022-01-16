@@ -9,11 +9,7 @@ import Toggle from './components/toggle/Toggle'
 import sliderClassNames from '../utils/sliderClassNames'
 
 import IToggle from '../utils/interfaces/view/components/toggle/IToggle'
-
-import './components/bar/bar.scss'
-import './components/toggle/toggle.scss'
-import './components/thumb/thumb.scss'
-import './components/ruler/ruler.scss'
+import IDomNode from '../utils/interfaces/view/components/toggle/IDomNode'
 
 interface ClickCoordinate {
   x: number
@@ -40,8 +36,6 @@ class View extends Observer {
     this.isVertical = orientation === 'vertical'
     this.isRange = values.hasOwnProperty('max')
   }
-
-  private getCoordinate(clickCoordinate: ClickCoordinate): number {}
 
   private createSliderContainer() {}
 }
