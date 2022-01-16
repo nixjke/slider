@@ -1,8 +1,8 @@
-import { values } from './types'
+import values from './types'
 
 interface ModelState {
   values: values
-  range: { min: number; max: number }
+  range: { start: number; end: number }
   ruler: boolean
   thumb: boolean
   step: number
