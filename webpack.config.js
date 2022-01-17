@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: mode,
-  entry: './src/demo/demoPage.ts',
+  entry: './src/demo/demoPage.js',
 
   module: {
     rules: [
