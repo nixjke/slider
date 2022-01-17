@@ -2,7 +2,7 @@ import values from '../../../../types'
 
 interface IBarProps {
   values: values
-  range: { start: number; end: number }
+  range: { min: number; max: number }
   isVertical: boolean
 }
 

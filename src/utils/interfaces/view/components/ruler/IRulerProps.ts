@@ -1,6 +1,6 @@
 interface IRulerProps {
   step: number;
-  range: { start: number; end: number };
+  range: { min: number; max: number };
   ruler: boolean;
   isVertical: boolean;
 }

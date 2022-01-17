@@ -15,6 +15,7 @@
         "@babel/preset-typescript": "^7.15.0",
         "@jest/types": "^27.2.5",
         "@types/jest": "^27.0.2",
+        "@types/jquery": "^3.5.13",
         "babel-loader": "^8.2.2",
         "clean-webpack-plugin": "^4.0.0",
         "css-loader": "^6.4.0",
@@ -34,8 +35,5 @@
         "webpack": "^5.58.1",
         "webpack-cli": "^4.9.0",
         "webpack-dev-server": "^4.3.1"
-    },
-    "dependencies": {
-        "normalize.css": "^8.0.1"
     }
 }

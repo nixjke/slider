@@ -2,7 +2,7 @@ import values from './types'
 
 interface ModelState {
   values: values
-  range: { start: number; end: number }
+  range: { min: number; max: number }
   ruler: boolean
   thumb: boolean
   step: number

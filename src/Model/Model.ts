@@ -1,83 +1,82 @@
 import Observer from '../Observer/Observer'
+import ObserverEvents from '../Observer/ObserverEvents'
 import ModelState from '../utils/IModel'
 import defaultState from '../utils/defaultState'
 
 class Model extends Observer {
-  private state: ModelState
+  private modelOptions: ModelState
 
-  constructor(state: ModelState) {
+  constructor(modelOptions: ModelState) {
     super()
-    this.state = this.getProcessedData(state)
+    this.modelOptions = this.getConfirmedOptions(modelOptions)
   }
 
-  public getState(): ModelState {
-    return this.state
+  getOptions = () => this.modelOptions
+
+  updateOptions = (newOptions: ModelState) => {
+    this.modelOptions = this.getConfirmedOptions(newOptions)
+    this.notify(ObserverEvents.modelStateUpdate, this.modelOptions)
   }
 
-  public updateState(state: ModelState): void {
-    this.state = this.getProcessedData(state)
-    this.notify(this.state)
-  }
-
-  private getProcessedData(state: ModelState): ModelState {
-    const processedData = { ...state }
-    const { values, range, step } = state
-    const isValuesNan = Number.isNaN(values.start) || Number.isNaN(values.end)
+  private getConfirmedOptions = (checkingOptions: ModelState): ModelState => {
+    const confirmedOptions = { ...checkingOptions }
+    const { values, range, step } = confirmedOptions
+    const isvaluesNan = Number.isNaN(values.start) || Number.isNaN(values.end)
     const isRangeNan = Number.isNaN(range.min) || Number.isNaN(range.max)
     const isStepNan = Number.isNaN(step)
-    const isRange = values.hasOwnProperty('max')
+    const isRange = values.hasOwnProperty('end')
 
     if (isRangeNan) {
-      processedData.range.min = defaultState.range.min
-      processedData.range.max = defaultState.range.max
+      confirmedOptions.range.min = defaultState.range.min
+      confirmedOptions.range.max = defaultState.range.max
     }
 
-    if (isValuesNan) {
-      processedData.values.start = defaultState.values.start
+    if (isvaluesNan) {
+      confirmedOptions.values.start = defaultState.values.start
       if (isRange) {
-        processedData.values.end = range.max
+        confirmedOptions.values.end = range.max
       }
     }
 
     const isStepInvalid = isStepNan || step <= 0
     if (isStepInvalid) {
-      processedData.step = defaultState.step
+      confirmedOptions.step = defaultState.step
     }
 
-    const isStepMoreThenRangeMax = !isStepInvalid && step > range.max
-    if (isStepMoreThenRangeMax) {
-      processedData.step = range.max
+    const isStepMoreThenRangeend = !isStepInvalid && step > range.max
+    if (isStepMoreThenRangeend) {
+      confirmedOptions.step = range.max
     }
 
     if (range.min > range.max) {
-      processedData.range.min = range.max
+      confirmedOptions.range.min = range.max
     }
 
     if (values.start < range.min) {
-      processedData.values.start = range.min
+      confirmedOptions.values.start = range.min
     }
 
-    const maxValueMoreThenRangeMax = isRange && values.end! > range.max
-    if (maxValueMoreThenRangeMax) {
-      processedData.values.end = range.max
+    const endValueMoreThenRangeend = isRange && values.end! > range.max
+    if (endValueMoreThenRangeend) {
+      confirmedOptions.values.end = range.max
     }
 
     if (values.start > range.max) {
-      processedData.values.start = range.max
+      confirmedOptions.values.start = range.max
     }
 
-    const maxValueLessThenRangeMax = isRange && values.end! < range.min
-    if (maxValueLessThenRangeMax) {
-      processedData.values.end = range.min
+    const endValueLessThenRangeend = isRange && values.end! < range.min
+    if (endValueLessThenRangeend) {
+      confirmedOptions.values.end = range.min
     }
 
-    const maxValueLessThenMinValue = isRange && values.end! < values.start
-    if (maxValueLessThenMinValue) {
+    const endValueLessThenstartValue = isRange && values.end! < values.start
+    if (endValueLessThenstartValue) {
       values.start = range.min
       values.end = range.max
     }
 
-    return processedData
+    return confirmedOptions
   }
 }
 

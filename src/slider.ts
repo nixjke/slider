@@ -1,14 +1,35 @@
+import Observer from './Observer/Observer'
 import Presenter from './Presenter/Presenter'
+import ISliderOptions from './utils/ISliderOprions'
+import ModelState from './utils/IModel'
+import ObserverEvents from './Observer/ObserverEvents'
 
-let anchor = document.getElementById('anchor') as HTMLElement
+class Slider extends Observer {
+  private presenter: Presenter
 
-let a = new Presenter(anchor, {
-  values: { start: 20 },
-  range: { min: 1, max: 100 },
-  ruler: true,
-  thumb: true,
-  step: 1,
-  orientation: 'vertical',
-})
+  constructor(sliderOptions: ISliderOptions) {
+    super()
+    this.presenter = new Presenter(sliderOptions)
+  }
 
-console.log(a)
+  init() {
+    this.presenter.init()
+    this.presenter.subscribe(ObserverEvents.modelStateUpdate, this.alertSubs)
+  }
+
+  updateOptions(modelOptions: ModelState) {
+    this.presenter.updateOptions(modelOptions)
+  }
+
+  getModelOptions = () => this.presenter.getModelOptions()
+
+  getDomParent = () => this.presenter.getDomParent()
+
+  getRulerValues = () => this.presenter.getRulerValues()
+
+  private alertSubs = () => {
+    this.notify(ObserverEvents.modelStateUpdate, this.getModelOptions())
+  }
+}
+
+export default Slider
