@@ -51,12 +51,12 @@ class Presenter extends Observer {
   }
 
   private subscribeModules = () => {
-    this.model.subscribe(ObserverEvents.modelStateUpdate, this.onmodelStateUpdate)
-    this.view.subscribe(ObserverEvents.modelStateUpdate, this.onViewChangedModelOptions)
+    this.model.on(ObserverEvents.modelStateUpdate, this.onmodelStateUpdate)
+    this.view.on(ObserverEvents.modelStateUpdate, this.onViewChangedModelOptions)
   }
 
   private onmodelStateUpdate = (modelOptions: ModelState) => {
-    this.view.updateStateOptions(modelOptions)
+    this.view.updateModelOptions(modelOptions)
     this.notify(ObserverEvents.modelStateUpdate, this.model.getOptions())
   }
 
@@ -100,7 +100,7 @@ class Presenter extends Observer {
   private renderNewView = (modelOptions: ModelState) => {
     this.view.destroyDom()
     this.view = new View(modelOptions, this.domParent)
-    this.view.subscribe(ObserverEvents.modelStateUpdate, this.onViewChangedModelOptions)
+    this.view.on(ObserverEvents.modelStateUpdate, this.onViewChangedModelOptions)
     this.view.render()
   }
 }

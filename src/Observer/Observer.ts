@@ -12,7 +12,7 @@ class Observer {
     this.subscribers = {}
   }
 
-  subscribe = (subName: ObserverEvents, callback: Subscriber) => {
+  on = (subName: ObserverEvents, callback: Subscriber) => {
     this.subscribers[subName] = [callback]
   }
 

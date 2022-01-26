@@ -1,7 +1,6 @@
 const HtmlWebpaclPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const webpack = require('webpack')
 
 let mode = 'development'
 
@@ -11,14 +10,17 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: mode,
-  entry: './src/demo/demoPage.js',
+  entry: {
+    rangeSlider: './src/index.ts',
+    panel: './src/demo/index.ts'
+  },
 
   module: {
     rules: [
       {
         test: /\.(js|ts)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        use: 'ts-loader'
       },
       {
         test: /\.hbs/,
@@ -39,10 +41,6 @@ module.exports = {
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-    }),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
     }),
   ],
   devServer: {

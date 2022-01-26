@@ -13,7 +13,7 @@ class Toggle {
     this.props = props
   }
 
-  getHtml = (): ChildNode => {
+  getHtml(): ChildNode {
     const templateOptions = { sliderClassNames }
     const toggle = document.createElement('div')
     toggle.innerHTML = toggleTemplate(templateOptions)
@@ -22,22 +22,24 @@ class Toggle {
     return toggle.firstChild as HTMLElement
   }
 
-  getDomNode = () => this.domNode
+  getDomNode() {
+    return this.domNode
+  }
 
-  setDomNode = (domNode: IDomNode) => {
+  setDomNode(domNode: IDomNode) {
     this.domNode = domNode
   }
 
-  updateProps = (props: IToggleProps) => {
+  updateProps(props: IToggleProps) {
     this.props = props
     this.redraw()
   }
 
-  private redraw = () => {
-    this.domNode.toggle.setAttribute('style', this.getTransformStyle())
+  private redraw() {
+    return this.domNode.toggle.setAttribute('style', this.getTransformStyle())
   }
 
-  private getTransformStyle = (): string => {
+  private getTransformStyle(): string {
     const { isVertical } = this.props
     const togglePosition = this.getPosition()
 
@@ -48,7 +50,7 @@ class Toggle {
     return `transform: translate(${togglePosition}%, 0px);`
   }
 
-  private getPosition = (): number => {
+  private getPosition(): number {
     const { scalePosition } = this.props
     const togglePosition = scalePosition * 1000
     return togglePosition

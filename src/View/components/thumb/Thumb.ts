@@ -15,7 +15,7 @@ class Thumb extends Observer {
     this.props = props
   }
 
-  getHtml = (): ChildNode => {
+  getHtml (): ChildNode  {
     const { value } = this.props
     const templateOptions = { sliderClassNames, value }
     const thumb = document.createElement('div')
@@ -23,18 +23,20 @@ class Thumb extends Observer {
     return thumb.firstChild as HTMLElement
   }
 
-  getDomNode = () => this.domNode
+  getDomNode() {
+   return this.domNode
+  }
 
-  setDomNode = (domNode: IDomNode) => {
+  setDomNode (domNode: IDomNode)  {
     this.domNode = domNode
   }
 
-  updateProps = (props: IThumbProps) => {
+  updateProps  (props: IThumbProps)  {
     this.props = props
     this.redraw()
   }
 
-  private redraw = () => {
+  private redraw ()  {
     const { value } = this.props
     this.domNode.thumb.textContent = `${value}`
   }

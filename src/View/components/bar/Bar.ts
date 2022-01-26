@@ -24,7 +24,7 @@ class Bar {
 
   getPosition(currentValue: number): number {
     const { range } = this.props
-    const scalePosition = (+currentValue - range.start) / (range.end - range.end)
+    const scalePosition = (+currentValue - range.min) / (range.max - range.min)
     return scalePosition
   }
 

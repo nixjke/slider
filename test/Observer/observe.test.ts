@@ -1,4 +1,5 @@
 import Observer from '../../src/Observer/Observer'
+import ObserverEvents from '../../src/Observer/ObserverEvents'
 
 let observer: Observer
 
@@ -7,19 +8,19 @@ beforeEach(() => {
 })
 
 describe('Observer', () => {
-  it('Signed', () => {
-    observer = new Observer()
-    const testSubCallBack = jest.fn()
-    observer.on(testSubCallBack)
-    expect(testSubCallBack.mock.calls.length).toBe(0)
-  })
+  it('подписывает', () => {
+    observer = new Observer();
+    const testSubCallBack = jest.fn();
+    observer.on(ObserverEvents.modelStateUpdate, testSubCallBack);
+    expect(testSubCallBack.mock.calls.length).toBe(0);
+  });
 
-  it('Alerts', () => {
-    observer = new Observer()
-    const testData = { text: 'hello from test' }
-    const testSubCallBack = jest.fn()
-    observer.on(testSubCallBack)
-    observer.notify(testData)
-    expect(testSubCallBack.mock.calls.length).toBe(1)
-  })
-})
+  it('оповещает', () => {
+    observer = new Observer();
+    const testData = { text: 'hello from test' };
+    const testSubCallBack = jest.fn();
+    observer.on(ObserverEvents.modelStateUpdate, testSubCallBack);
+    observer.notify(ObserverEvents.modelStateUpdate, testData);
+    expect(testSubCallBack.mock.calls.length).toBe(1);
+  });
+});

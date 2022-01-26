@@ -22,14 +22,23 @@ interface ClickCoordinate {
 
 class View extends Observer {
   private state: ModelState
+
   private domParent: HTMLElement
+
   private slider!: HTMLElement
+
   private isVertical: boolean
+
   private isRange: boolean
-  private bar!: Bar
+
   private ruler!: Ruler | null
+
+  private bar!: Bar
+
   private toggles!: IToggle[]
+
   private activeToggle!: Toggle
+
   private activeToggleIndex!: number
 
   constructor(state: ModelState, domParent: HTMLElement) {
@@ -42,7 +51,7 @@ class View extends Observer {
     this.initViewComponents()
   }
 
-  render() {
+  render = () => {
     this.mountSlider()
     this.saveDom()
     if (this.isVertical) {
@@ -55,20 +64,27 @@ class View extends Observer {
     this.domParent.removeChild(this.slider)
   }
 
-  private initViewComponents() {
+  updateModelOptions = (state: ModelState) => {
+    this.state = state
+    this.redrawValue()
+  }
+
+  getRulerValues = () => this.ruler!.getRulerValues()
+
+  private initViewComponents = () => {
     const { ruler } = this.state
     this.ruler = ruler ? this.getRuler() : null
     this.bar = this.getBar()
     this.toggles = this.getToggles()
   }
 
-  private getRuler(): Ruler {
+  private getRuler = (): Ruler => {
     const ruler = new Ruler(this.getRulerProps())
-    ruler.subscribe(ObserverEvents.rulerHide, this.handleRulerHide)
+    ruler.on(ObserverEvents.rulerHide, this.handleRulerHide)
     return ruler
   }
 
-  private getRulerProps(): IRulerProps {
+  private getRulerProps = (): IRulerProps => {
     const { range, step, ruler } = this.state
 
     return {
@@ -79,23 +95,21 @@ class View extends Observer {
     }
   }
 
-  private handleRulerHide() {
+  private handleRulerHide = () => {
     if (this.ruler) {
       this.ruler.destroyDom()
       this.ruler = null
     }
   }
 
-  private getBar() {
-    return new Bar(this.getBarProps())
-  }
+  private getBar = () => new Bar(this.getBarProps())
 
-  private getBarProps(): IBarProps {
+  private getBarProps = (): IBarProps => {
     const { values, range } = this.state
     return { values, range, isVertical: this.isVertical }
   }
 
-  private getToggles(): IToggle[] {
+  private getToggles = (): IToggle[] => {
     const { values, thumb } = this.state
 
     return Object.entries(values).map(([, value]) => {
@@ -105,27 +119,16 @@ class View extends Observer {
         main: new Toggle(toggleProps),
         thumb: thumb ? new Thumb(this.getThumbProps(value!)) : null,
       }
-
       return toggle
     })
   }
 
-  private getThumbProps(value: number): IThumbProps {
+  private getThumbProps = (value: number): IThumbProps => {
     const { thumb } = this.state
     return { thumb, value }
   }
 
-  private getCleanCoordinate(clickCoordinate: ClickCoordinate): number {
-    const { toggle: activeToggle } = this.activeToggle.getDomNode()
-    const halfHandleWidth = activeToggle.offsetWidth / 4
-    const leftToggleMargin = this.isVertical ? 5 : 7
-    const sliderOffset = this.isVertical ? this.slider.offsetTop : this.slider.offsetLeft
-    const interfering = sliderOffset - halfHandleWidth + leftToggleMargin
-    const cleanCoordinate = this.isVertical ? clickCoordinate.y - interfering : clickCoordinate.x - interfering
-    return cleanCoordinate
-  }
-
-  private mountSlider() {
+  private mountSlider = () => {
     this.domParent.appendChild(this.createSliderContainer())
   }
 
@@ -356,8 +359,8 @@ class View extends Observer {
     const newSliderOptions = { ...this.state } as ModelState
 
     enum indexMap {
-      min,
-      max,
+      start,
+      end,
     }
 
     const currentValueKey = indexMap[this.activeToggleIndex] as 'start' | 'end'
@@ -380,6 +383,16 @@ class View extends Observer {
     }
 
     this.dispatchModelOptions(newSliderOptions)
+  }
+
+  private getCleanCoordinate = (clickCoordinate: ClickCoordinate): number => {
+    const { toggle: activeToggle } = this.activeToggle.getDomNode()
+    const halfHandleWidth = activeToggle.offsetWidth / 4
+    const leftToggleMargin = this.isVertical ? 5 : 7
+    const sliderOffset = this.isVertical ? this.slider.offsetTop : this.slider.offsetLeft
+    const interfering = sliderOffset - halfHandleWidth + leftToggleMargin
+    const cleanCoordinate = this.isVertical ? clickCoordinate.y - interfering : clickCoordinate.x - interfering
+    return cleanCoordinate
   }
 
   private getPercent = (value: number): number => {
@@ -412,16 +425,9 @@ class View extends Observer {
     return stepCurrentValue
   }
 
-  private dispatchModelOptions = (modelOptions: ModelState) => {
-    this.notify(ObserverEvents.modelStateUpdate, modelOptions)
+  private dispatchModelOptions = (state: ModelState) => {
+    this.notify(ObserverEvents.modelStateUpdate, state)
   }
-
-  updateStateOptions = (state: ModelState) => {
-    this.state = state
-    this.redrawValue()
-  }
-
-  getRulerValues = () => this.ruler!.getRulerValues()
 
   private redrawValue = () => {
     this.bar.updateProps(this.getBarProps())
@@ -441,13 +447,14 @@ class View extends Observer {
       const index = toggleIndexMap[key as 'min' | 'max']
       const scalePosition = this.bar.getPosition(value!)
       const toggleProps: IToggleProps = { scalePosition, isVertical: this.isVertical }
+      console.log(this.toggles[0])
       this.toggles[index].main.updateProps(toggleProps)
 
-      const { thumb } = this.toggles[index]
-      const isThumbExist = thumb && !!thumb
+      const { thumb: togglesThumb } = this.toggles[index]
+      const isThumbExist = togglesThumb && !!thumb
 
       if (isThumbExist) {
-        thumb!.updateProps(this.getThumbProps(value!))
+        togglesThumb!.updateProps(this.getThumbProps(value!))
       }
     })
   }

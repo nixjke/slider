@@ -14,7 +14,7 @@ class Slider extends Observer {
 
   init() {
     this.presenter.init()
-    this.presenter.subscribe(ObserverEvents.modelStateUpdate, this.alertSubs)
+    this.presenter.on(ObserverEvents.modelStateUpdate, this.alertSubs)
   }
 
   updateOptions(modelOptions: ModelState) {

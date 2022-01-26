@@ -53,17 +53,17 @@ class Ruler extends Observer {
 
   getRulerValues = (): number[] => {
     const { range, step } = this.props
-    const midQuantity = Math.ceil((range.end - range.start) / step)
+    const midQuantity = Math.ceil((range.max - range.min) / step)
     const viewStep = Math.ceil(midQuantity / 5) * step
     const midArr = []
-    let value = range.start
+    let value = range.min
 
-    for (let i = 0; value < range.end; i += 1) {
+    for (let i = 0; value < range.max; i += 1) {
       value += viewStep
-      if (value < range.end) midArr.push(Number(value.toLocaleString('en', { useGrouping: false })))
+      if (value < range.max) midArr.push(Number(value.toLocaleString('en', { useGrouping: false })))
     }
 
-    return [range.start, ...midArr, range.end]
+    return [range.min, ...midArr, range.max]
   }
 
   private redraw = () => {
@@ -101,7 +101,7 @@ class Ruler extends Observer {
 
   private getPositionByValue(value: number): number {
     const { range } = this.props
-    return ((+value - range.start) / (range.end - range.start)) * 1000
+    return ((+value - range.min) / (range.max - range.min)) * 1000
   }
 }
 

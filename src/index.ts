@@ -2,13 +2,13 @@ import Slider from './slider'
 import defaultState from './utils/defaultState'
 import ISliderOptions from './utils/ISliderOprions'
 import ModelState from './utils/IModel'
+import './scss/index.scss'
 
 declare global {
   interface JQuery {
     rangeSlider(options: ISliderOptions): Slider
   }
 }
-
 ;(function (jquery) {
   const $ = jquery
 
