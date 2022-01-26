@@ -10,17 +10,14 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: mode,
-  entry: {
-    rangeSlider: './src/index.ts',
-    panel: './src/demo/index.ts'
-  },
+  entry: './src/demo/index.ts',
 
   module: {
     rules: [
       {
         test: /\.(js|ts)$/,
         exclude: /node_modules/,
-        use: 'ts-loader'
+        use: 'ts-loader',
       },
       {
         test: /\.hbs/,
