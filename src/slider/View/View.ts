@@ -11,3 +11,5 @@ class View extends Observer {
     this.domParent = domParent
   }
 }
+
+export default View
