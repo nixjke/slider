@@ -1,4 +1,6 @@
-const sliderClassNames = {
+import SliderClassNames from './interfaces/ISliderClassNames'
+
+const sliderClassNames: SliderClassNames = {
   overflowFix: 'range-slider-overflow',
   slider: 'range-slider',
   wrap: 'range-slider__wrap',
