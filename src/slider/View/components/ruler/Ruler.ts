@@ -105,3 +105,5 @@ class Ruler extends Observer {
     return ((+value - range.min) / (range.max - range.min)) * 1000
   }
 }
+
+export default Ruler
