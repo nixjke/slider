@@ -4,18 +4,18 @@ import { ModelState } from '../utils/interfaces/Model'
 import defaultState from '../utils/defaultState'
 
 class Model extends Observer {
-  private state: ModelState
+  private modelState: ModelState
 
   constructor(modelOptions: ModelState) {
     super()
-    this.state = this.getConfirmedOptions(modelOptions)
+    this.modelState = this.getConfirmedOptions(modelOptions)
   }
 
-  getState = () => this.state
+  getState = () => this.modelState
 
   updateOptions = (newOptions: ModelState) => {
-    this.state = this.getConfirmedOptions(newOptions)
-    this.notify(ObserverEvents.modelStateUpdate, this.state)
+    this.modelState = this.getConfirmedOptions(newOptions)
+    this.notify(ObserverEvents.modelStateUpdate, this.modelState)
   }
 
   private getConfirmedOptions = (checkingOptions: ModelState): ModelState => {

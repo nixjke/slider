@@ -1,7 +1,7 @@
-type currentValues = { start: number; end?: number }
+type CurrentValues = { start: number; end?: number }
 
 interface ModelState {
-  currentValues: currentValues
+  currentValues: CurrentValues
   range: { min: number; max: number }
   ruler: boolean
   thumb: boolean
@@ -9,4 +9,4 @@ interface ModelState {
   orientation: 'horizontal' | 'vertical'
 }
 
-export { currentValues, ModelState }
+export { CurrentValues, ModelState }
