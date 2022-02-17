@@ -1,6 +1,6 @@
 interface ThumbProps {
   value: number | number[]
-  withThumb: boolean
+  thumb: boolean
 }
 
 interface DomNode {

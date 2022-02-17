@@ -2,12 +2,14 @@ import Observer from '../Observer/Observer'
 import ObserverEvents from '../Observer/ObserverEvents'
 import { BarProps } from '../utils/interfaces/Components/IBar'
 import { RulerProps } from '../utils/interfaces/Components/IRuler'
-import { IToggle } from '../utils/interfaces/Components/IToggle'
+import { ThumbProps } from '../utils/interfaces/Components/IThumb'
+import { IToggle, ToggleProps } from '../utils/interfaces/Components/IToggle'
 import { ModelState } from '../utils/interfaces/Model'
 import sliderClassNames from '../utils/sliderClassNames'
 
 import Bar from './components/bar/Bar'
 import Ruler from './components/ruler/Ruler'
+import Thumb from './components/thumb/Thumb'
 import Toggle from './components/toggle/Toggle'
 
 class View extends Observer {
@@ -54,6 +56,7 @@ class View extends Observer {
     const { ruler } = this.modelState
     this.ruler = ruler ? this.getRuler() : null
     this.bar = this.getBar()
+    this.toggles = this.getToggles()
   }
 
   private getRuler(): Ruler {
@@ -87,6 +90,26 @@ class View extends Observer {
   private getBarProps(): BarProps {
     const { currentValues, range } = this.modelState
     return { currentValues, range, isVertical: this.isVertical }
+  }
+
+  private getToggles(): IToggle[] {
+    const { currentValues, thumb } = this.modelState
+
+    return Object.entries(currentValues).map(([, value]) => {
+      const scalePosition = this.bar.getPosition(value!)
+      const toggleProps: ToggleProps = { scalePosition, isVertical: this.isVertical }
+      const toggle = {
+        main: new Toggle(toggleProps),
+        thumb: thumb ? new Thumb(this.getThumbProps(value!)) : null,
+      }
+
+      return toggle
+    })
+  }
+
+  private getThumbProps = (value: number): ThumbProps => {
+    const { thumb } = this.modelState
+    return { thumb, value }
   }
 
   private mountSlider() {
