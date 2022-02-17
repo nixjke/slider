@@ -3,10 +3,10 @@ interface ToggleProps {
   isVertical: boolean
 }
 
-import IToggle from '../../../View/components/toggle/Toggle'
+import Toggle from '../../../View/components/toggle/Toggle'
 import Thumb from '../../../View/components/thumb/Thumb'
 
-interface Toggle {
+interface IToggle {
   main: Toggle
   thumb: Thumb | null
 }

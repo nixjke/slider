@@ -16,6 +16,10 @@ class Presenter extends Observer {
     this.model = new Model(this.modelState)
     this.view = new View(this.modelState, this.domParent)
   }
+
+  init() {
+    this.view.render()
+  }
 }
 
 export default Presenter

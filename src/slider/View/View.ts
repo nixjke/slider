@@ -1,6 +1,8 @@
 import Observer from '../Observer/Observer'
 import { BarProps } from '../utils/interfaces/Components/IBar'
+import { IToggle } from '../utils/interfaces/Components/IToggle'
 import { ModelState } from '../utils/interfaces/Model'
+import sliderClassNames from '../utils/sliderClassNames'
 
 import Bar from './components/bar/Bar'
 import Ruler from './components/ruler/Ruler'
@@ -16,7 +18,7 @@ class View extends Observer {
 
   private bar!: Bar
   private ruler!: Ruler | null
-  private toggles!: Toggle[]
+  private toggles!: IToggle[]
   private activeToggle!: Toggle
   private activeToggleIndex!: number
 
@@ -30,6 +32,10 @@ class View extends Observer {
     this.initViewComoponents()
   }
 
+  render() {
+    this.mountSlider()
+  }
+
   private initViewComoponents() {
     this.bar = this.getBar()
   }
@@ -40,7 +46,32 @@ class View extends Observer {
 
   private getBarProps(): BarProps {
     const { currentValues, range } = this.modelState
-    return { currentValues, range, isVertical: true }
+    return { currentValues, range, isVertical: this.isVertical }
+  }
+
+  private mountSlider() {
+    this.domParent.appendChild(this.createSliderContainer())
+  }
+
+  private createSliderContainer(): HTMLDivElement {
+    const sliderDom = document.createElement('div')
+    sliderDom.classList.add(sliderClassNames.slider)
+    const sliderContainer = document.createElement('div')
+    sliderContainer.classList.add(sliderClassNames.wrap)
+    sliderContainer.appendChild(this.bar.getHtml())
+
+    if (this.ruler) {
+      sliderContainer.appendChild(this.ruler.getHtml())
+    }
+
+    this.toggles.forEach((toggle: IToggle) => {
+      const toggleHtml = toggle.main.getHtml()
+      if (toggle.thumb) toggleHtml.appendChild(toggle.thumb.getHtml())
+      sliderContainer.appendChild(toggleHtml)
+    })
+
+    sliderDom.appendChild(sliderContainer)
+    return sliderDom
   }
 }
 
