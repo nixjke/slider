@@ -38,7 +38,7 @@ class Ruler extends Observer {
 
   updateProps(props: RulerProps) {
     this.props = props
-    const { withRuler } = this.props
+    const { ruler: withRuler } = this.props
     if (withRuler) {
       this.redraw()
     } else {

@@ -1,5 +1,7 @@
 import Observer from '../Observer/Observer'
+import ObserverEvents from '../Observer/ObserverEvents'
 import { BarProps } from '../utils/interfaces/Components/IBar'
+import { RulerProps } from '../utils/interfaces/Components/IRuler'
 import { IToggle } from '../utils/interfaces/Components/IToggle'
 import { ModelState } from '../utils/interfaces/Model'
 import sliderClassNames from '../utils/sliderClassNames'
@@ -36,8 +38,46 @@ class View extends Observer {
     this.mountSlider()
   }
 
+  destroyDom() {
+    this.domParent.removeChild(this.slider)
+  }
+
+  updateModelState(modelState: ModelState) {
+    this.modelState = modelState
+  }
+
+  getRulerValues() {
+    return this.ruler!.getRulerValues()
+  }
+
   private initViewComoponents() {
+    const { ruler } = this.modelState
+    this.ruler = ruler ? this.getRuler() : null
     this.bar = this.getBar()
+  }
+
+  private getRuler(): Ruler {
+    const ruler = new Ruler(this.getRulerProps())
+    ruler.on(ObserverEvents.rulerHide, this.handleRulerHide)
+    return ruler
+  }
+
+  private getRulerProps = (): RulerProps => {
+    const { range, step, ruler } = this.modelState
+
+    return {
+      range,
+      step,
+      ruler,
+      isVertical: this.isVertical,
+    }
+  }
+
+  private handleRulerHide() {
+    if (this.ruler) {
+      this.ruler.destroyDom()
+      this.ruler = null
+    }
   }
 
   private getBar() {

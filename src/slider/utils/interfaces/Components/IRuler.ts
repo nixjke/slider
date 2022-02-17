@@ -7,7 +7,7 @@ interface DomNode {
 interface RulerProps {
   step: number
   range: { min: number; max: number }
-  withRuler: boolean
+  ruler: boolean
   isVertical: boolean
 }
 
