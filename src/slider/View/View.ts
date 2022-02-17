@@ -1,6 +1,6 @@
 import Observer from '../Observer/Observer'
 import ObserverEvents from '../Observer/ObserverEvents'
-import { BarProps } from '../utils/interfaces/Components/IBar'
+import { BarProps, DomNode } from '../utils/interfaces/Components/IBar'
 import { RulerProps } from '../utils/interfaces/Components/IRuler'
 import { ThumbProps } from '../utils/interfaces/Components/IThumb'
 import { IToggle, ToggleProps } from '../utils/interfaces/Components/IToggle'
@@ -135,6 +135,21 @@ class View extends Observer {
 
     sliderDom.appendChild(sliderContainer)
     return sliderDom
+  }
+
+  private saveDom() {
+    this.slider = this.domParent.querySelector(`.${sliderClassNames.slider}`) as HTMLElement
+    this.saveBarDom()
+  }
+
+  private saveBarDom() {
+    return this.bar.setDomNode(this.getBarDom())
+  }
+
+  private getBarDom(): DomNode {
+    const bar = this.domParent.querySelector(`.${sliderClassNames.bar}`) as HTMLElement
+    const scale = this.domParent.querySelector(`.${sliderClassNames.scale}`) as HTMLElement
+    return { scale, bar }
   }
 }
 
