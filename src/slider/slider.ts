@@ -1,18 +1,17 @@
 import 'normalize.css'
 import Observer from './Observer/Observer'
 import ObserverEvents from './Observer/ObserverEvents'
-
-const slider = document.querySelector('js-range-slider') as HTMLElement
-
 import Presenter from './Presenter/Presenter'
 import { ModelState } from './utils/interfaces/Model'
+
+const slider = document.querySelector('.js-range-sider') as HTMLElement
+console.log(slider)
 
 class Slider extends Observer {
   private presenter: Presenter
 
-  constructor( domParent: HTMLElement, modelState: ModelState) {
+  constructor(domParent: HTMLElement, modelState: ModelState) {
     super()
-    console.log(domParent)
     this.presenter = new Presenter(domParent, modelState)
     this.init()
   }
@@ -23,7 +22,7 @@ class Slider extends Observer {
   }
 
   updateOptions = (modelState: ModelState) => {
-    this.presenter.updateOptions(modelState)
+    this.presenter.updateState(modelState)
   }
 
   getModelOptions = () => this.presenter.getModelOptions()

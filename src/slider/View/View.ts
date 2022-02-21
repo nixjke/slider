@@ -33,6 +33,7 @@ class View extends Observer {
 
   constructor(modelState: ModelState, domParent: HTMLElement) {
     super()
+    let test
     this.modelState = modelState
     this.domParent = domParent
     const { currentValues, orientation } = this.modelState
@@ -151,6 +152,16 @@ class View extends Observer {
   private saveDom() {
     this.slider = this.domParent.querySelector(`.${sliderClassNames.slider}`) as HTMLElement
     this.saveBarDom()
+    this.saveTogglesDom()
+
+    if (this.ruler) {
+      this.saveRuler()
+    }
+
+    const { thumb } = this.modelState
+    if (thumb) {
+      this.saveThumbDom()
+    }
   }
 
   private saveBarDom() {
@@ -163,13 +174,27 @@ class View extends Observer {
     return { scale, bar }
   }
 
-  private saveToggleDom() {
+  private saveTogglesDom() {
     const domToggles = this.domParent.querySelectorAll(`.${sliderClassNames.toggle}`)
     domToggles.forEach((domToggle, index) => {
       const domNode = {
         toggle: domToggle as HTMLElement,
         handle: domToggle.querySelector(`.${sliderClassNames.handle}`) as HTMLElement,
       }
+
+      this.toggles[index].main.setDomNode(domNode)
+    })
+  }
+
+  private saveRuler = () => {
+    const domRuler = this.domParent.querySelector(`.${sliderClassNames.ruler}`) as HTMLElement
+    this.ruler!.setDomNode({ ruler: domRuler })
+  }
+
+  private saveThumbDom = () => {
+    const domThumbs = this.domParent.querySelectorAll(`.${sliderClassNames.thumb}`)
+    domThumbs.forEach((domThumb, index) => {
+      this.toggles[index].thumb!.setDomNode({ thumb: domThumb as HTMLElement })
     })
   }
 
