@@ -151,6 +151,141 @@ class View extends Observer {
     const scale = this.domParent.querySelector(`.${sliderClassNames.scale}`) as HTMLElement
     return { scale, bar }
   }
+
+  private saveToggleDom() {
+    const domToggles = this.domParent.querySelectorAll(`.${sliderClassNames.toggle}`)
+    domToggles.forEach((domToggle, index) => {
+      const domNode = {
+        toggle: domToggle as HTMLElement,
+        handle: domToggle.querySelector(`.${sliderClassNames.handle}`) as HTMLElement,
+      }
+    })
+  }
+
+  private setVerticalClasses() {
+    const { bar } = this.bar.getDomNode()
+    bar.classList.add(`${sliderClassNames.barVertical}`)
+
+    const { ruler, thumb } = this.modelState
+    this.toggles.forEach((toggle: IToggle) => {
+      const { toggle: toggleHtml } = toggle.main.getDomNode()
+      toggleHtml.classList.add(`${sliderClassNames.toggleVertical}`)
+
+      if (thumb) {
+        const { thumb } = toggle.thumb!.getDomNode()
+        thumb.classList.add(`${sliderClassNames.thumbVertical}`)
+      }
+    })
+
+    if (ruler) {
+      const { ruler } = this.ruler!.getDomNode()
+      const rulerItems = ruler.querySelectorAll(`.${sliderClassNames.rulerItem}`)
+      ruler.classList.add(`${sliderClassNames.rulerVertical}`)
+      rulerItems.forEach(item => {
+        item.classList.add(`${sliderClassNames.rulerItemVertical}`)
+      })
+    }
+  }
+
+  private setListeners() {
+    const { bar } = this.bar.getDomNode()
+    bar.addEventListener('click', this.handleBarClick)
+
+    if (this.ruler) {
+      const { ruler } = this.ruler.getDomNode()
+      ruler.addEventListener('click', this.handleRulerClick)
+    }
+
+    this.toggles.forEach((toggle, toggleIndex: number) => {
+      const { handle } = toggle.main.getDomNode()
+      const { withThumb } = this.modelOptions
+      if (withThumb) {
+        const { thumb } = toggle.thumb!.getDomNode()
+        thumb.addEventListener('mousedown', (evt: MouseEvent) => {
+          this.handleToggleMouseDown(evt, toggleIndex)
+        })
+      }
+      handle.addEventListener('mousedown', (evt: MouseEvent) => {
+        this.handleToggleMouseDown(evt, toggleIndex)
+      })
+    })
+  }
+
+  private handleBarClick(event: MouseEvent) {
+    event.preventDefault()
+    let activeToggleIndex = 0
+
+    if (this.isRange) {
+      const togglesPositions = this.toggles.map((toggle: IToggle): number => {
+        const toggleHtml = toggle.main.getHtml() as HTMLElement
+        const positionRegExp = this.isVertical ? /(\d*.\d*)%\)/ : /\((\d*.\d*)%/
+        const indexForRegExp = 1
+        return Number(toggleHtml.getAttribute('style')!.match(positionRegExp)![indexForRegExp])
+      })
+
+      const { pageX, pageY } = event
+      const clickCoordinate = this.isVertical ? pageY : pageX
+      const offsetDirection = this.isVertical ? this.slider.offsetTop : this.slider.offsetLeft
+      const offsetSize = this.isVertical ? this.slider.offsetHeight : this.slider.offsetWidth
+      const cleanCoordinate = clickCoordinate - offsetDirection
+      const clickPercentOfSize = (cleanCoordinate / offsetSize) * 1000
+      const minValuePosition = togglesPositions[0]
+      const maxValuePosition = togglesPositions[1]
+      const minValueDistance = Math.abs(clickPercentOfSize - minValuePosition)
+      const maxValueDistance = Math.abs(clickPercentOfSize - maxValuePosition)
+
+      if (minValuePosition === maxValuePosition) {
+        activeToggleIndex = clickPercentOfSize < minValuePosition ? 0 : 1
+      } else {
+        activeToggleIndex = minValueDistance < maxValueDistance ? 0 : 1
+      }
+    }
+
+    this.activeToggleIndex = activeToggleIndex
+    this.activeToggle = this.toggles[activeToggleIndex].main
+    this.changeCurrentValue({ x: event.pageX, y: event.pageY })
+  }
+
+  private handleRulerClick(event: MouseEvent) {
+    const clickNode = event.target as HTMLElement
+    const withRulerItem = clickNode.classList.contains(`${sliderClassNames.rulerItem}`)
+
+    if (withRulerItem) {
+      const newValue = +clickNode.textContent!
+      const newSliderOptions = { ...this.modelState }
+      const { currentValues } = newSliderOptions
+
+      if (this.isRange) {
+        const { start, end } = currentValues
+        let newValueIndex
+        if (newValue < start) {
+          newValueIndex = 0
+        }
+
+        const isNewValueInDiapason = newValue > start && newValue < end!
+        if (isNewValueInDiapason) {
+          newValueIndex = Math.round(newValue / (start + end!))
+        }
+
+        if (newValue > end!) {
+          newValueIndex = 1
+        }
+
+        const isNewValueIndexMoreThenZero = !!newValueIndex && newValueIndex > 0
+        if (isNewValueIndexMoreThenZero) {
+          currentValues.end = newValue
+        } else {
+          currentValues.start = newValue
+        }
+      } else {
+        currentValues.start = newValue
+      }
+
+      this.dispatchModelOptions(newSliderOptions)
+    }
+  }
+
+  
 }
 
 export default View
