@@ -18,7 +18,15 @@ class Presenter extends Observer {
   }
 
   init() {
+    this.subscribeModules()
     this.view.render()
+  }
+
+  updateOptions (modelState: ModelState)  {
+    this.checkOnChangeRange(modelState)
+    this.checkOnChangeOrientation(modelState)
+    this.checkOnChangeThumbDisplay(modelState)
+    this.model.updateOptions(this.getSplitModelOptions(modelState))
   }
 }
 

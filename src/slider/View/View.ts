@@ -12,6 +12,11 @@ import Ruler from './components/ruler/Ruler'
 import Thumb from './components/thumb/Thumb'
 import Toggle from './components/toggle/Toggle'
 
+interface ClickCoordinate {
+  x: number
+  y: number
+}
+
 class View extends Observer {
   private modelState: ModelState
   private domParent: HTMLElement
@@ -38,6 +43,11 @@ class View extends Observer {
 
   render() {
     this.mountSlider()
+    this.saveDom()
+    if (this.isVertical) {
+      this.setVerticalClasses()
+    }
+    this.setListeners()
   }
 
   destroyDom() {
@@ -46,6 +56,7 @@ class View extends Observer {
 
   updateModelState(modelState: ModelState) {
     this.modelState = modelState
+    this.redrawValue()
   }
 
   getRulerValues() {
@@ -198,8 +209,8 @@ class View extends Observer {
 
     this.toggles.forEach((toggle, toggleIndex: number) => {
       const { handle } = toggle.main.getDomNode()
-      const { withThumb } = this.modelOptions
-      if (withThumb) {
+      const { thumb } = this.modelState
+      if (thumb) {
         const { thumb } = toggle.thumb!.getDomNode()
         thumb.addEventListener('mousedown', (evt: MouseEvent) => {
           this.handleToggleMouseDown(evt, toggleIndex)
@@ -285,7 +296,145 @@ class View extends Observer {
     }
   }
 
-  
+  private handleToggleMouseDown(event: MouseEvent, toggleIndex: number) {
+    event.preventDefault()
+    this.activeToggle = this.toggles[toggleIndex].main
+    this.activeToggleIndex = toggleIndex
+    this.toggles.forEach((toggle, index) => {
+      const { toggle: toggleDom } = toggle.main.getDomNode()
+      if (index === this.activeToggleIndex) {
+        toggleDom.classList.add(sliderClassNames.toggleActive)
+      } else {
+        toggleDom.classList.remove(sliderClassNames.toggleActive)
+      }
+    })
+    document.addEventListener('mousemove', this.handleToggleMove)
+    document.addEventListener('mouseup', this.handleToggleUp)
+  }
+
+  private handleToggleMove = (event: MouseEvent) => {
+    event.preventDefault()
+    this.changeCurrentValue({ x: event.pageX, y: event.pageY })
+  }
+
+  private handleToggleUp = (event: MouseEvent) => {
+    event.preventDefault()
+    document.removeEventListener('mousemove', this.handleToggleMove)
+    document.removeEventListener('mouseup', this.handleToggleUp)
+  }
+
+  private changeCurrentValue = (clickCoordinate: ClickCoordinate) => {
+    const cleanCoordinate = this.getCleanCoordinate(clickCoordinate)
+    const percentOfSlider = this.getPercent(cleanCoordinate)
+    const newCurrentValue = this.getCurrentValueByPercent(percentOfSlider)
+    const newSliderOptions = { ...this.modelState } as ModelState
+
+    enum indexMap {
+      min,
+      max,
+    }
+
+    const currentValueKey = indexMap[this.activeToggleIndex] as 'start' | 'end'
+
+    if (this.isRange) {
+      const isFirstValue = this.activeToggleIndex === 0
+      const isLastValue = this.activeToggleIndex === 1
+      const minOutRange = isFirstValue ? newSliderOptions.currentValues.end : newSliderOptions.currentValues.start
+      const maxOutRange = isLastValue ? newSliderOptions.currentValues.start : newSliderOptions.currentValues.end
+
+      if (isFirstValue) {
+        const isOutOfRange = newCurrentValue >= maxOutRange!
+        newSliderOptions.currentValues[currentValueKey]! = isOutOfRange ? maxOutRange! : newCurrentValue
+      } else if (isLastValue) {
+        const isOutOfRange = newCurrentValue <= minOutRange!
+        newSliderOptions.currentValues[currentValueKey]! = isOutOfRange ? minOutRange! : newCurrentValue
+      }
+    } else {
+      newSliderOptions.currentValues[currentValueKey] = newCurrentValue
+    }
+
+    this.dispatchModelOptions(newSliderOptions)
+  }
+
+  private getCleanCoordinate = (clickCoordinate: ClickCoordinate): number => {
+    const { toggle: activeToggle } = this.activeToggle.getDomNode()
+    const halfHandleWidth = activeToggle.offsetWidth / 4
+    const leftToggleMargin = this.isVertical ? 5 : 7
+    const sliderOffset = this.isVertical ? this.slider.offsetTop : this.slider.offsetLeft
+    const interfering = sliderOffset - halfHandleWidth + leftToggleMargin
+    const cleanCoordinate = this.isVertical ? clickCoordinate.y - interfering : clickCoordinate.x - interfering
+    return cleanCoordinate
+  }
+
+  private getPercent = (value: number): number => {
+    const offset = this.isVertical ? this.slider.offsetHeight : this.slider.offsetWidth
+    let percent = value / offset
+    if (percent > 1) percent = 1
+    if (percent < 0) percent = 0
+    return percent
+  }
+
+  private getCurrentValueByPercent = (percent: number): number => {
+    const { range } = this.modelState
+    const newCurrentValue = percent * (range.max - range.min) + range.min
+
+    return Number(this.getStepCurrentValue(newCurrentValue).toLocaleString('en', { useGrouping: false }))
+  }
+
+  private getStepCurrentValue = (currentValue: number): number => {
+    const { step, range } = this.modelState
+    let stepCurrentValue = Math.round((currentValue - range.min) / step) * step + range.min
+    const isLastStepLess = currentValue - range.max === 0
+
+    if (isLastStepLess) {
+      stepCurrentValue = range.max
+    }
+
+    if (stepCurrentValue >= range.max) {
+      stepCurrentValue = range.max
+    }
+
+    return stepCurrentValue
+  }
+
+  private dispatchModelOptions = (modelState: ModelState) => {
+    this.notify(ObserverEvents.modelStateUpdate, modelState)
+  }
+
+  private redrawValue = () => {
+    this.bar.updateProps(this.getBarProps())
+    const { ruler } = this.modelState
+    const isOldRulerUpdate = !ruler && this.ruler && this.hasRulerPropsChange()
+    const isNewRulerUpdate = ruler && this.ruler && this.hasRulerPropsChange()
+    const isRulerMustBeUpdate = isOldRulerUpdate || isNewRulerUpdate
+
+    if (isRulerMustBeUpdate) {
+      this.ruler!.updateProps(this.getRulerProps())
+    }
+
+    const { currentValues, thumb } = this.modelState
+
+    Object.entries(currentValues).forEach(([key, value]) => {
+      const toggleIndexMap = { min: 0, max: 1 }
+      const index = toggleIndexMap[key as 'min' | 'max']
+      const scalePosition = this.bar.getPosition(value!)
+      const toggleProps: ToggleProps = { scalePosition, isVertical: this.isVertical }
+      this.toggles[index].main.updateProps(toggleProps)
+
+      const { thumb: thumbToggles } = this.toggles[index]
+      const isThumbExist = thumb && !!thumbToggles
+
+      if (isThumbExist) {
+        thumbToggles!.updateProps(this.getThumbProps(value!))
+      }
+    })
+  }
+
+  private hasRulerPropsChange = (): boolean => {
+    const oldRulerProps = this.ruler!.getProps()
+    const newRulerProps = this.getRulerProps()
+    return JSON.stringify(oldRulerProps) !== JSON.stringify(newRulerProps)
+  }
 }
 
 export default View

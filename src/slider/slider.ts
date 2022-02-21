@@ -10,8 +10,9 @@ import { ModelState } from './utils/interfaces/Model'
 class Slider extends Observer {
   private presenter: Presenter
 
-  constructor(domParent: HTMLElement, modelState: ModelState) {
+  constructor( domParent: HTMLElement, modelState: ModelState) {
     super()
+    console.log(domParent)
     this.presenter = new Presenter(domParent, modelState)
     this.init()
   }
@@ -21,18 +22,18 @@ class Slider extends Observer {
     this.presenter.on(ObserverEvents.modelStateUpdate, this.alertSubs)
   }
 
-  // updateOptions = (modelState: ModelState) => {
-  //   this.presenter.updateOptions(modelState)
-  // }
+  updateOptions = (modelState: ModelState) => {
+    this.presenter.updateOptions(modelState)
+  }
 
-  // getModelOptions = () => this.presenter.getModelOptions()
+  getModelOptions = () => this.presenter.getModelOptions()
 
-  // getDomParent = () => this.presenter.getDomParent()
+  getDomParent = () => this.presenter.getDomParent()
 
-  // getRulerValues = () => this.presenter.getRulerValues()
+  getRulerValues = () => this.presenter.getRulerValues()
 
   private alertSubs = () => {
-    // this.notify(ObserverEvents.modelStateUpdate, this.getModelOptions())
+    this.notify(ObserverEvents.modelStateUpdate, this.getModelOptions())
   }
 }
 
