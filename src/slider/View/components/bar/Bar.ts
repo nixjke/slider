@@ -59,7 +59,7 @@ class Bar {
       return `transform: translate(${translateScale}%, 0px) scale(${totalPosition}, 1);`
     }
 
-    const totalPosition = this.getPosition(currentValues.start)
+    const totalPosition = this.getPosition(currentValues.min)
 
     if (isVertical) {
       return `transform: scale(1, ${totalPosition});`

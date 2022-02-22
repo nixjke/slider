@@ -12,7 +12,7 @@ class Toggle {
     this.props = props
   }
 
-  getHtml = (): ChildNode => {
+  getHtml(): ChildNode {
     const templateOptions = { sliderClassNames }
     const toggle = document.createElement('div')
     toggle.innerHTML = toggleTemplate(templateOptions)

@@ -6,22 +6,22 @@ import defaultState from '../utils/defaultState'
 class Model extends Observer {
   private modelState: ModelState
 
-  constructor(modelOptions: ModelState) {
+  constructor(modelState: ModelState) {
     super()
-    this.modelState = this.getConfirmedOptions(modelOptions)
+    this.modelState = this.getConfirmedOptions(modelState)
   }
 
   getState = () => this.modelState
 
-  updateOptions = (newOptions: ModelState) => {
-    this.modelState = this.getConfirmedOptions(newOptions)
+  updateOptions (newState: ModelState)  {
+    this.modelState = this.getConfirmedOptions(newState)
     this.notify(ObserverEvents.modelStateUpdate, this.modelState)
   }
 
-  private getConfirmedOptions = (checkingOptions: ModelState): ModelState => {
+  private getConfirmedOptions (checkingOptions: ModelState): ModelState  {
     const confirmedOptions = { ...checkingOptions }
     const { currentValues, range, step } = confirmedOptions
-    const isCurrentValuesNan = Number.isNaN(currentValues.start) || Number.isNaN(currentValues.end)
+    const isCurrentValuesNan = Number.isNaN(currentValues.min) || Number.isNaN(currentValues.max)
     const isRangeNan = Number.isNaN(range.min) || Number.isNaN(range.max)
     const isStepNan = Number.isNaN(step)
     const isRange = currentValues.hasOwnProperty('max')
@@ -32,9 +32,9 @@ class Model extends Observer {
     }
 
     if (isCurrentValuesNan) {
-      confirmedOptions.currentValues.start = defaultState.currentValues.start
+      confirmedOptions.currentValues.min = defaultState.currentValues.min
       if (isRange) {
-        confirmedOptions.currentValues.end = range.max
+        confirmedOptions.currentValues.max = range.max
       }
     }
 
@@ -52,28 +52,28 @@ class Model extends Observer {
       confirmedOptions.range.min = range.max
     }
 
-    if (currentValues.start < range.min) {
-      confirmedOptions.currentValues.start = range.min
+    if (currentValues.min < range.min) {
+      confirmedOptions.currentValues.min = range.min
     }
 
-    const maxValueMoreThenRangeMax = isRange && currentValues.end! > range.max
+    const maxValueMoreThenRangeMax = isRange && currentValues.max! > range.max
     if (maxValueMoreThenRangeMax) {
-      confirmedOptions.currentValues.end = range.max
+      confirmedOptions.currentValues.max = range.max
     }
 
-    if (currentValues.start > range.max) {
-      confirmedOptions.currentValues.start = range.max
+    if (currentValues.min > range.max) {
+      confirmedOptions.currentValues.min = range.max
     }
 
-    const maxValueLessThenRangeMax = isRange && currentValues.end! < range.min
+    const maxValueLessThenRangeMax = isRange && currentValues.max! < range.min
     if (maxValueLessThenRangeMax) {
-      confirmedOptions.currentValues.end = range.min
+      confirmedOptions.currentValues.max = range.min
     }
 
-    const maxValueLessThenMinValue = isRange && currentValues.end! < currentValues.start
+    const maxValueLessThenMinValue = isRange && currentValues.max! < currentValues.min
     if (maxValueLessThenMinValue) {
-      currentValues.start = range.min
-      currentValues.end = range.max
+      currentValues.min = range.min
+      currentValues.max = range.max
     }
 
     return confirmedOptions

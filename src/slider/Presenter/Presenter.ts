@@ -42,8 +42,8 @@ class Presenter extends Observer {
     return this.view.getRulerValues()
   }
 
-  private getSplitModelOptions = (sliderState: ModelState): ModelState => {
-    const { currentValues, range, ruler, thumb, step, orientation } = sliderState
+  private getSplitModelOptions = (modelState: ModelState): ModelState => {
+    const { currentValues, range, ruler, thumb, step, orientation } = modelState
 
     return {
       currentValues,
@@ -55,22 +55,22 @@ class Presenter extends Observer {
     }
   }
 
-  private subscribeModules = () => {
+  private subscribeModules  ()  {
     this.model.on(ObserverEvents.modelStateUpdate, this.onModelOptionsUpdate)
     this.view.on(ObserverEvents.modelStateUpdate, this.onViewChangedModelOptions)
   }
 
-  private onModelOptionsUpdate = (modelOptions: ModelState) => {
+  private onModelOptionsUpdate (modelOptions: ModelState) {
     this.view.updateModelState(modelOptions)
     this.notify(ObserverEvents.modelStateUpdate, this.model.getState())
   }
 
-  private onViewChangedModelOptions = (modelOptions: ModelState) => {
+  private onViewChangedModelOptions (modelOptions: ModelState) {
     this.model.updateOptions(modelOptions)
     this.notify(ObserverEvents.modelStateUpdate, this.model.getState())
   }
 
-  private checkOnChangeRange = (modelOptions: ModelState) => {
+  private checkOnChangeRange  (modelOptions: ModelState)  {
     const { currentValues: oldCurrentValues } = this.model.getState()
     const { currentValues: newCurrentValues } = modelOptions
     const isOldRange = oldCurrentValues.hasOwnProperty('max')

@@ -1,7 +1,7 @@
 import { ModelState } from './interfaces/Model'
 
 const defaultState: ModelState = {
-  currentValues: { start: 15 },
+  currentValues: { min: 15 },
   range: { min: 0, max: 100 },
   ruler: true,
   thumb: true,

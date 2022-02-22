@@ -1,11 +1,11 @@
 import 'normalize.css'
+import './style/index.scss'
 import Observer from './Observer/Observer'
 import ObserverEvents from './Observer/ObserverEvents'
 import Presenter from './Presenter/Presenter'
 import { ModelState } from './utils/interfaces/Model'
 
-const slider = document.querySelector('.js-range-sider') as HTMLElement
-console.log(slider)
+const slider = document.querySelector('.js-range-slider') as HTMLElement
 
 class Slider extends Observer {
   private presenter: Presenter
@@ -37,7 +37,7 @@ class Slider extends Observer {
 }
 
 new Slider(slider, {
-  currentValues: { start: 0},
+  currentValues: { min: 0 },
   orientation: 'horizontal',
   range: { min: 0, max: 100},
   ruler: true,

@@ -33,7 +33,6 @@ class View extends Observer {
 
   constructor(modelState: ModelState, domParent: HTMLElement) {
     super()
-    let test
     this.modelState = modelState
     this.domParent = domParent
     const { currentValues, orientation } = this.modelState
@@ -114,7 +113,6 @@ class View extends Observer {
         main: new Toggle(toggleProps),
         thumb: thumb ? new Thumb(this.getThumbProps(value!)) : null,
       }
-
       return toggle
     })
   }
@@ -237,20 +235,19 @@ class View extends Observer {
       const { thumb } = this.modelState
       if (thumb) {
         const { thumb } = toggle.thumb!.getDomNode()
-        thumb.addEventListener('mousedown', (evt: MouseEvent) => {
-          this.handleToggleMouseDown(evt, toggleIndex)
+        thumb.addEventListener('mousedown', (event: MouseEvent) => {
+          this.handleToggleMouseDown(event, toggleIndex)
         })
       }
-      handle.addEventListener('mousedown', (evt: MouseEvent) => {
-        this.handleToggleMouseDown(evt, toggleIndex)
+      handle.addEventListener('mousedown', (event: MouseEvent) => {
+        this.handleToggleMouseDown(event, toggleIndex)
       })
     })
   }
 
-  private handleBarClick(event: MouseEvent) {
+  private handleBarClick(event: MouseEvent, ) {
     event.preventDefault()
     let activeToggleIndex = 0
-
     if (this.isRange) {
       const togglesPositions = this.toggles.map((toggle: IToggle): number => {
         const toggleHtml = toggle.main.getHtml() as HTMLElement
@@ -276,7 +273,6 @@ class View extends Observer {
         activeToggleIndex = minValueDistance < maxValueDistance ? 0 : 1
       }
     }
-
     this.activeToggleIndex = activeToggleIndex
     this.activeToggle = this.toggles[activeToggleIndex].main
     this.changeCurrentValue({ x: event.pageX, y: event.pageY })
@@ -285,39 +281,38 @@ class View extends Observer {
   private handleRulerClick(event: MouseEvent) {
     const clickNode = event.target as HTMLElement
     const withRulerItem = clickNode.classList.contains(`${sliderClassNames.rulerItem}`)
-
     if (withRulerItem) {
       const newValue = +clickNode.textContent!
-      const newSliderOptions = { ...this.modelState }
-      const { currentValues } = newSliderOptions
+      const newSliderStates = { ...this.modelState }
+      const { currentValues } = newSliderStates
 
       if (this.isRange) {
-        const { start, end } = currentValues
+        const { min, max } = currentValues
         let newValueIndex
-        if (newValue < start) {
+        if (newValue < min) {
           newValueIndex = 0
         }
 
-        const isNewValueInDiapason = newValue > start && newValue < end!
+        const isNewValueInDiapason = newValue > min && newValue < max!
         if (isNewValueInDiapason) {
-          newValueIndex = Math.round(newValue / (start + end!))
+          newValueIndex = Math.round(newValue / (min + max!))
         }
 
-        if (newValue > end!) {
+        if (newValue > max!) {
           newValueIndex = 1
         }
 
         const isNewValueIndexMoreThenZero = !!newValueIndex && newValueIndex > 0
         if (isNewValueIndexMoreThenZero) {
-          currentValues.end = newValue
+          currentValues.min = newValue
         } else {
-          currentValues.start = newValue
+          currentValues.min = newValue
         }
       } else {
-        currentValues.start = newValue
+        currentValues.min = newValue
       }
 
-      this.dispatchModelOptions(newSliderOptions)
+      this.dispatchModelState(newSliderStates)
     }
   }
 
@@ -348,24 +343,22 @@ class View extends Observer {
     document.removeEventListener('mouseup', this.handleToggleUp)
   }
 
-  private changeCurrentValue = (clickCoordinate: ClickCoordinate) => {
+  private changeCurrentValue(clickCoordinate: ClickCoordinate) {
     const cleanCoordinate = this.getCleanCoordinate(clickCoordinate)
     const percentOfSlider = this.getPercent(cleanCoordinate)
     const newCurrentValue = this.getCurrentValueByPercent(percentOfSlider)
     const newSliderOptions = { ...this.modelState } as ModelState
-
     enum indexMap {
       min,
       max,
     }
 
-    const currentValueKey = indexMap[this.activeToggleIndex] as 'start' | 'end'
-
+    const currentValueKey = indexMap[this.activeToggleIndex] as 'min' | 'max'
     if (this.isRange) {
       const isFirstValue = this.activeToggleIndex === 0
       const isLastValue = this.activeToggleIndex === 1
-      const minOutRange = isFirstValue ? newSliderOptions.currentValues.end : newSliderOptions.currentValues.start
-      const maxOutRange = isLastValue ? newSliderOptions.currentValues.start : newSliderOptions.currentValues.end
+      const minOutRange = isFirstValue ? newSliderOptions.currentValues.max : newSliderOptions.currentValues.min
+      const maxOutRange = isLastValue ? newSliderOptions.currentValues.min : newSliderOptions.currentValues.max
 
       if (isFirstValue) {
         const isOutOfRange = newCurrentValue >= maxOutRange!
@@ -378,7 +371,7 @@ class View extends Observer {
       newSliderOptions.currentValues[currentValueKey] = newCurrentValue
     }
 
-    this.dispatchModelOptions(newSliderOptions)
+    this.dispatchModelState(newSliderOptions)
   }
 
   private getCleanCoordinate = (clickCoordinate: ClickCoordinate): number => {
@@ -422,11 +415,11 @@ class View extends Observer {
     return stepCurrentValue
   }
 
-  private dispatchModelOptions = (modelState: ModelState) => {
+  private dispatchModelState(modelState: ModelState) {
     this.notify(ObserverEvents.modelStateUpdate, modelState)
   }
 
-  private redrawValue = () => {
+  private redrawValue() {
     this.bar.updateProps(this.getBarProps())
     const { ruler } = this.modelState
     const isOldRulerUpdate = !ruler && this.ruler && this.hasRulerPropsChange()
@@ -455,7 +448,7 @@ class View extends Observer {
     })
   }
 
-  private hasRulerPropsChange = (): boolean => {
+  private hasRulerPropsChange(): boolean {
     const oldRulerProps = this.ruler!.getProps()
     const newRulerProps = this.getRulerProps()
     return JSON.stringify(oldRulerProps) !== JSON.stringify(newRulerProps)

@@ -1,4 +1,4 @@
-type CurrentValues = { start: number; end?: number }
+type CurrentValues = { min: number; max?: number }
 
 interface ModelState {
   currentValues: CurrentValues
