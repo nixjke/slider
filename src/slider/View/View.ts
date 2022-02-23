@@ -245,9 +245,10 @@ class View extends Observer {
     })
   }
 
-  private handleBarClick(event: MouseEvent, ) {
+  private handleBarClick(event: MouseEvent) {
     event.preventDefault()
     let activeToggleIndex = 0
+
     if (this.isRange) {
       const togglesPositions = this.toggles.map((toggle: IToggle): number => {
         const toggleHtml = toggle.main.getHtml() as HTMLElement
@@ -347,7 +348,8 @@ class View extends Observer {
     const cleanCoordinate = this.getCleanCoordinate(clickCoordinate)
     const percentOfSlider = this.getPercent(cleanCoordinate)
     const newCurrentValue = this.getCurrentValueByPercent(percentOfSlider)
-    const newSliderOptions = { ...this.modelState } as ModelState
+    const newSliderState = { ...this.modelState } as ModelState
+
     enum indexMap {
       min,
       max,
@@ -357,21 +359,21 @@ class View extends Observer {
     if (this.isRange) {
       const isFirstValue = this.activeToggleIndex === 0
       const isLastValue = this.activeToggleIndex === 1
-      const minOutRange = isFirstValue ? newSliderOptions.currentValues.max : newSliderOptions.currentValues.min
-      const maxOutRange = isLastValue ? newSliderOptions.currentValues.min : newSliderOptions.currentValues.max
+      const minOutRange = isFirstValue ? newSliderState.currentValues.max : newSliderState.currentValues.min
+      const maxOutRange = isLastValue ? newSliderState.currentValues.min : newSliderState.currentValues.max
 
       if (isFirstValue) {
         const isOutOfRange = newCurrentValue >= maxOutRange!
-        newSliderOptions.currentValues[currentValueKey]! = isOutOfRange ? maxOutRange! : newCurrentValue
+        newSliderState.currentValues[currentValueKey]! = isOutOfRange ? maxOutRange! : newCurrentValue
       } else if (isLastValue) {
         const isOutOfRange = newCurrentValue <= minOutRange!
-        newSliderOptions.currentValues[currentValueKey]! = isOutOfRange ? minOutRange! : newCurrentValue
+        newSliderState.currentValues[currentValueKey]! = isOutOfRange ? minOutRange! : newCurrentValue
       }
     } else {
-      newSliderOptions.currentValues[currentValueKey] = newCurrentValue
+      newSliderState.currentValues[currentValueKey] = newCurrentValue
     }
 
-    this.dispatchModelState(newSliderOptions)
+    this.dispatchModelState(newSliderState)
   }
 
   private getCleanCoordinate = (clickCoordinate: ClickCoordinate): number => {

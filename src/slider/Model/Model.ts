@@ -11,14 +11,16 @@ class Model extends Observer {
     this.modelState = this.getConfirmedOptions(modelState)
   }
 
-  getState = () => this.modelState
+  getState() {
+    return this.modelState
+  }
 
-  updateOptions (newState: ModelState)  {
+  updateOptions(newState: ModelState) {
     this.modelState = this.getConfirmedOptions(newState)
     this.notify(ObserverEvents.modelStateUpdate, this.modelState)
   }
 
-  private getConfirmedOptions (checkingOptions: ModelState): ModelState  {
+  private getConfirmedOptions(checkingOptions: ModelState): ModelState {
     const confirmedOptions = { ...checkingOptions }
     const { currentValues, range, step } = confirmedOptions
     const isCurrentValuesNan = Number.isNaN(currentValues.min) || Number.isNaN(currentValues.max)

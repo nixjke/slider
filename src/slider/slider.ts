@@ -25,11 +25,17 @@ class Slider extends Observer {
     this.presenter.updateState(modelState)
   }
 
-  getModelOptions = () => this.presenter.getModelOptions()
+  getModelOptions() {
+    return this.presenter.getModelOptions()
+  }
 
-  getDomParent = () => this.presenter.getDomParent()
+  getDomParent() {
+    return this.presenter.getDomParent()
+  }
 
-  getRulerValues = () => this.presenter.getRulerValues()
+  getRulerValues() {
+    return this.presenter.getRulerValues()
+  }
 
   private alertSubs = () => {
     this.notify(ObserverEvents.modelStateUpdate, this.getModelOptions())
@@ -39,8 +45,8 @@ class Slider extends Observer {
 new Slider(slider, {
   currentValues: { min: 0 },
   orientation: 'horizontal',
-  range: { min: 0, max: 100},
+  range: { min: 0, max: 100 },
   ruler: true,
   step: 1,
-  thumb: true
+  thumb: true,
 })
