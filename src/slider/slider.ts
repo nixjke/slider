@@ -21,7 +21,7 @@ class Slider extends Observer {
     this.presenter.on(ObserverEvents.modelStateUpdate, this.alertSubs)
   }
 
-  updateOptions = (modelState: ModelState) => {
+  updateState = (modelState: ModelState) => {
     this.presenter.updateState(modelState)
   }
 
@@ -45,7 +45,7 @@ class Slider extends Observer {
 new Slider(slider, {
   currentValues: { min: 0 },
   orientation: 'horizontal',
-  range: { min: 0, max: 100 },
+  range: { min: 0, max: 1000 },
   ruler: true,
   step: 1,
   thumb: true,

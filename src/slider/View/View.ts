@@ -245,7 +245,7 @@ class View extends Observer {
     })
   }
 
-  private handleBarClick(event: MouseEvent) {
+  private handleBarClick = (event: MouseEvent) => {
     event.preventDefault()
     let activeToggleIndex = 0
 
@@ -279,7 +279,7 @@ class View extends Observer {
     this.changeCurrentValue({ x: event.pageX, y: event.pageY })
   }
 
-  private handleRulerClick(event: MouseEvent) {
+  private handleRulerClick =(event: MouseEvent) => {
     const clickNode = event.target as HTMLElement
     const withRulerItem = clickNode.classList.contains(`${sliderClassNames.rulerItem}`)
     if (withRulerItem) {

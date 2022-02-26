@@ -15,7 +15,7 @@ class Model extends Observer {
     return this.modelState
   }
 
-  updateOptions(newState: ModelState) {
+  updateState(newState: ModelState) {
     this.modelState = this.getConfirmedOptions(newState)
     this.notify(ObserverEvents.modelStateUpdate, this.modelState)
   }

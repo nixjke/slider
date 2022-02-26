@@ -17,31 +17,25 @@ class Presenter extends Observer {
   }
 
   init() {
-    this.subscribeModules()
+    this.onModules()
     this.view.render()
   }
 
-  updateState(modelState: ModelState) {
+  updateState = (modelState: ModelState) => {
     this.checkOnChangeRange(modelState)
     this.checkOnChangeOrientation(modelState)
     this.checkOnChangeThumbDisplay(modelState)
-    this.model.updateOptions(this.getSplitModelOptions(modelState))
+    this.model.updateState(this.getSplitModelOptions(modelState))
   }
 
-  getModelOptions() {
-    return this.model.getState()
-  }
+  getModelOptions = () => this.model.getState()
 
-  getDomParent() {
-    return this.domParent
-  }
+  getDomParent = () => this.domParent
 
-  getRulerValues() {
-    return this.view.getRulerValues()
-  }
+  getRulerValues = () => this.view.getRulerValues()
 
-  private getSplitModelOptions(modelState: ModelState): ModelState {
-    const { currentValues, range, ruler, thumb, step, orientation } = modelState
+  private getSplitModelOptions = (ModelState: ModelState): ModelState => {
+    const { currentValues, range, ruler, thumb, step, orientation } = ModelState
 
     return {
       currentValues,
@@ -53,56 +47,56 @@ class Presenter extends Observer {
     }
   }
 
-  private subscribeModules() {
-    this.model.on(ObserverEvents.modelStateUpdate, this.onModelOptionsUpdate)
+  private onModules = () => {
+    this.model.on(ObserverEvents.modelStateUpdate, this.onmodelStateUpdate)
     this.view.on(ObserverEvents.modelStateUpdate, this.onViewChangedModelOptions)
   }
 
-  private onModelOptionsUpdate(modelState: ModelState) {
-    this.view.updateModelState(modelState)
+  private onmodelStateUpdate = (modelOptions: ModelState) => {
+    this.view.updateModelState(modelOptions)
     this.notify(ObserverEvents.modelStateUpdate, this.model.getState())
   }
 
-  private onViewChangedModelOptions(modelState: ModelState) {
-    this.model.updateOptions(modelState)
+  private onViewChangedModelOptions = (modelOptions: ModelState) => {
+    this.model.updateState(modelOptions)
     this.notify(ObserverEvents.modelStateUpdate, this.model.getState())
   }
 
-  private checkOnChangeRange(modelState: ModelState) {
+  private checkOnChangeRange = (modelOptions: ModelState) => {
     const { currentValues: oldCurrentValues } = this.model.getState()
-    const { currentValues: newCurrentValues } = modelState
+    const { currentValues: newCurrentValues } = modelOptions
     const isOldRange = oldCurrentValues.hasOwnProperty('max')
     const isNewRange = newCurrentValues.hasOwnProperty('max')
     const isRangeChange = (!isOldRange && isNewRange) || (isOldRange && !isNewRange)
 
     if (isRangeChange) {
-      this.renderNewView(modelState)
+      this.renderNewView(modelOptions)
     }
   }
 
-  private checkOnChangeOrientation = (modelState: ModelState) => {
+  private checkOnChangeOrientation = (modelOptions: ModelState) => {
     const { orientation: oldOrientation } = this.model.getState()
-    const { orientation: newOrientation } = modelState
+    const { orientation: newOrientation } = modelOptions
     const isOrientationChange = oldOrientation !== newOrientation
 
     if (isOrientationChange) {
-      this.renderNewView(modelState)
+      this.renderNewView(modelOptions)
     }
   }
 
-  private checkOnChangeThumbDisplay = (modelState: ModelState) => {
+  private checkOnChangeThumbDisplay = (modelOptions: ModelState) => {
     const { thumb: oldWithThumb } = this.model.getState()
-    const { thumb: newWithThumb } = modelState
+    const { thumb: newWithThumb } = modelOptions
     const isWithThumbChange = oldWithThumb !== newWithThumb
 
     if (isWithThumbChange) {
-      this.renderNewView(modelState)
+      this.renderNewView(modelOptions)
     }
   }
 
-  private renderNewView = (modelState: ModelState) => {
+  private renderNewView = (modelOptions: ModelState) => {
     this.view.destroyDom()
-    this.view = new View(modelState, this.domParent)
+    this.view = new View(modelOptions, this.domParent)
     this.view.on(ObserverEvents.modelStateUpdate, this.onViewChangedModelOptions)
     this.view.render()
   }
