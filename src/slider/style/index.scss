@@ -1,12 +1,14 @@
+@import '../style/color.scss';
 @import '../view/components/ruler/ruler.scss';
 @import '../view/components/thumb/thumb.scss';
 @import '../view/components/bar/bar.scss';
 @import '../view/components/toggle/toggle.scss';
 
 .js-range-slider {
-  width: 600px;
+  width: 500px;
+  height: 400px;
   margin-top: 40px;
-  margin-left: 30px;
+  margin-left: 100px;
 }
 
 .range-slider {
@@ -29,7 +31,7 @@
     width: fit-content;
     height: 100%;
     top: -400px;
-    left: 81px;
+    left: -30px;
   }
 
   &__ruler-item_vertical {
@@ -48,6 +50,6 @@
 
   &__thumb_vertical {
     top: -4px;
-    left: 22px;
+    left: 40px;
   }
 }
