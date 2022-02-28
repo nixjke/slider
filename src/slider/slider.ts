@@ -44,7 +44,7 @@ class Slider extends Observer {
 
 new Slider(slider, {
   currentValues: { min: 0 },
-  orientation: 'vertical',
+  orientation: 'horizontal',
   range: { min: 0, max: 100 },
   ruler: true,
   step: 1,
