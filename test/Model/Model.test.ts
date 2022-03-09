@@ -75,4 +75,71 @@ describe('Model', () => {
     model.updateState(stateWithCurrentValueMaxNaN)
     expect(model.getState()).toEqual(stateWithCurrentValueMaxNaN)
   })
+
+  it('step cannot be less than 0', () => {
+    const newSliderState = { ...modelState, step: -1 }
+    const correctSliderState = { ...modelState }
+
+    model.updateState(newSliderState)
+    expect(model.getState()).toEqual(correctSliderState)
+  })
+
+  it('step cannot be equals than 0', () => {
+    const newSliderState = { ...modelState, step: 0 }
+    const correctSliderState = { ...modelState }
+
+    model.updateState(newSliderState)
+    expect(model.getState()).toEqual(correctSliderState)
+  })
+
+  it('does not pass currentValue below range', () => {
+    const newSliderState: ModelState = {
+      ...modelState,
+      currentValues: { min: 1 },
+      range: { min: 1, max: 100 },
+    }
+
+    const correctSliderOptions: ModelState = {
+      ...modelState,
+      currentValues: { min: 2 },
+      range: { min: 2, max: 10 },
+    }
+
+    model.updateState(newSliderState)
+    expect(model.getState()).toEqual(correctSliderOptions)
+  })
+
+  it('does not pass currentValue above range', () => {
+    const newSliderState: ModelState = {
+      ...modelState,
+      currentValues: { min: 11 },
+      range: { min: 2, max: 10 },
+    }
+
+    const correctSliderState: ModelState = {
+      ...modelState,
+      currentValues: { min: 10 },
+      range: { min: 2, max: 10 },
+    }
+
+    model.updateState(newSliderState)
+    expect(model.getState()).toEqual(correctSliderState)
+  })
+
+  it('currentValue[0] cannot be greater than currentValues[1] and vice versa', () => {
+    const newSliderState: ModelState = {
+      ...modelState,
+      currentValues: { min: 5, max: 3 },
+      range: { min: 2, max: 10 },
+    }
+
+    const correctSliderState: ModelState = {
+      ...modelState,
+      currentValues: { min: 2, max: 10 },
+      range: { min: 2, max: 10 },
+    }
+
+    model.updateState(newSliderState)
+    expect(model.getState()).toEqual(correctSliderState)
+  })
 })
