@@ -21,7 +21,7 @@ class Presenter extends Observer {
     this.view.render()
   }
 
-  updateState = (modelState: ModelState) => {
+  updateState(modelState: ModelState) {
     this.checkOnChangeRange(modelState)
     this.checkOnChangeOrientation(modelState)
     this.checkOnChangeThumbDisplay(modelState)

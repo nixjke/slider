@@ -96,17 +96,17 @@ describe('Model', () => {
     const newSliderState: ModelState = {
       ...modelState,
       currentValues: { min: 1 },
-      range: { min: 1, max: 100 },
-    }
+      range: { min: 2, max: 100 },
+    };
 
-    const correctSliderOptions: ModelState = {
+    const correctSliderState: ModelState = {
       ...modelState,
       currentValues: { min: 2 },
-      range: { min: 2, max: 10 },
-    }
+      range: { min: 2, max: 100 },
+    };
 
     model.updateState(newSliderState)
-    expect(model.getState()).toEqual(correctSliderOptions)
+    expect(model.getState()).toEqual(correctSliderState)
   })
 
   it('does not pass currentValue above range', () => {
