@@ -131,7 +131,7 @@ describe('View', () => {
   })
 
   it('Handles bar click if currentValue.min === currentValue.max', () => {
-    const rangeSliderState = { ...modelState, currentValues: { min: 15, max: 15 } }
+    const rangeSliderState = { ...modelState, currentValues: { min: 0, max: 100 } }
     const view = new View(rangeSliderState, document.querySelector('.js-default-slider') as HTMLElement)
     const spy = jest.spyOn(view, 'notify')
     view.render()
@@ -148,5 +148,117 @@ describe('View', () => {
     const thumb = document.querySelector(`.${sliderClassNames.thumb}`) as HTMLElement
     thumb.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
     expect(toggle.classList.contains(`${sliderClassNames.toggleActive}`)).toBeTruthy()
+  })
+
+  it('Notifies at mousemove at toggle', () => {
+    const rangeSliderState = { ...modelState }
+    const view = new View(rangeSliderState, document.querySelector('.js-default-slider') as HTMLElement)
+    const spy = jest.spyOn(view, 'notify')
+    view.render()
+    const toggle = document.querySelector(`.${sliderClassNames.handle}`) as HTMLElement
+    toggle.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+    document.dispatchEvent(new MouseEvent('mousemove'))
+    document.dispatchEvent(new MouseEvent('mouseup'))
+    expect(spy).toBeCalled()
+  })
+
+  it('Notifies at mousemove at toggle c range', () => {
+    const rangeSliderState = { ...modelState, currentValues: { min: 0, max: 100 } }
+    const view = new View(rangeSliderState, document.querySelector('.js-default-slider') as HTMLElement)
+    const spy = jest.spyOn(view, 'notify')
+    view.render()
+    const toggle = document.querySelector(`.${sliderClassNames.handle}`) as HTMLElement
+    toggle.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+    document.dispatchEvent(new MouseEvent('mousemove'))
+    document.dispatchEvent(new MouseEvent('mouseup'))
+    expect(spy).toBeCalled()
+  })
+
+  it('Notifies you when you click on the ruler', () => {
+    const rangeSliderState = {
+      ...modelState,
+      ruler: true,
+    }
+    const view = new View(rangeSliderState, document.querySelector('.js-default-slider') as HTMLElement)
+    const spy = jest.spyOn(view, 'notify')
+    view.render()
+    const rulerItem = document.querySelector(`.${sliderClassNames.rulerItem}`) as HTMLElement
+    rulerItem.click()
+    expect(spy).toBeCalled()
+  })
+
+  it('Notifies you when you click on the ruler range', () => {
+    const rangeSliderState = {
+      ...modelState,
+      currentValues: { min: 0, max: 100 },
+      withRuler: true,
+    }
+    const view = new View(rangeSliderState, document.querySelector('.js-default-slider') as HTMLElement)
+    const spy = jest.spyOn(view, 'notify')
+    view.render()
+    const rulerItem = document.querySelector(`.${sliderClassNames.rulerItem}`) as HTMLElement
+    rulerItem.click()
+    expect(spy).toBeCalled()
+  })
+
+  it('Notifies when you click on the ruler where the new currentValues.min is larger than the old one', () => {
+    const rangeSliderState = {
+      ...modelState,
+      currentValues: { min: 0, max: 100 },
+      withRuler: true,
+    }
+    const view = new View(rangeSliderState, document.querySelector('.js-default-slider') as HTMLElement)
+    const spy = jest.spyOn(view, 'notify')
+    view.render()
+    const rulerItem = document.querySelectorAll(`.${sliderClassNames.rulerItem}`)[1] as HTMLElement
+    rulerItem.click()
+    expect(spy).toBeCalled()
+  })
+
+  it('Notifies when you click on the ruler where the new currentValues.max is larger than the old one', () => {
+    const rangeSliderState = {
+      ...modelState,
+      currentValues: { min: 0, max: 100 },
+      withRuler: true,
+    }
+    const view = new View(rangeSliderState, document.querySelector('.js-default-slider') as HTMLElement)
+    const spy = jest.spyOn(view, 'notify')
+    view.render()
+    const rulerItem = document.querySelectorAll(`.${sliderClassNames.rulerItem}`)[3] as HTMLElement
+    rulerItem.click()
+    expect(spy).toBeCalled()
+  })
+
+  it('Deletes domParent', () => {
+    const rangeSliderState = { ...modelState, ruler: true }
+    const parentElement = document.querySelector('.js-default-slider') as HTMLElement
+    const view = new View(rangeSliderState, parentElement)
+    view.render()
+    view.destroyDom()
+    expect(parentElement.children.length).toBe(0)
+  })
+
+  it('Updates the currentValues value', () => {
+    const rangeSliderOptions = { ...modelState, withRuler: true }
+    const view = new View(rangeSliderOptions, document.querySelector('.js-default-slider') as HTMLElement)
+    view.render()
+    const thumb = document.querySelector(`.${sliderClassNames.thumb}`) as HTMLElement
+    const thumbValue = Number(thumb.textContent)
+    const newMinValue = 1
+    view.updateModelState({ ...modelState, currentValues: { min: newMinValue } })
+    const newThumbValue = Number(thumb.textContent)
+    expect(thumbValue).not.toBe(newThumbValue)
+  })
+
+  it('Handles the case when the updated currentVale > range.max', () => {
+    const rangeSliderOptions = { ...modelState, currentValues: { min: 0, max: 100 } }
+    const view = new View(rangeSliderOptions, document.querySelector('.js-default-slider') as HTMLElement)
+    view.render()
+    const thumb = document.querySelector(`.${sliderClassNames.thumb}`) as HTMLElement
+    const thumbValue = Number(thumb.textContent)
+    const newMinValue = 0
+    view.updateModelState({ ...modelState, currentValues: { min: newMinValue } })
+    const { max } = modelState.range
+    expect(thumbValue).not.toBe(max)
   })
 })
