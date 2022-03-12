@@ -1,13 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>Range slider</title>
 </head>
 
 <body>
-  <div class="js-range-slider"></div>
+  <div class="container">
+    <div class="page-wrap">
+      <section class="config-panel">
+        <h2 class="config-panel__title">Default slider</h2>
+        <div class="config-panel__slider js-default-slider"></div>
+        <form class="config-panel__form js-default-slider-config"></form>
+      </section>
+      <section class="config-panel">
+        <h2 class="config-panel__title">Slider with range</h2>
+        <div class="config-panel__slider js-range-slider"></div>
+        <form class="config-panel__form js-range-slider-config"></form>
+      </section>
+      <section class="config-panel">
+        <h2 class="config-panel__title">Slider with step</h2>
+        <div class="config-panel__slider js-step-slider"></div>
+        <form class="config-panel__form js-step-slider-config"></form>
+      </section>
+      <section class="config-panel config-panel_vertical">
+        <h2 class="config-panel__title">Vertical slider</h2>
+        <div class="config-panel__slider config-panel__slider_vertical js-vertical-slider"></div>
+        <form class="config-panel__form js-vertical-slider-config"></form>
+      </section>
+    </div>
+  </div>
 </body>
 
 </html>

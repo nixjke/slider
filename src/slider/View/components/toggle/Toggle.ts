@@ -21,7 +21,9 @@ class Toggle {
     return toggle.firstChild as HTMLElement
   }
 
-  getDomNode = () => this.domNode
+  getDomNode() {
+    return this.domNode
+  }
 
   setDomNode = (domNode: DomNode) => {
     this.domNode = domNode

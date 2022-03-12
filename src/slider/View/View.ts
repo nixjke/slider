@@ -87,7 +87,7 @@ class View extends Observer {
     }
   }
 
-  private handleRulerHide() {
+  private handleRulerHide = () => {
     if (this.ruler) {
       this.ruler.destroyDom()
       this.ruler = null
@@ -279,7 +279,7 @@ class View extends Observer {
     this.changeCurrentValue({ x: event.pageX, y: event.pageY })
   }
 
-  private handleRulerClick =(event: MouseEvent) => {
+  private handleRulerClick = (event: MouseEvent) => {
     const clickNode = event.target as HTMLElement
     const withRulerItem = clickNode.classList.contains(`${sliderClassNames.rulerItem}`)
     if (withRulerItem) {

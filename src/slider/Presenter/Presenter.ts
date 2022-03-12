@@ -28,7 +28,7 @@ class Presenter extends Observer {
     this.model.updateState(this.getSplitModelOptions(modelState))
   }
 
-  getModelOptions = () => this.model.getState()
+  getModelState = () => this.model.getState()
 
   getDomParent = () => this.domParent
 

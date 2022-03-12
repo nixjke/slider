@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: mode,
-  entry: './src/demo/index.ts',
+  entry: './src/demo/index.js',
 
   output: {
     clean: true,

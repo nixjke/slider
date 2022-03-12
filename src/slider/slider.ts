@@ -5,8 +5,6 @@ import ObserverEvents from './Observer/ObserverEvents'
 import Presenter from './Presenter/Presenter'
 import { ModelState } from './utils/interfaces/Model'
 
-const slider = document.querySelector('.js-range-slider') as HTMLElement
-
 class Slider extends Observer {
   private presenter: Presenter
 
@@ -21,12 +19,12 @@ class Slider extends Observer {
     this.presenter.on(ObserverEvents.modelStateUpdate, this.alertSubs)
   }
 
-  updateState = (modelState: ModelState) => {
+  updateState (modelState: ModelState)  {
     this.presenter.updateState(modelState)
   }
 
-  getModelOptions() {
-    return this.presenter.getModelOptions()
+  getModelState() {
+    return this.presenter.getModelState()
   }
 
   getDomParent() {
@@ -38,15 +36,8 @@ class Slider extends Observer {
   }
 
   private alertSubs = () => {
-    this.notify(ObserverEvents.modelStateUpdate, this.getModelOptions())
+    this.notify(ObserverEvents.modelStateUpdate, this.getModelState())
   }
 }
 
-new Slider(slider, {
-  currentValues: { min: 0 },
-  orientation: 'horizontal',
-  range: { min: 0, max: 100 },
-  ruler: true,
-  step: 1,
-  thumb: true,
-})
+export default Slider
