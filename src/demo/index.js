@@ -26,7 +26,7 @@ const sliderStep = new Slider(document.querySelector('.js-step-slider'), {
   range: { min: 0, max: 100 },
   ruler: true,
   step: 1,
-  thumb: false,
+  thumb: true,
 })
 
 const verticalSlider = new Slider(document.querySelector('.js-vertical-slider'), {

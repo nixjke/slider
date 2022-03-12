@@ -24,9 +24,7 @@ type DomElements = {
 
 class ConfigPanel {
   domParent: HTMLElement
-
   slider: Slider
-
   domElements!: DomElements
 
   constructor(domParent: HTMLElement, slider: Slider) {
@@ -35,23 +33,23 @@ class ConfigPanel {
     this.init()
   }
 
-  init = () => {
+  init() {
     this.renderPanel()
     this.slider.on(ObserverEvents.modelStateUpdate, this.onStateUpdate)
   }
 
-  private renderPanel = () => {
+  private renderPanel() {
     this.mountPanel()
     this.saveDom()
     this.toggleHangingInputs()
     this.setListeners()
   }
 
-  private mountPanel = () => {
+  private mountPanel() {
     this.domParent.appendChild(this.getPanelContainer())
   }
 
-  private getPanelContainer = (): HTMLDivElement => {
+  private getPanelContainer(): HTMLDivElement {
     const configPanelContainer = document.createElement('div')
     const classNames = { ...configPanelClassName }
     const { currentValues, range, ruler, thumb, step, orientation } = this.slider.getModelState()
@@ -70,7 +68,7 @@ class ConfigPanel {
     return configPanelContainer
   }
 
-  private toggleHangingInputs = () => {
+  private toggleHangingInputs() {
     const { maxCurrentValueContainer } = this.domElements
     const { hidedValueContainer } = configPanelClassName
 
@@ -81,7 +79,7 @@ class ConfigPanel {
     }
   }
 
-  private saveDom = () => {
+  private saveDom() {
     const {
       valuesContainer: valuesContainerClass,
       stepInput: stepInputClass,
@@ -136,7 +134,7 @@ class ConfigPanel {
     }
   }
 
-  private setListeners = () => {
+  private setListeners() {
     const {
       currentValueInput,
       stepInput,
@@ -169,7 +167,7 @@ class ConfigPanel {
     this.slider.updateState(newOptions)
   }
 
-  private getNewModelOptions = (): ModelState => {
+  private getNewModelOptions(): ModelState {
     const { minRangeInput, maxRangeInput, currentValueInput, maxCurrentValueInput, stepInput } = this.domElements
     const newOptions: ModelState = { ...this.slider.getModelState() }
 
@@ -225,7 +223,7 @@ class ConfigPanel {
     this.slider.updateState(newOptions)
   }
 
-  private toggleOrientation = () => {
+  private toggleOrientation() {
     const { wrap } = sliderClassNames
     const { verticalSlider } = configPanelClassName
     const sliderParent = this.slider.getDomParent()
@@ -264,7 +262,7 @@ class ConfigPanel {
     this.toggleHangingInputs()
   }
 
-  private hasRange = (): boolean => {
+  private hasRange(): boolean {
     const { currentValues } = this.slider.getModelState()
     return currentValues.hasOwnProperty('max')
   }

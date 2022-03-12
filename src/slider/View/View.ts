@@ -378,7 +378,7 @@ class View extends Observer {
 
   private getCleanCoordinate = (clickCoordinate: ClickCoordinate): number => {
     const { toggle: activeToggle } = this.activeToggle.getDomNode()
-    const halfHandleWidth = activeToggle.offsetWidth / 4
+    const halfHandleWidth = activeToggle.offsetWidth / 7
     const leftToggleMargin = this.isVertical ? 5 : 7
     const sliderOffset = this.isVertical ? this.slider.offsetTop : this.slider.offsetLeft
     const interfering = sliderOffset - halfHandleWidth + leftToggleMargin
