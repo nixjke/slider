@@ -4,11 +4,12 @@ import Observer from './Observer/Observer'
 import ObserverEvents from './Observer/ObserverEvents'
 import Presenter from './Presenter/Presenter'
 import { ModelState } from './utils/interfaces/Model'
+import defaultState from './utils/defaultState'
 
 class Slider extends Observer {
   private presenter: Presenter
 
-  constructor(domParent: HTMLElement, modelState: ModelState) {
+  constructor(domParent: HTMLElement, modelState = defaultState) {
     super()
     this.presenter = new Presenter(domParent, modelState)
     this.init()

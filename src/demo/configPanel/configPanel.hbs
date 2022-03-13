@@ -1,31 +1,31 @@
 <fieldset class="{{classNames.valuesContainer}}">
   <p class="{{classNames.valueContainer}} {{classNames.currentValueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Текущее значение:
+      Current value:
       <input class="{{classNames.currentValueInput}}" type="number" value="{{currentValues.min}}">
     </label>
   </p>
   <p class="{{classNames.valueContainer}} {{classNames.maxCurrentValueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Текущее макс. значение:
+      Current max. value:
       <input class="{{classNames.maxCurrentValueInput}}" type="number" value="{{currentValues.max}}">
     </label>
   </p>
   <p class="{{classNames.valueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Шаг:
+      Step:
       <input class="{{classNames.stepInput}}" type="number" value="{{step}}">
     </label>
   </p>
   <p class="{{classNames.valueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Мин. значение:
+      Min:
       <input class="{{classNames.minRangeInput}}" type="number" value={{range.min}}>
     </label>
   </p>
   <p class="{{classNames.valueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Макс. значение:
+      Max:
       <input class="{{classNames.maxRangeInput}}" type="number" value="{{range.max}}">
     </label>
   </p>
@@ -33,25 +33,25 @@
 <fieldset>
   <p class="{{classNames.valueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Показывать текущее значение:
+      Show current value:
       <input class="{{classNames.thumbCheckbox}}" data-value-name="thumb" type="checkbox" {{#if thumb}}checked{{/if}}>
     </label>
   </p>
   <p class="{{classNames.valueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Шкала:
+      Scale:
       <input class="{{classNames.rulerCheckbox}}" data-value-name="ruler" type="checkbox" {{#if ruler}}checked{{/if}}>
     </label>
   </p>
   <p class="{{classNames.valueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Диапазон:
+      Range:
       <input class="{{classNames.diapasonCheckbox}}" type="checkbox" {{#if isRange}}checked{{/if}}>
     </label>
   </p>
   <p class="{{classNames.valueContainer}}">
     <label class="{{classNames.valueLabel}}">
-      Вертикальный слайдер:
+      Vertical slider:
       <input class="{{classNames.verticalCheckbox}}" type="checkbox" {{#if isVertical}}checked{{/if}}>
     </label>
   </p>

@@ -1,6 +1,13 @@
+fieldset {
+  border: hsl(60, 100%, 70%) 2px solid;
+}
+
 .config-panel {
   width: 700px;
   margin: 20px auto;
+  color: #fff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  user-select: none;
 }
 
 .config-panel__slider {
@@ -22,12 +29,35 @@
   &--hided {
     display: none;
   }
+  padding: 0 8px 0 0;
 }
 
 .config-panel__label {
   cursor: pointer;
 
+  input[type='number'] {
+    width: 100%;
+    background-color: transparent;
+    color: #fff;
+    outline: none;
+    border: hsl(60, 100%, 70%) 2px solid;
+    border-radius: 1px;
+
+    &:focus {
+      border: hsl(100, 100%, 70%) 2px solid;
+      background-color: hsl(0, 0%, 30%);
+    }
+  }
+
   input[type='checkbox'] {
     cursor: pointer;
+    width: 20px;
+    height: 20px;
+    appearance: none;
+    border: hsl(60, 100%, 70%) 2px solid;
+
+    &:checked {
+      background-color: hsl(100, 100%, 70%);
+    }
   }
 }
