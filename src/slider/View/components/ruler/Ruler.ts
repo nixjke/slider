@@ -14,7 +14,7 @@ class Ruler extends Observer {
     this.props = props
   }
 
-  getProps() {
+  getProps(): RulerProps {
     return this.props
   }
 
@@ -28,15 +28,15 @@ class Ruler extends Observer {
     return ruler.firstChild as HTMLElement
   }
 
-  getDomNode() {
+  getDomNode(): DomNode {
     return this.domNode
   }
 
-  setDomNode(domNode: DomNode) {
+  setDomNode(domNode: DomNode): void {
     this.domNode = domNode
   }
 
-  updateProps(props: RulerProps) {
+  updateProps(props: RulerProps): void {
     this.props = props
     const { ruler: withRuler } = this.props
     if (withRuler) {
@@ -46,7 +46,7 @@ class Ruler extends Observer {
     }
   }
 
-  destroyDom() {
+  destroyDom(): void {
     const { ruler } = this.domNode
     const parent = ruler.parentElement as HTMLElement
     parent.removeChild(ruler)

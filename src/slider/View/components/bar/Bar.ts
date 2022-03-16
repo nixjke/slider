@@ -26,15 +26,15 @@ class Bar {
     return scalePosition
   }
 
-  getDomNode() {
+  getDomNode(): DomNode {
     return this.domNode
   }
 
-  setDomNode(domNode: DomNode) {
+  setDomNode(domNode: DomNode): void {
     this.domNode = domNode
   }
 
-  updateProps(props: BarProps) {
+  updateProps(props: BarProps): void {
     this.props = props
     this.redraw()
   }

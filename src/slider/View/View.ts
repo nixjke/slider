@@ -41,7 +41,7 @@ class View extends Observer {
     this.initViewComoponents()
   }
 
-  render() {
+  render(): void {
     this.mountSlider()
     this.saveDom()
     if (this.isVertical) {
@@ -50,11 +50,11 @@ class View extends Observer {
     this.setListeners()
   }
 
-  destroyDom() {
+  destroyDom(): void {
     this.domParent.removeChild(this.slider)
   }
 
-  updateModelState(modelState: ModelState) {
+  updateModelState(modelState: ModelState): void {
     this.modelState = modelState
     this.redrawValue()
   }
