@@ -16,7 +16,7 @@ class Presenter extends Observer {
     this.view = new View(this.model.getState(), this.domParent)
   }
 
-  init() {
+  init(): void {
     this.onModules()
     this.view.render()
   }
