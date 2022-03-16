@@ -41,3 +41,7 @@ const defaultState: ModelState = {
   orientation: 'horizontal',
 }
 ```
+
+## Architecture
+
+![alt tag](UML.png "UML")
