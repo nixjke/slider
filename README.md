@@ -1,5 +1,29 @@
 # slider [plugin]
 
+[View Slider](https://nixjke.github.io/slider/)
+
+| | Version |
+|---|---|
+| node | 14.16.0 |
+| npm | 6.14.11 |
+
+## Installation
+
+```bash
+git clone https://github.com/nixjke/slider.git
+cd slider
+npm install
+npm run build
+```
+
+## Commands
+
+Start: `npm start`
+Build: `npm run build`
+Tests: `npm test`
+Tests with coverage: `npm run coverage`
+Send dist to gh-pages: `npm run deploy`
+
 ## Using
 
 Default slider
