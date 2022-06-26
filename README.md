@@ -2,11 +2,6 @@
 
 [View Slider](https://nixjke.github.io/slider/)
 
-| | Version |
-|---|---|
-| node | 14.16.0 |
-| npm | 6.14.11 |
-
 ## Installation
 
 ```bash
